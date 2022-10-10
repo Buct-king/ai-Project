@@ -1,16 +1,10 @@
-import sys
-import PyQt5
-from PyQt5 import QtWidgets
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 
 import fauilt_detection  # 刚刚转为py文件的UI文件名，我的是untitled
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
-import PyQt5.QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QFileDialog
 
 
-
-
-class UI(QMainWindow,fauilt_detection.Ui_MainWindow):
+class UI(QMainWindow, fauilt_detection.Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setupUi(self)

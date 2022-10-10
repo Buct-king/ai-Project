@@ -1,16 +1,11 @@
-import sys
-import PyQt5
-from PyQt5 import QtWidgets
-
 import test_openVideo  # 刚刚转为py文件的UI文件名，我的是untitled
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QMainWindow
 
-from PyQt5.QtWidgets import QApplication, QFileDialog
+from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
-from PyQt5.QtMultimediaWidgets import QVideoWidget
 
 
-class UI(QMainWindow,test_openVideo.Ui_MainWindow):
+class UI(QMainWindow, test_openVideo.Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setupUi(self)
