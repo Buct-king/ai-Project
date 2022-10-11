@@ -17,7 +17,7 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>-10</x>
       <y>0</y>
       <width>991</width>
       <height>491</height>
@@ -347,6 +347,19 @@ border-radius: 10px;  border: 2px groove gray;</string>
        <string>类型</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>420</y>
+        <width>93</width>
+        <height>28</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>打开子窗口</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -374,7 +387,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
      <x>0</x>
      <y>0</y>
      <width>988</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
