@@ -5,6 +5,7 @@
 代码位置：scj/code/initialization.py
 
 ### <code>get_root_path()</code>  获取存储结构的根目录
+
 作用：获取存储内容的根目录，根目录具体存储位置未定，后续需要修改，暂时定位到：default_detection/dir_test
 
 参数：无
@@ -12,6 +13,7 @@
 返回值：根目录的绝对路径（string）
 
 ### <code>directory_ini()</code> 创建软件存储环境
+
 作用：创建软件的存储环境、目录结构以及组织相关文件内容
 
 参数：无
@@ -22,6 +24,7 @@
 代码位置：scj/code/device.py
 
 ###功能函数
+
 ####<code>video_judge(url_path)</code> 视频能否被打开判断函数
 作用：判断传入的视频（地址）能否被正常读取
 
@@ -33,7 +36,9 @@
 2  # 错误码2，文件类型错误
 0  # 文件类型检查无误，可以打开
 ```
+
 ####<code>history_video()</code> 获取历史视频列表
+
 作用：获取历史检测过的全部视频
 
 参数：无
@@ -50,7 +55,9 @@
   }
 }
 ```
+
 ####<code> open_new_video(video_url_path)</code> 打开新视频
+
 作用：打开新视频
 
 参数：<code>video_url_path</code> 视频的qurl地址
@@ -87,7 +94,9 @@
 //0 Video does not exist! 视频不存在
 //1 OK 成功
 ```
+
 ####<code>get_video_information(video_name)</code> 获取视频信息
+
 作用：获取视频信息
 
 参数：<code>video_name</code> 视频名，string，无.mp4后缀
@@ -102,7 +111,9 @@
     "last_change": "null" //最后一次修改时间
 }
 ```
+
 ####<code>get_pre_video(video_name)</code> 获取上一个视频
+
 作用：获取上一个视频
 
 参数：<code>video_name</code> 视频名称，无.mp4后缀
@@ -122,7 +133,9 @@
 //-1 当前视频不存在
 //-2 已经是第一个视频
 ```
+
 ####<code>get_next_video(video_name)</code> 获取下一个视频
+
 作用：获取下一个视频
 
 参数：<code>video_name</code> 视频名称，无.mp4后缀
@@ -144,7 +157,9 @@
 ```
 
 ###工具函数
+
 ####<code>qurl_to_string(url)</code> qurl转url
+
 作用：将qurl格式转为url
 
 参数：qurl类型的路径
@@ -152,4 +167,5 @@
 返回值：url（string）
 
 ####<code>format_byte(number)</code> 文件大小格式转换
+
 ####<code>format_time(longtime)</code> 时间格式转换
