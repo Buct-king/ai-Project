@@ -1,6 +1,9 @@
 #后端接口说明
+
 ##软件初始化
+
 代码位置：scj/code/initialization.py
+
 ### <code>get_root_path()</code>  获取存储结构的根目录
 作用：获取存储内容的根目录，根目录具体存储位置未定，后续需要修改，暂时定位到：default_detection/dir_test
 
@@ -127,11 +130,11 @@
 返回值：json
 ```json
 {
-    'code': 1,//状态码
-    'message': 'null',//状态信息
-    'video_info': {//视频信息
-        'video_name': 'null',//视频名称(无.mp4后缀)
-        'video_path': 'null' //视频路径
+    "code": 1,//状态码
+    "message": "null",//状态信息
+    "video_info": {//视频信息
+        "video_name": "null",//视频名称(无.mp4后缀)
+        "video_path": "null" //视频路径
     }
 }
 //状态码及含义
