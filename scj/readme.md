@@ -1,6 +1,6 @@
-#后端接口说明
+# 后端接口说明
 
-##软件初始化
+## 软件初始化
 
 代码位置：scj/code/initialization.py
 
@@ -23,9 +23,9 @@
 ## 设备处理相关功能
 代码位置：scj/code/device.py
 
-###功能函数
+### 功能函数
 
-####<code>video_judge(url_path)</code> 视频能否被打开判断函数
+#### <code>video_judge(url_path)</code> 视频能否被打开判断函数
 作用：判断传入的视频（地址）能否被正常读取
 
 参数：<code>url_path</code> qurl格式的视频路径
@@ -37,7 +37,7 @@
 0  # 文件类型检查无误，可以打开
 ```
 
-####<code>history_video()</code> 获取历史视频列表
+#### <code>history_video()</code> 获取历史视频列表
 
 作用：获取历史检测过的全部视频
 
@@ -56,7 +56,7 @@
 }
 ```
 
-####<code> open_new_video(video_url_path)</code> 打开新视频
+#### <code> open_new_video(video_url_path)</code> 打开新视频
 
 作用：打开新视频
 
@@ -76,7 +76,7 @@
 //1 OK 成功
 ```
 
-####<code>open_old_video(video_name)</code> 打开历史视频
+#### <code>open_old_video(video_name)</code> 打开历史视频
 作用：根据传入的视频名称（无.mp4后缀），判断并打开历史视频
 
 参数：<code>video_name</code> 视频名称，无.mp4后缀
@@ -95,7 +95,7 @@
 //1 OK 成功
 ```
 
-####<code>get_video_information(video_name)</code> 获取视频信息
+#### <code>get_video_information(video_name)</code> 获取视频信息
 
 作用：获取视频信息
 
@@ -112,7 +112,7 @@
 }
 ```
 
-####<code>get_pre_video(video_name)</code> 获取上一个视频
+#### <code>get_pre_video(video_name)</code> 获取上一个视频
 
 作用：获取上一个视频
 
@@ -134,7 +134,7 @@
 //-2 已经是第一个视频
 ```
 
-####<code>get_next_video(video_name)</code> 获取下一个视频
+#### <code>get_next_video(video_name)</code> 获取下一个视频
 
 作用：获取下一个视频
 
@@ -156,9 +156,9 @@
 //-2 已经是第一个视频
 ```
 
-###工具函数
+### 工具函数
 
-####<code>qurl_to_string(url)</code> qurl转url
+#### <code>qurl_to_string(url)</code> qurl转url
 
 作用：将qurl格式转为url
 
@@ -166,6 +166,6 @@
 
 返回值：url（string）
 
-####<code>format_byte(number)</code> 文件大小格式转换
+#### <code>format_byte(number)</code> 文件大小格式转换
 
-####<code>format_time(longtime)</code> 时间格式转换
+#### <code>format_time(longtime)</code> 时间格式转换
