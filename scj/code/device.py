@@ -1,6 +1,6 @@
 import os
 from configparser import ConfigParser
-import initialization
+import scj.code.initialization as initialization
 from PyQt5.QtCore import QUrl
 import shutil
 import json
@@ -10,7 +10,8 @@ import yaml
 
 # qurl转string
 def qurl_to_string(url):
-    return url.tostring()
+    s = url.tostring()
+    return s[8:]
 
 
 def format_byte(number):
@@ -238,5 +239,6 @@ if __name__ == '__main__':
     # get_file_information("/Users/shichunjing/Desktop/C++Primer.pdf")
     # print(get_video_information("C++Primer"))
     # print(get_pre_video("abcd"))
-    print(get_next_video("device_2_without_file"))
+    # print(get_next_video("device_2_without_file"))
+    pass
 
