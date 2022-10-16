@@ -1,12 +1,13 @@
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 import random
-import fauilt_detection  # 刚刚转为py文件的UI文件名，我的是untitled
+import fault_detection,fault_detection_addition_ui  # 刚刚转为py文件的UI文件名，我的是untitled
 from PyQt5.QtWidgets import QMainWindow, QFileDialog
 from child_viewmodel import Child
 from PyQt5 import QtCore
-class UI(QMainWindow, fauilt_detection.Ui_MainWindow):
+class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection_addition_ui.Fault_Detection_Addition_UI):
     def __init__(self):
         QMainWindow.__init__(self)
+        fault_detection_addition_ui.Fault_Detection_Addition_UI.__init__(self)
         self.setupUi(self)
         self.ch = Child()
 
@@ -26,7 +27,7 @@ class UI(QMainWindow, fauilt_detection.Ui_MainWindow):
         绑定控件的回调函数
     '''
     def slot_init(self):
-        self.pushButton.clicked.connect(lambda: self.openVideoSelect())
+        self.oepnVideoPushButton.clicked.connect(lambda: self.openVideoSelect())
         self.startPushButton.clicked.connect(lambda: self.videoStateChange())
         self.nextPushButton.clicked.connect(lambda: self.fastChange())
         self.lastPushButton.clicked.connect(lambda: self.backoffChange())
@@ -64,8 +65,10 @@ class UI(QMainWindow, fauilt_detection.Ui_MainWindow):
     def videoStateChange(self):
         if self.player.state()==2:
             self.player.play()
+            self.changeIcon2IconStop()
         elif self.player.state()==1:
             self.player.pause()
+            self.changeIcon2IconStart()
 
     def fastChange(self):
         print("总长是",self.player.duration())
@@ -90,10 +93,12 @@ class UI(QMainWindow, fauilt_detection.Ui_MainWindow):
     '''
     def sliderPressed(self):
         self.player.pause()
+        self.changeIcon2IconStart()
         self.timer.stop()
 
     def sliderReleased(self):
         self.player.play()
+        self.changeIcon2IconStop()
         rateOfProcess=self.horizontalSlider.value()/self.horizontalSlider.maximum()
         self.player.setPosition(self.player.duration()*rateOfProcess)
         self.timer.start()
