@@ -178,10 +178,8 @@ def get_pre_video(video_name):
     ans_dict = {
         'code': 1,
         'message': 'null',
-        'video_info': {
-            'video_name': 'null',
-            'video_path': 'null'
-        }
+        'video_name': 'null',
+        'video_path': 'null'
     }
     history_list = json.loads(history_video())
     if history_list['devices_list'].__contains__(video_name) is not True:
@@ -190,15 +188,15 @@ def get_pre_video(video_name):
         return ans_dict
     for device in history_list['devices_list']:
         if device == video_name:
-            if ans_dict['video_info']['video_name'] == 'null':
+            if ans_dict['video_name'] == 'null':
                 ans_dict['code'] = -2
                 ans_dict['message'] = '已经是第一个视频'
             else:
                 ans_dict['code'] = 1
                 ans_dict['message'] = 'OK'
             break
-        ans_dict['video_info']['video_name'] = device
-        ans_dict['video_info']['video_path'] = history_list['devices_list'][device]
+        ans_dict['video_name'] = device
+        ans_dict['video_path'] = history_list['devices_list'][device]
     return ans_dict
 
 
@@ -207,10 +205,8 @@ def get_next_video(video_name):
     ans_dict = {
         'code': 1,
         'message': 'null',
-        'video_info': {
-            'video_name': 'null',
-            'video_path': 'null'
-        }
+        'video_name': 'null',
+        'video_path': 'null'
     }
     history_list = json.loads(history_video())
     if history_list['devices_list'].__contains__(video_name) is not True:
@@ -222,12 +218,12 @@ def get_next_video(video_name):
         if file_has_found is True:
             ans_dict['code'] = 1
             ans_dict['message'] = 'OK'
-            ans_dict['video_info']['video_name'] = device
-            ans_dict['video_info']['video_path'] = history_list['devices_list'][device]
+            ans_dict['video_name'] = device
+            ans_dict['video_path'] = history_list['devices_list'][device]
             break
         if device == video_name:
             file_has_found = True
-    if ans_dict['video_info']['video_name'] == 'null':
+    if ans_dict['video_name'] == 'null':
         ans_dict['code'] = -2
         ans_dict['message'] = '已经是最后一个视频'
     return ans_dict
