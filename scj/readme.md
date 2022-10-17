@@ -123,10 +123,8 @@
 {
     'code': 1,//状态码
     'message': 'null',//状态信息
-    'video_info': {//视频信息
-        'video_name': 'null',//视频名称(无.mp4后缀)
-        'video_path': 'null' //视频路径
-    }
+    'video_name': 'null',//视频名称(无.mp4后缀)
+    'video_path': 'null' //视频路径
 }
 //状态码及含义
 //1 OK 上一个视频信息获取成功
@@ -144,11 +142,9 @@
 ```json
 {
     "code": 1,//状态码
-    "message": "null",//状态信息
-    "video_info": {//视频信息
-        "video_name": "null",//视频名称(无.mp4后缀)
-        "video_path": "null" //视频路径
-    }
+    "message": "null",//状态信息  
+    "video_name": "null",//视频名称(无.mp4后缀)
+    "video_path": "null" //视频路径
 }
 //状态码及含义
 //1 OK 上一个视频信息获取成功
