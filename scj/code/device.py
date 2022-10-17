@@ -10,7 +10,7 @@ import yaml
 
 # qurl转string
 def qurl_to_string(url):
-    s = url.tostring()
+    s = url.toString()
     return s[8:]
 
 
@@ -60,6 +60,7 @@ def history_video():  # 获取历史检测过的视频/设备列表
 # 打开新视频
 def open_new_video(video_url_path):  # 打开新视频时，调用该函数为视频创建视频内容保存路径
     video_path = qurl_to_string(video_url_path)
+    print(video_path)
     # video_path = "aaaa/bbbb/cccc/dddd/abcd.mp4"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
     return_dict = {
@@ -131,6 +132,7 @@ def open_old_video(video_name):
     conf = ConfigParser()
     conf.read(config_path)
     device_path = conf.get("path_config", "device_path")
+    print(history_video_dict)
     if history_video_dict.__contains__(video_name) is not True:  # 失败，视频不存在
         return_dict['code'] = 0
         return_dict['message'] = "Video does not exist!"

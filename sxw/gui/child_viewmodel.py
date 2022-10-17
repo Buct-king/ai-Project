@@ -11,13 +11,13 @@ import scj.code.device as device
 
 class Child(QMainWindow, child.Ui_MainWindow):
     # 向父窗口传递打开文件名的信号量
-    _signal = QtCore.pyqtSignal(QtCore.QUrl)
+    _signal = QtCore.pyqtSignal([str,QtCore.QUrl,int])
 
     def __init__(self):
         QMainWindow.__init__(self)
         self.setupUi(self)
         self.slot_init()
-        self.historyVideosName, self.getHistoryVideosPath=self.getHistoryVideosInfo()
+        self.historyVideosName, self.historyVideosPath=self.getHistoryVideosInfo()
         self.selectedItem = None
 
     # 绑定回调函数
@@ -29,20 +29,23 @@ class Child(QMainWindow, child.Ui_MainWindow):
     def searchVideoFile(self):
         # openFileUrl PyQt5.QtCore.QUrl
         openFileUrl = QFileDialog.getOpenFileUrl()
-        self._signal.emit(openFileUrl[0])
+        print(openFileUrl)
+        signal=[openFileUrl[0],1]
+        self._signal.emit(None,signal[0],signal[1])
         self.close()
 
     # 打开历史视频文件
     def openHistoryVideoFile(self):
         if self.selectedItem == None:
-            print("您还咩有选择视频文件")
+            print("您还没有选择视频文件")
             QMessageBox.critical(self, "错误", "您还未选择视频")
         else:
             pass
-            # openFileUrl = QtCore.QUrl(self.historyVideos[self.selectedItem.row()])
-            # print(openFileUrl)
-            # self._signal.emit(openFileUrl)
-            # self.close()
+            openFileUrl = QtCore.QUrl(self.historyVideosPath[self.selectedItem.row()])
+            openFileName=self.historyVideosName[self.selectedItem.row()]
+            print(openFileUrl)
+            self._signal.emit(openFileName,openFileUrl,2)
+            self.close()
 
 
     '''
@@ -66,12 +69,14 @@ class Child(QMainWindow, child.Ui_MainWindow):
         self.selectedItem = qModelIndex
         print(qModelIndex)
         # 控制台，你选择的信息
-        print('你选择了：' + self.historyVideos[qModelIndex.row()])
+        print('你选择了：' + self.historyVideosName[qModelIndex.row()])
 
     def getHistoryVideosInfo(self):
         historyVideos = json.loads(device.history_video())
         count = historyVideos["devices_cnt"]
-        historyVideosName=historyVideos["devices_list"].keys()
-        historyVideosPath=historyVideos["devices_list"].values()
-
+        historyVideosName=list(historyVideos["devices_list"].keys())
+        historyVideosPath=list(historyVideos["devices_list"].values())
         return historyVideosName, historyVideosPath
+
+    def setHistoryVideosInfo(self):
+        self.historyVideosName, self.historyVideosPath = self.getHistoryVideosInfo()
