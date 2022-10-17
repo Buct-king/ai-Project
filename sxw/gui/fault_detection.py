@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'fauilt_detection.ui'
+# Form implementation generated from reading ui file 'fault_detection.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.3
 #
