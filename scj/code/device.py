@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from configparser import ConfigParser
 import scj.code.initialization as initialization
@@ -6,6 +7,7 @@ import shutil
 import json
 import time
 import yaml
+import sys
 
 
 # qurl转string
@@ -54,7 +56,7 @@ def history_video():  # 获取历史检测过的视频/设备列表
         'devices_cnt': devices_cnt,
         'devices_list': all_devices
     }
-    return json.dumps(json_dict)
+    return json.dumps(json_dict, ensure_ascii=False)
 
 
 # 打开新视频
@@ -62,6 +64,7 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
     video_path = qurl_to_string(video_url_path)
     # video_path = "aaaa/bbbb/cccc/dddd/abcd.mp4"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
+    # video_path = "/Users/shichunjing/Desktop/STL源码剖析.pdf"
     return_dict = {
         'code': -1,  # 状态码，-1表示无意义
         'message': "null",  # 状态码信息
@@ -115,7 +118,8 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
         return_dict['message'] = "OK"
         return_dict['video_name'] = video_name[:-4]
         return_dict['video_path'] = device_path + "/" + video_name[:-4]
-        return json.dumps(return_dict)
+        print(video_name[:-4])
+        return json.dumps(return_dict, ensure_ascii=False)
 
 
 # 打开历史视频
@@ -146,7 +150,7 @@ def open_old_video(video_name):
         with open(initialization.get_root_path() + "/system.ini", 'w') as f:
             conf.write(f)
             f.close()
-        return json.dumps(return_dict)
+        return json.dumps(return_dict, ensure_ascii=False)
 
 
 # 获取视频信息
@@ -168,7 +172,7 @@ def get_video_information(video_name):
         information_dict['last_visit'] = yaml_data['video_info']['last_visit']
         information_dict['last_change'] = yaml_data['video_info']['last_change']
         f.close()
-    return json.dumps(information_dict)
+    return json.dumps(information_dict, ensure_ascii=False)
 
 
 # 获取上一个视频
@@ -195,7 +199,7 @@ def get_pre_video(video_name):
             break
         ans_dict['video_name'] = device
         ans_dict['video_path'] = history_list['devices_list'][device]
-    return ans_dict
+    return json.dumps(ans_dict, ensure_ascii=False)
 
 
 # 获取下一个视频
@@ -224,7 +228,7 @@ def get_next_video(video_name):
     if ans_dict['video_name'] == 'null':
         ans_dict['code'] = -2
         ans_dict['message'] = '已经是最后一个视频'
-    return ans_dict
+    return json.dumps(ans_dict, ensure_ascii=False)
 
 
 if __name__ == '__main__':
@@ -236,5 +240,6 @@ if __name__ == '__main__':
     # print(get_video_information("C++Primer"))
     # print(get_pre_video("abcd"))
     # print(get_next_video("device_2_without_file"))
+    # print(qurl_to_string(""))
     pass
 
