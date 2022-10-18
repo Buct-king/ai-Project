@@ -1,0 +1,8 @@
+camera:
+  camera_list: []
+  camera_num: 0
+video:
+  video_list:
+  - STL源码剖析
+  - C++Primer
+  video_num: 2

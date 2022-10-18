@@ -2,6 +2,7 @@
 
 import os
 from configparser import ConfigParser
+import yaml
 
 
 # 获取存储结构的根目录
@@ -21,6 +22,17 @@ def directory_ini():
     if os.path.isfile(path + "/data/device_list.yml") is not True:  # 初始化配置文件
         print(path + "/data/device_list.yml")
         with open(path + "/data/device_list.yml", 'a') as f:
+            yaml_dict = {
+                'video': {
+                    'video_num': 0,
+                    'video_list': []
+                },
+                'camera': {
+                    'camera_num': 0,
+                    'camera_list': []
+                }
+            }
+            yaml.dump(yaml_dict, f, allow_unicode=True)
             f.close()
     if os.path.isdir(path + "/model") is not True:  # 初始化model文件夹
         os.mkdir(path + "/model")

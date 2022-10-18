@@ -2,12 +2,11 @@
 import os
 from configparser import ConfigParser
 import scj.code.initialization as initialization
-from PyQt5.QtCore import QUrl
 import shutil
 import json
 import time
 import yaml
-import sys
+import cv2
 
 
 # qurl转string
@@ -62,7 +61,6 @@ def history_video():  # 获取历史检测过的视频/设备列表
 # 打开新视频
 def open_new_video(video_url_path):  # 打开新视频时，调用该函数为视频创建视频内容保存路径
     video_path = qurl_to_string(video_url_path)
-    print(video_path)
     # video_path = "aaaa/bbbb/cccc/dddd/abcd.mp4"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/STL源码剖析.pdf"
@@ -91,7 +89,7 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
     else:  # 为新视频创建存储路径
         video_status = os.stat(video_path)
         new_device_information_dict = {  # 新视频需要存储的信息内容
-            'video_name': video_name,
+            'video_name': video_name[:-4],
             'image_path': device_path + "/" + video_name[:-4] + "/images",
             'image_info': device_path + "/" + video_name[:-4] + "/images/image_list.yml",
             'video_info': {
@@ -106,9 +104,7 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
         os.mkdir(device_path + "/" + video_name[:-4] + "/images")
         with open(device_path + "/" + video_name[:-4] + "/" + video_name[:-4] + ".yml", 'a') as f:
             # yaml_data = yaml.load(f, Loader=yaml.FullLoader)
-            yaml.dump(new_device_information_dict, f)
-            f.close()
-        with open(device_path + "/" + video_name[:-4] + "/images/image_list.yml", 'a') as f:
+            yaml.dump(new_device_information_dict, f, allow_unicode=True)
             f.close()
         shutil.copyfile(video_path, device_path + "/" + video_name[:-4] + "/" + video_name)
         conf.set('processing', 'video', video_name[:-4])
@@ -119,6 +115,16 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
         return_dict['message'] = "OK"
         return_dict['video_name'] = video_name[:-4]
         return_dict['video_path'] = device_path + "/" + video_name[:-4]
+        # 向device_list文件中写入
+        yml_dict = {}
+        with open(initialization.get_root_path() + "/data/device_list.yml", 'r') as f:
+            yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+            f.close()
+        with open(initialization.get_root_path() + "/data/device_list.yml", 'w+') as f:
+            yml_dict['video']['video_num'] = 1 + int(yml_dict['video']['video_num'])
+            yml_dict['video']['video_list'].append(video_name[:-4])
+            yaml.dump(yml_dict, f, allow_unicode=True)
+            f.close()
         print(video_name[:-4])
         return json.dumps(return_dict, ensure_ascii=False)
 
@@ -233,6 +239,30 @@ def get_next_video(video_name):
     return json.dumps(ans_dict, ensure_ascii=False)
 
 
+def get_camera_list():
+    is_working = True
+    dev_port = 0
+    working_ports = []
+    available_ports = []
+    while is_working:
+        camera = cv2.VideoCapture(dev_port)
+        if not camera.isOpened():
+            is_working = False
+        else:
+            camera_list = []
+            is_reading, img = camera.read()
+            w = camera.get(3)
+            h = camera.get(4)
+            if is_reading:
+                print("Port %s is working and reads images (%s x %s)" % (dev_port, h, w))
+                working_ports.append(dev_port)
+            else:
+                print("Port %s for camera ( %s x %s) is present but does not reads." % (dev_port, h, w))
+                available_ports.append(dev_port)
+        dev_port += 1
+    return available_ports, working_ports
+
+
 if __name__ == '__main__':
     # print(video_judge("xxx.mp4"))
     # print(history_video())
@@ -243,5 +273,7 @@ if __name__ == '__main__':
     # print(get_pre_video("abcd"))
     # print(get_next_video("device_2_without_file"))
     # print(qurl_to_string(""))
+    # get_camera_list()
+    get_camera_list()
     pass
 
