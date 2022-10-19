@@ -3,6 +3,6 @@ camera:
   camera_num: 0
 video:
   video_list:
-  - STL源码剖析
   - C++Primer
+  - STL源码剖析
   video_num: 2

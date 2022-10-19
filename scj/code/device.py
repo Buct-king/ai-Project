@@ -40,17 +40,19 @@ def video_judge(url_path):
     return 0  # 文件类型检查无误，可以打开
 
 
-# 获取历史视频列表
+# 获取历史视频列表 ====
 def history_video():  # 获取历史检测过的视频/设备列表
     config_path = initialization.get_root_path() + "/system.ini"
     conf = ConfigParser()
     conf.read(config_path)
-    path = conf.get("path_config", "device_path")
+    path = conf.get("path_config", "device_video_path")
     all_devices = {}
-    devices_cnt = 0
-    for directory in os.listdir(path):
-        all_devices[directory] = path + "/" + directory
-        devices_cnt += 1
+    with open(initialization.get_root_path() + "/data/device_list.yml", 'r') as f:
+        yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+        devices_cnt = yml_dict["video"]["video_num"]
+        for device in yml_dict["video"]["video_list"]:
+            all_devices[device] = path + "/" + device
+        f.close()
     json_dict = {
         'devices_cnt': devices_cnt,
         'devices_list': all_devices
@@ -73,7 +75,8 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
     config_path = initialization.get_root_path() + "/system.ini"
     conf = ConfigParser()
     conf.read(config_path)
-    device_path = conf.get("path_config", "device_path")
+    # device_path = conf.get("path_config", "device_path")
+    device_video_path = conf.get("path_config", "device_video_path")
     video_name = ""  # 视频名称
     i = len(video_path) - 1
     while i >= 0:
@@ -87,34 +90,34 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
         return_dict['message'] = "Video already exists!"
         return json.dumps(return_dict)
     else:  # 为新视频创建存储路径
-        video_status = os.stat(video_path)
+        video_status = os.stat(video_path)  # 获取视频信息状态
         new_device_information_dict = {  # 新视频需要存储的信息内容
             'video_name': video_name[:-4],
-            'image_path': device_path + "/" + video_name[:-4] + "/images",
-            'image_info': device_path + "/" + video_name[:-4] + "/images/image_list.yml",
+            'image_path': device_video_path + "/" + video_name[:-4] + "/images",
+            'image_info': device_video_path + "/" + video_name[:-4] + "/images/image_list.yml",
             'video_info': {
                 'original_path': video_path,
-                'video_path': device_path + "/" + video_name[:-4],
+                'video_path': device_video_path + "/" + video_name[:-4],
                 'video_size': format_byte(video_status.st_size),
                 'last_visit': format_time(video_status.st_atime),
                 'last_change': format_time(video_status.st_mtime)
             }
         }
-        os.mkdir(device_path + "/" + video_name[:-4])
-        os.mkdir(device_path + "/" + video_name[:-4] + "/images")
-        with open(device_path + "/" + video_name[:-4] + "/" + video_name[:-4] + ".yml", 'a') as f:
+        os.mkdir(device_video_path + "/" + video_name[:-4])
+        os.mkdir(device_video_path + "/" + video_name[:-4] + "/images")
+        with open(device_video_path + "/" + video_name[:-4] + "/" + video_name[:-4] + ".yml", 'a') as f:
             # yaml_data = yaml.load(f, Loader=yaml.FullLoader)
             yaml.dump(new_device_information_dict, f, allow_unicode=True)
             f.close()
-        shutil.copyfile(video_path, device_path + "/" + video_name[:-4] + "/" + video_name)
-        conf.set('processing', 'video', video_name[:-4])
+        shutil.copyfile(video_path, device_video_path + "/" + video_name[:-4] + "/" + video_name)  # 复制视频副本
+        conf.set('processing', 'video', video_name[:-4])  # 配置文件修改：当前正在处理的视频是该视频
         with open(initialization.get_root_path() + "/system.ini", 'w') as f:
             conf.write(f)
             f.close()
         return_dict['code'] = 1
         return_dict['message'] = "OK"
         return_dict['video_name'] = video_name[:-4]
-        return_dict['video_path'] = device_path + "/" + video_name[:-4]
+        return_dict['video_path'] = device_video_path + "/" + video_name[:-4]
         # 向device_list文件中写入
         yml_dict = {}
         with open(initialization.get_root_path() + "/data/device_list.yml", 'r') as f:
@@ -141,19 +144,19 @@ def open_old_video(video_name):
     config_path = initialization.get_root_path() + "/system.ini"
     conf = ConfigParser()
     conf.read(config_path)
-    device_path = conf.get("path_config", "device_path")
-    print(history_video_dict)
+    device_video_path = conf.get("path_config", "device_video_path")
+    # print(history_video_dict)
     if history_video_dict.__contains__(video_name) is not True:  # 失败，视频不存在
         return_dict['code'] = 0
         return_dict['message'] = "Video does not exist!"
         return_dict['video_name'] = video_name
-        return_dict['video_path'] = device_path + "/" + video_name
+        return_dict['video_path'] = "null"
         return json.dumps(return_dict)
     else:
         return_dict['code'] = 1
         return_dict['message'] = "OK"
         return_dict['video_name'] = video_name
-        return_dict['video_path'] = device_path + "/" + video_name
+        return_dict['video_path'] = device_video_path + "/" + video_name
         conf.set('processing', 'video', video_name)
         with open(initialization.get_root_path() + "/system.ini", 'w') as f:
             conf.write(f)
@@ -166,15 +169,15 @@ def get_video_information(video_name):
     config_path = initialization.get_root_path() + "/system.ini"
     conf = ConfigParser()
     conf.read(config_path)
-    device_path = conf.get("path_config", "device_path")
+    device_video_path = conf.get("path_config", "device_video_path")
     information_dict = {
         'video_name': video_name + ".mp4",
-        'video_path': device_path + "/" + video_name + "/" + video_name + ".mp4",
+        'video_path': device_video_path + "/" + video_name + "/" + video_name + ".mp4",
         'video_size': "null",
         'last_visit': "null",
         'last_change': "null"
     }
-    with open(device_path + "/" + video_name + "/" + video_name + ".yml", 'r') as f:
+    with open(device_video_path + "/" + video_name + "/" + video_name + ".yml", 'r') as f:
         yaml_data = yaml.load(f, Loader=yaml.FullLoader)
         information_dict['video_size'] = yaml_data['video_info']['video_size']
         information_dict['last_visit'] = yaml_data['video_info']['last_visit']
@@ -289,6 +292,6 @@ if __name__ == '__main__':
     # print(get_next_video("device_2_without_file"))
     # print(qurl_to_string(""))
     # get_camera_list()
-    print(get_camera_list())
+    # print(get_camera_list())
     pass
 
