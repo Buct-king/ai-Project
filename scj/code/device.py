@@ -239,28 +239,43 @@ def get_next_video(video_name):
     return json.dumps(ans_dict, ensure_ascii=False)
 
 
+# 获取可用的摄像头列表
 def get_camera_list():
     is_working = True
     dev_port = 0
-    working_ports = []
-    available_ports = []
+    camera_info = {
+        'camera_num': 0,
+        'camera_list': []
+    }
     while is_working:
         camera = cv2.VideoCapture(dev_port)
         if not camera.isOpened():
             is_working = False
         else:
-            camera_list = []
+            _camera = {
+                'id': dev_port,
+                'name': str(camera),
+                'status': "",
+                'size_height': -1,
+                'size_weight': -1
+            }
             is_reading, img = camera.read()
-            w = camera.get(3)
-            h = camera.get(4)
+            _camera['size_weight'] = camera.get(3)
+            _camera['size_height'] = camera.get(4)
             if is_reading:
-                print("Port %s is working and reads images (%s x %s)" % (dev_port, h, w))
-                working_ports.append(dev_port)
+                _camera['status'] = "OK"
             else:
-                print("Port %s for camera ( %s x %s) is present but does not reads." % (dev_port, h, w))
-                available_ports.append(dev_port)
+                _camera['status'] = "camera present but does not reads"
+            camera_info['camera_list'].append(_camera)
         dev_port += 1
-    return available_ports, working_ports
+    camera_info['camera_num'] = dev_port - 1
+    return json.dumps(camera_info, ensure_ascii=False)
+
+
+# 创建新的摄像头设备
+def open_new_camera(camera_name):
+
+    pass
 
 
 if __name__ == '__main__':
@@ -274,6 +289,6 @@ if __name__ == '__main__':
     # print(get_next_video("device_2_without_file"))
     # print(qurl_to_string(""))
     # get_camera_list()
-    get_camera_list()
+    print(get_camera_list())
     pass
 

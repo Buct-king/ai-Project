@@ -173,4 +173,29 @@ json = {
 
 参数：无
 
-返回值：设备列表
+返回值：设备列表 json
+```python
+json = {
+    'camera_num': 0,  # 设备可调用的摄像头数量
+    'camera_list': []  # 设备列表，元素为_camera类型
+}
+_camera = {
+    'id': -1,  # 摄像头id，opencv中调用的识别号
+    'name': "string",  # 摄像头名字
+    'status': "",  # 摄像头状态
+    'size_height': -1,  # 画面高度
+    'size_weight': -1  # 画面宽度
+}
+eg = {
+    "camera_num": 1, 
+    "camera_list": [
+        {
+            "id": 0, 
+            "name": "<VideoCapture 0x7fcabc09bcf0>", 
+            "status": "OK", 
+            "size_height": 720.0, 
+            "size_weight": 1280.0
+        }
+    ]
+}
+```
