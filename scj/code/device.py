@@ -40,7 +40,7 @@ def video_judge(url_path):
     return 0  # 文件类型检查无误，可以打开
 
 
-# 获取历史视频列表 ====
+# 获取历史视频列表
 def history_video():  # 获取历史检测过的视频/设备列表
     config_path = initialization.get_root_path() + "/system.ini"
     conf = ConfigParser()
@@ -62,9 +62,9 @@ def history_video():  # 获取历史检测过的视频/设备列表
 
 # 打开新视频
 def open_new_video(video_url_path):  # 打开新视频时，调用该函数为视频创建视频内容保存路径
-    video_path = qurl_to_string(video_url_path)
+    # video_path = qurl_to_string(video_url_path)
     # video_path = "aaaa/bbbb/cccc/dddd/abcd.mp4"  # 测试用
-    # video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
+    video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/STL源码剖析.pdf"
     return_dict = {
         'code': -1,  # 状态码，-1表示无意义
@@ -84,8 +84,8 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
             break
         video_name = video_path[i] + video_name
         i = i - 1
-    history_video_dict = history_video()
-    if history_video_dict.__contains__(video_name[:-4]):  # 新视频创建失败，已经存在相同名字的历史视频
+    history_video_dict = json.loads(history_video())
+    if history_video_dict["devices_list"].__contains__(video_name[:-4]):  # 新视频创建失败，已经存在相同名字的历史视频
         return_dict['code'] = 0
         return_dict['message'] = "Video already exists!"
         return json.dumps(return_dict)
@@ -106,6 +106,8 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
         os.mkdir(device_video_path + "/" + video_name[:-4])
         os.mkdir(device_video_path + "/" + video_name[:-4] + "/images")
         with open(device_video_path + "/" + video_name[:-4] + "/" + video_name[:-4] + ".yml", 'a') as f:
+            f.close()
+        with open(device_video_path + "/" + video_name[:-4] + "/images/image_list.yml", 'a') as f:
             # yaml_data = yaml.load(f, Loader=yaml.FullLoader)
             yaml.dump(new_device_information_dict, f, allow_unicode=True)
             f.close()
@@ -140,13 +142,13 @@ def open_old_video(video_name):
         'video_name': 'null',  # 视频名称
         'video_path': 'null'  # 视频路径
     }
-    history_video_dict = history_video()
+    history_video_dict = json.loads(history_video())
     config_path = initialization.get_root_path() + "/system.ini"
     conf = ConfigParser()
     conf.read(config_path)
     device_video_path = conf.get("path_config", "device_video_path")
     # print(history_video_dict)
-    if history_video_dict.__contains__(video_name) is not True:  # 失败，视频不存在
+    if history_video_dict['devices_list'].__contains__(video_name) is not True:  # 失败，视频不存在
         return_dict['code'] = 0
         return_dict['message'] = "Video does not exist!"
         return_dict['video_name'] = video_name
@@ -242,7 +244,7 @@ def get_next_video(video_name):
     return json.dumps(ans_dict, ensure_ascii=False)
 
 
-# 获取可用的摄像头列表
+# 获取系统可用的摄像头列表
 def get_camera_list():
     is_working = True
     dev_port = 0
@@ -275,10 +277,123 @@ def get_camera_list():
     return json.dumps(camera_info, ensure_ascii=False)
 
 
-# 创建新的摄像头设备
-def open_new_camera(camera_name):
+# 获取历史使用的摄像头列表
+def history_camera():
+    config_path = initialization.get_root_path() + "/system.ini"
+    conf = ConfigParser()
+    conf.read(config_path)
+    path = conf.get("path_config", "device_camera_path")
+    all_devices = {}
+    with open(initialization.get_root_path() + "/data/device_list.yml", 'r') as f:
+        yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+        devices_cnt = yml_dict["camera"]["camera_num"]
+        for device in yml_dict["camera"]["camera_list"]:
+            all_devices[device] = path + "/" + device
+        f.close()
+    json_dict = {
+        'devices_cnt': devices_cnt,
+        'devices_list': all_devices
+    }
+    return json.dumps(json_dict, ensure_ascii=False)
 
+
+# 创建新的摄像头设备
+def open_new_camera(camera_name, camera_code):
+    return_dict = {
+        'code': -1,  # 状态码，-1表示摄像头不可用
+        'message': "null",  # 状态码信息
+        'camera_name': 'null',  # 摄像头名称
+        'camera_path': 'null'  # 摄像头相关文件存储目录
+    }
+    camera = cv2.VideoCapture(camera_code)  # 获取摄像头对象
+    if not camera.isOpened():
+        return_dict['code'] = -1  # 摄像头不可用
+        return_dict['message'] = 'camera present but does not open'
+        return json.dumps(return_dict)
+    is_reading, img = camera.read()
+    if is_reading is not True:
+        return_dict['code'] = -2  # 摄像头不可读
+        return_dict['message'] = 'camera present but does not reads'
+        return json.dumps(return_dict)
+    config_path = initialization.get_root_path() + "/system.ini"
+    conf = ConfigParser()
+    conf.read(config_path)
+    device_camera_path = conf.get("path_config", "device_camera_path")
+    history_video_dict = json.loads(history_camera())
+    if history_video_dict['devices_list'].__contains__(camera_name):  # 新摄像头创建失败，已经存在相同名字的历史摄像头
+        return_dict['code'] = -3
+        return_dict['message'] = "Camera already exists!"
+        return json.dumps(return_dict)
+    else:  # 为新摄像头创建存储路径
+        new_device_information_dict = {  # 新视频需要存储的信息内容，写入yml文件
+            'camera_name': camera_name,
+            'image_path': device_camera_path + "/" + camera_name + "/images",
+            'image_info': device_camera_path + "/" + camera_name + "/images/image_list.yml",
+            'camera_info': {
+                'camera_size_weight': camera.get(3),
+                'camera_size_height': camera.get(4),
+            }
+        }
+        os.mkdir(device_camera_path + "/" + camera_name)
+        os.mkdir(device_camera_path + "/" + camera_name + "/images")
+        with open(device_camera_path + "/" + camera_name + "/images/image_list.yml", 'a') as f:
+            f.close()
+        with open(device_camera_path + "/" + camera_name + "/" + camera_name + ".yml", 'a') as f:
+            # yaml_data = yaml.load(f, Loader=yaml.FullLoader)
+            yaml.dump(new_device_information_dict, f, allow_unicode=True)
+            f.close()
+        conf.set('processing', 'camera', camera_name)  # 配置文件修改：当前正在处理的视频是该视频
+        with open(initialization.get_root_path() + "/system.ini", 'w') as f:
+            conf.write(f)
+            f.close()
+        return_dict['code'] = 1
+        return_dict['message'] = "OK"
+        return_dict['camera_name'] = camera_name
+        return_dict['camera_path'] = device_camera_path + "/" + camera_name
+        # 向device_list文件中写入
+        yml_dict = {}
+        with open(initialization.get_root_path() + "/data/device_list.yml", 'r') as f:
+            yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+            f.close()
+        with open(initialization.get_root_path() + "/data/device_list.yml", 'w+') as f:
+            yml_dict['camera']['camera_num'] = 1 + int(yml_dict['camera']['camera_num'])
+            yml_dict['camera']['camera_list'].append(camera_name)
+            yaml.dump(yml_dict, f, allow_unicode=True)
+            f.close()
+        print(camera_name)
+        return json.dumps(return_dict, ensure_ascii=False)
     pass
+
+
+# 打开历史视频
+def open_old_camera(camera_name):
+    return_dict = {
+        'code': -1,  # 状态码，-1表示无意义
+        'message': "null",  # 状态码信息
+        'camera_name': 'null',  # 摄像头名称
+        'camera_path': 'null'  # 摄像头路径
+    }
+    history_video_dict = json.loads(history_camera())
+    config_path = initialization.get_root_path() + "/system.ini"
+    conf = ConfigParser()
+    conf.read(config_path)
+    device_camera_path = conf.get("path_config", "device_camera_path")
+    if history_video_dict['devices_list'].__contains__(camera_name) is not True:  # 失败，视频不存在
+        return_dict['code'] = 0  # 失败，摄像头不存在
+        return_dict['message'] = "Camera does not exist!"
+        return_dict['camera_name'] = camera_name
+        return_dict['camera_name'] = "null"
+        return json.dumps(return_dict)
+    else:
+        return_dict['code'] = 1
+        return_dict['message'] = "OK"
+        return_dict['camera_name'] = camera_name
+        return_dict['camera_path'] = device_camera_path + "/" + camera_name
+        conf.set('processing', 'camera', camera_name)
+        with open(initialization.get_root_path() + "/system.ini", 'w') as f:
+            conf.write(f)
+            f.close()
+        return json.dumps(return_dict, ensure_ascii=False)
 
 
 if __name__ == '__main__':
@@ -293,5 +408,9 @@ if __name__ == '__main__':
     # print(qurl_to_string(""))
     # get_camera_list()
     # print(get_camera_list())
+    # print(history_camera())
+    # open_new_camera("test_camera_1", 0)
+    print(open_new_camera("test_camera_3", 0))
+    # print(open_old_camera("test_camera_3"))
     pass
 

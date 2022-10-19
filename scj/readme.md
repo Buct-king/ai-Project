@@ -201,3 +201,69 @@ eg = {
     ]
 }
 ```
+
+#### <code>history_camera()</code> 获取历史使用的摄像头列表
+
+作用：获取历史曾使用过的摄像头列表，与视频类似
+
+参数：无
+
+返回值：历史设备列表，json
+
+```python
+json = {
+    'devices_cnt': 0,  # 整数状态码，表示历史摄像头设备数量
+    'devices_list': {  # 历史摄像头列表
+        "device_name": "device_path"  # 键值对 key：设备/视频名 value：对应的存储目录位置
+    }
+}
+# 状态码及其含义
+# 0 ,摄像头创建失败，已经存在同名的摄像头
+```
+
+
+#### <code>open_new_camera(camera_name, camera_code)</code> 创建新摄像头
+
+作用：创建新的摄像头（起别名，创建新的独立存储文件夹）
+
+参数：<code>camera_name</code> 摄像头名称；<code>camera_code</code> 摄像头索引值（opencv），从0开始
+
+返回值：创建动作结果，json
+
+```python
+json = {
+    'code': -1,  # 状态码
+    'message': "null",  # 状态码信息
+    'camera_name': 'null',  # 摄像头名称
+    'camera_path': 'null'  # 摄像头相关文件存储目录
+}
+'''
+状态码及其含义
+-1：camera present but does not open  摄像头不可用（不存在）
+-2：camera present but does not reads 摄像头不可读取视频流的画面（摄像头异常或权限异常）
+-3：Camera already exists! 摄像头已经存在（存在重名的摄像头，需要重新起名）
+1： OK，创建成功
+'''
+```
+
+#### <code>open_old_camera(camera_name)</code> 打开历史视频
+
+作用：打开历史摄像头记录继续存储处理，切换当前处理的摄像头对象
+
+参数：<code>camera_name</code> 视频名称
+
+返回值：动作结果，json
+
+```python
+json = {
+    'code': 0,  # 状态码
+    'message': "null",  # 状态码信息
+    'camera_name': 'null',  # 摄像头名称
+    'camera_path': 'null'  # 摄像头相关文件存储目录
+}
+'''
+状态码及其含义
+0：Camera does not exist!  失败，摄像头不存在
+1： OK，切换成功
+'''
+```
