@@ -153,6 +153,27 @@ json = {
 # //-2 已经是第一个视频
 ```
 
+#### <code>delete_video_or_camera(name, kind)</code> 删除视频
+
+作用：删除视频，用法同删除摄像头，api相同
+
+参数：<code>name</code>视频名称，<code>kind = 0</code>
+
+返回值：json，同摄像头
+```python
+json = {
+    'code': 0,  # 状态码，默认为0，无意义
+    'message': "null",  # 状态码信息
+}
+'''
+状态码及解释
+-1 kind code error kind码值错误
+-2 Video/Camera does not exist! 视频/摄像头不存在
+1 OK 删除操作成功
+'''
+```
+
+
 ### 视频工具函数
 
 #### <code>qurl_to_string(url)</code> qurl转url
@@ -265,5 +286,25 @@ json = {
 状态码及其含义
 0：Camera does not exist!  失败，摄像头不存在
 1： OK，切换成功
+'''
+```
+
+#### <code>delete_video_or_camera(name, kind)</code> 删除摄像头
+
+作用：删除摄像头，用法同删除视频，api相同
+
+参数：<code>name</code>摄像头名称，<code>kind = 1</code>
+
+返回值：json，同视频
+```python
+json = {
+    'code': 0,  # 状态码，默认为0，无意义
+    'message': "null",  # 状态码信息
+}
+'''
+状态码及解释
+-1 kind code error kind码值错误
+-2 Video/Camera does not exist! 视频/摄像头不存在
+1 OK 删除操作成功
 '''
 ```
