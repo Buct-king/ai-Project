@@ -1,0 +1,11 @@
+camera:
+  camera_list:
+  - test_camera_1
+  - test_camera_2
+  - test_camera_3
+  camera_num: 3
+video:
+  video_list:
+  - C++Primer
+  - STL源码剖析
+  video_num: 2
