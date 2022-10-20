@@ -60,9 +60,9 @@ def directory_ini():
         conf.set('path_config', 'device_list_path', path + "/data/device_list.yml")
         conf.set('path_config', 'model_list_path', path + "/model/models/model_list.yml")
         conf.add_section('processing')
-        conf.set('processing', 'video', "none")
-        conf.set('processing', 'camera', "none")
-        conf.set('processing', 'model', "none")
+        conf.set('processing', 'video', "null")
+        conf.set('processing', 'camera', "null")
+        conf.set('processing', 'model', "null")
         with open(path + "/system.ini", 'a') as f:
             conf.write(f)
             f.close()

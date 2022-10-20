@@ -7,6 +7,7 @@ import json
 import time
 import yaml
 import cv2
+import shutil
 
 
 # qurl转string
@@ -188,6 +189,58 @@ def get_video_information(video_name):
     return json.dumps(information_dict, ensure_ascii=False)
 
 
+# 删除
+def delete_video_or_camera(name, kind):
+    # 读取系统配置文件
+    config_path = initialization.get_root_path() + "/system.ini"
+    conf = ConfigParser()
+    conf.read(config_path)
+    return_dict = {
+        'code': 0,  # 状态码，默认为0，无意义
+        'message': "null",  # 状态码信息
+    }
+    # 读取设备列表记录文件
+    with open(initialization.get_root_path() + "/data/device_list.yml", 'r') as f:
+        device_list_yml = yaml.load(f.read(), Loader=yaml.FullLoader)
+        f.close()
+    if kind == 1:  # 视频
+        history_video_dict = json.loads(history_video())
+        device_path = conf.get("path_config", "device_video_path")
+    elif kind == 0:  # 摄像头
+        history_video_dict = json.loads(history_camera())
+        device_path = conf.get("path_config", "device_camera_path")
+    else:
+        return_dict['code'] = -1
+        return_dict['message'] = "kind code error"  # 对象种类编码错误
+        return json.dumps(return_dict, ensure_ascii=False)
+    print(history_video_dict['devices_list'])
+    if history_video_dict['devices_list'].__contains__(name) is not True:  # 失败，对象不存在
+        return_dict['code'] = -2
+        return_dict['message'] = "Video/Camera does not exist!"
+        return json.dumps(return_dict, ensure_ascii=False)
+    else:
+        return_dict['code'] = 1
+        return_dict['message'] = "OK"
+        shutil.rmtree(device_path + "/" + name)  # 删除存储对象的文件夹
+        if kind == 1:  # 视频
+            device_list_yml['video']['video_num'] = int(device_list_yml['video']['video_num']) - 1
+            device_list_yml['video']['video_list'].remove(name)
+            if conf.get("processing", "video") == name:
+                conf.set('processing', 'video', "null")
+        else:  # 摄像头
+            device_list_yml['camera']['camera_num'] = int(device_list_yml['camera']['camera_num']) - 1
+            device_list_yml['camera']['camera_list'].remove(name)
+            if conf.get("processing", "camera") == name:
+                conf.set('processing', 'camera', "null")
+        with open(initialization.get_root_path() + "/data/device_list.yml", 'w+') as f:
+            yaml.dump(device_list_yml, f, allow_unicode=True)
+            f.close()
+        with open(initialization.get_root_path() + "/system.ini", 'w') as f:
+            conf.write(f)
+            f.close()
+        return json.dumps(return_dict, ensure_ascii=False)
+
+
 # 获取上一个视频
 def get_pre_video(video_name):
     ans_dict = {
@@ -365,7 +418,7 @@ def open_new_camera(camera_name, camera_code):
     pass
 
 
-# 打开历史视频
+# 打开历史摄像头
 def open_old_camera(camera_name):
     return_dict = {
         'code': -1,  # 状态码，-1表示无意义
@@ -378,7 +431,7 @@ def open_old_camera(camera_name):
     conf = ConfigParser()
     conf.read(config_path)
     device_camera_path = conf.get("path_config", "device_camera_path")
-    if history_video_dict['devices_list'].__contains__(camera_name) is not True:  # 失败，视频不存在
+    if history_video_dict['devices_list'].__contains__(camera_name) is not True:  # 失败，摄像头不存在
         return_dict['code'] = 0  # 失败，摄像头不存在
         return_dict['message'] = "Camera does not exist!"
         return_dict['camera_name'] = camera_name
@@ -410,7 +463,8 @@ if __name__ == '__main__':
     # print(get_camera_list())
     # print(history_camera())
     # open_new_camera("test_camera_1", 0)
-    print(open_new_camera("test_camera_3", 0))
+    # print(open_new_camera("test_camera_3", 0))
     # print(open_old_camera("test_camera_3"))
+    # print(delete_video_or_camera("C++Primer", 1))
     pass
 
