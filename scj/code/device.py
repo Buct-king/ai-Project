@@ -465,6 +465,6 @@ if __name__ == '__main__':
     # open_new_camera("test_camera_1", 0)
     # print(open_new_camera("test_camera_3", 0))
     # print(open_old_camera("test_camera_3"))
-    print(delete_video_or_camera("C++Primer", 1))
+    # print(delete_video_or_camera("C++Primer", 1))
     pass
 
