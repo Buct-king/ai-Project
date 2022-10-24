@@ -191,6 +191,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
             defaultButton=QMessageBox.Ok)
         else:
             self.timer_camera.start(30)
+            self.openCameraPushButton.setText("关闭摄像头")
 
      #打开关闭摄像头控制
     def slotCameraButton(self):
@@ -208,6 +209,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
          self.timer_camera.stop()
          self.cap.release()
          self.cameraLabel.clear()
+         self.openCameraPushButton.setText("打开摄像头")
 
     # 打开摄像头选择窗口
     def openCameraSelect(self):
