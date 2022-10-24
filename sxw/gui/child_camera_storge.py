@@ -33,7 +33,7 @@ class Ui_MainWindow(object):
         self.deleteOldFilePushButton.setObjectName("deleteOldFilePushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 448, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 448, 26))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -47,6 +47,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "历史文件"))
-        self.createNewFilePushButton.setText(_translate("MainWindow", "创新新文件"))
+        self.createNewFilePushButton.setText(_translate("MainWindow", "创建新文件"))
         self.openHistoryFilePushButton.setText(_translate("MainWindow", "打开"))
         self.deleteOldFilePushButton.setText(_translate("MainWindow", "删除文件"))

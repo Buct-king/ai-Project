@@ -47,7 +47,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>创新新文件</string>
+     <string>创建新文件</string>
     </property>
    </widget>
    <widget class="QPushButton" name="openHistoryFilePushButton">
@@ -83,7 +83,7 @@
      <x>0</x>
      <y>0</y>
      <width>448</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>
