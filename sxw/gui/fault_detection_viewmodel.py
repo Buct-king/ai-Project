@@ -5,7 +5,10 @@ from PyQt5 import QtCore
 import random
 import fault_detection,fault_detection_addition_ui  # 刚刚转为py文件的UI文件名，我的是untitled
 from PyQt5.QtWidgets import *
+
 from child_viewmodel import Child
+from child_camera_select_viewmodel import ChildCameraSelect
+from child_camera_storge_viewmodel import ChildCameraStorage
 
 
 import cv2
@@ -17,24 +20,30 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
         QMainWindow.__init__(self)
         fault_detection_addition_ui.Fault_Detection_Addition_UI.__init__(self)
         self.setupUi(self)
-        self.ch = Child()
 
         # 视频播放器
+        self.ch = Child()
         self.player = QMediaPlayer()
         self.player.setVideoOutput(self.videoPlayer)
         self.ch._signal.connect(self.openVideoFile)
         self.timer = QtCore.QTimer()
         self.timer.start(200)
-
         self.horizontalSlider.setMinimum(0)
         self.horizontalSlider.setValue(0)
         self.horizontalSlider.setMaximum(1000)
         self.videoInfo=None
 
+
         # 摄像头
+        self.chCameraSelect = ChildCameraSelect()
+        self.chCameraSelect._signal.connect(self.openCamera)
+        self.chCameraStorage=ChildCameraStorage()
+        self.chCameraStorage._signal.connect(self.openStorage)
         self.timer_camera = QtCore.QTimer() #初始化定时器
         self.cap = cv2.VideoCapture() #初始化摄像头
-        self.CAM_NUM = 0
+        self.CAM_NUM = None
+        self.CAM_STORAGE= None
+
 
         # 绑定回调函数
         self.slot_init()
@@ -56,18 +65,22 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
         #摄像头
         self.timer_camera.timeout.connect(self.show_camera)
         self.openCameraPushButton.clicked.connect(self.slotCameraButton)
+        self.cameraSelectPushButton.clicked.connect(self.openCameraSelect)
+        self.cameraStoragePushButton.clicked.connect(self.openCameraStorage)
+
     '''
-        打开视频选择窗口
+        视频
     '''
+    # 打开视频选择窗口
     def openVideoSelect(self):
         self.ch.show()
         self.ch.setHistoryVideosInfo()
         self.ch.setHistoryVideos()
 
-    '''
-        接收选择视频子窗口传来的视频地址,对播放做判断
-        @:param parameter 视频文件地址,状态码（[]）
-    '''
+    #
+    #   接收选择视频子窗口传来的视频地址,对播放做判断
+    #    @:param parameter 视频文件地址,状态码（[]）
+    #
     def openVideoFile(self,videoName,videoUrl,vedioCode):
         # 打开新视频状态码是 1，历史视频状态码是 2
         if vedioCode==1:
@@ -100,9 +113,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
                     self.openVideoSelect()
 
 
-    '''
-         视频播放暂停回调后函数
-    '''
+
+    # 视频播放暂停回调后函数
     def videoStateChange(self):
         if self.player.state()==2:
             self.player.play()
@@ -119,9 +131,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
     def backoffChange(self):
         self.player.setPosition(self.player.position() - 2000)
 
-    '''
-        Timer定时的回调函数，更新slider跟着视频播放进度调整位置
-    '''
+
+    # Timer定时的回调函数，更新slider跟着视频播放进度调整位置
     def timerSync(self):
         if self.player.duration()==0:
             self.horizontalSlider.setValue(0)
@@ -129,9 +140,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
             rateOfProcess=self.player.position()/self.player.duration()
             self.horizontalSlider.setValue(rateOfProcess*self.horizontalSlider.maximum())
 
-    '''
-        Slider的回调函数，调整slider的值，调整视频的位置
-    '''
+    # Slider的回调函数，调整slider的值，调整视频的位置
     def sliderPressed(self):
         self.player.pause()
         self.changeIcon2IconStart()
@@ -144,9 +153,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
         self.player.setPosition(self.player.duration()*rateOfProcess)
         self.timer.start()
 
-    '''
-        切换视频
-    '''
+    # 切换视频
     def lastVideo(self):
         videoInfo=device.get_pre_video(self.videoInfo["video_name"])
         if videoInfo["code"]==1:
@@ -164,8 +171,6 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
             QMessageBox.critical(self, "错误", videoInfo["message"])
 
 
-
-
     '''
         摄像头
     '''
@@ -178,7 +183,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
 
 
      #打开摄像头
-    def openCamera(self):
+    def openLocalCamera(self):
         flag = self.cap.open(self.CAM_NUM)
         if flag == False:
             msg = QMessageBox.Warning(self, u'Warning', u'请检测相机与电脑是否连接正确',
@@ -186,12 +191,15 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
             defaultButton=QMessageBox.Ok)
         else:
             self.timer_camera.start(30)
+            self.openCameraPushButton.setText("关闭摄像头")
 
      #打开关闭摄像头控制
     def slotCameraButton(self):
+        if self.CAM_STORAGE!=1:
+            QMessageBox.critical(self, "错误", "请先选择摄像头和存储文件")
         if self.timer_camera.isActive() == False:
             #打开摄像头并显示图像信息
-            self.openCamera()
+            self.openLocalCamera()
         else:
             #关闭摄像头并清空显示信息
             self.closeCamera()
@@ -201,3 +209,30 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
          self.timer_camera.stop()
          self.cap.release()
          self.cameraLabel.clear()
+         self.openCameraPushButton.setText("打开摄像头")
+
+    # 打开摄像头选择窗口
+    def openCameraSelect(self):
+        self.chCameraSelect.show()
+        self.chCameraSelect.setCameras()
+
+    # 接收打开摄像头子窗口信号量
+    def openCamera(self,cameraName,cameraCode):
+        self.CAM_NUM=cameraCode
+        self.CAM_NAME=cameraName
+
+    # 打开存储选择窗口
+    def openCameraStorage(self):
+        if self.CAM_NUM == None:
+            QMessageBox.critical(self, "错误", "请先选择摄像头")
+        else:
+            self.chCameraStorage.show()
+            self.chCameraStorage.setStorages()
+
+    def openStorage(self,storageName,storageCode):
+        self.CAM_STORAGE=1
+        if storageCode==0:
+            device.open_new_camera(storageName,self.CAM_NUM)
+        else:
+            device.open_old_camera(storageName)
+

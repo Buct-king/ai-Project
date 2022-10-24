@@ -63,9 +63,9 @@ def history_video():  # 获取历史检测过的视频/设备列表
 
 # 打开新视频
 def open_new_video(video_url_path):  # 打开新视频时，调用该函数为视频创建视频内容保存路径
-    # video_path = qurl_to_string(video_url_path)
+    video_path = qurl_to_string(video_url_path)
     # video_path = "aaaa/bbbb/cccc/dddd/abcd.mp4"  # 测试用
-    video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
+    # video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/STL源码剖析.pdf"
     return_dict = {
         'code': -1,  # 状态码，-1表示无意义
