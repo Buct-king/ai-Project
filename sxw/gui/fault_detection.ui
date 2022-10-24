@@ -50,7 +50,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../resource/导出icon.png</normaloff>../resource/导出icon.png</iconset>
+        <normaloff>C:/Users/11795/.designer/resource/导出icon.png</normaloff>C:/Users/11795/.designer/resource/导出icon.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="deletePushButton">
@@ -70,7 +70,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../resource/删除icon.png</normaloff>../resource/删除icon.png</iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="detailPushButton">
@@ -90,7 +90,7 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../resource/感叹号icon.png</normaloff>../resource/感叹号icon.png</iconset>
+        <normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</iconset>
       </property>
      </widget>
      <widget class="QPushButton" name="snapshotPushButton">
@@ -113,7 +113,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../resource/相机icon.png</normaloff>../resource/相机icon.png</iconset>
+        <normaloff>C:/Users/11795/.designer/resource/相机icon.png</normaloff>C:/Users/11795/.designer/resource/相机icon.png</iconset>
       </property>
      </widget>
      <widget class="QLabel" name="label">
@@ -256,7 +256,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../resource/快退icon.png</normaloff>../resource/快退icon.png</iconset>
+             <normaloff>C:/Users/11795/.designer/resource/快退icon.png</normaloff>C:/Users/11795/.designer/resource/快退icon.png</iconset>
            </property>
           </widget>
          </item>
@@ -270,7 +270,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../resource/上一个icon.png</normaloff>../resource/上一个icon.png</iconset>
+             <normaloff>C:/Users/11795/.designer/resource/上一个icon.png</normaloff>C:/Users/11795/.designer/resource/上一个icon.png</iconset>
            </property>
           </widget>
          </item>
@@ -284,7 +284,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../resource/开始.png</normaloff>../resource/开始.png</iconset>
+             <normaloff>C:/Users/11795/.designer/resource/开始.png</normaloff>C:/Users/11795/.designer/resource/开始.png</iconset>
            </property>
           </widget>
          </item>
@@ -298,7 +298,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../resource/下一个icon.png</normaloff>../resource/下一个icon.png</iconset>
+             <normaloff>C:/Users/11795/.designer/resource/下一个icon.png</normaloff>C:/Users/11795/.designer/resource/下一个icon.png</iconset>
            </property>
           </widget>
          </item>
@@ -312,7 +312,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../resource/跨进icon.png</normaloff>../resource/跨进icon.png</iconset>
+             <normaloff>C:/Users/11795/.designer/resource/跨进icon.png</normaloff>C:/Users/11795/.designer/resource/跨进icon.png</iconset>
            </property>
           </widget>
          </item>
@@ -335,7 +335,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../resource/文件icon.png</normaloff>../resource/文件icon.png</iconset>
+          <normaloff>C:/Users/11795/.designer/resource/文件icon.png</normaloff>C:/Users/11795/.designer/resource/文件icon.png</iconset>
         </property>
        </widget>
       </widget>
@@ -367,6 +367,45 @@ border-radius: 10px;  border: 2px groove gray;</string>
         </property>
         <property name="text">
          <string>摄像头</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="closeCameraPushButton">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>330</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>关闭</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="cameraSelectPushButton">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>330</y>
+          <width>51</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>设备选择</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="cameraStoragePushButton">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>330</y>
+          <width>71</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>历史副本</string>
         </property>
        </widget>
       </widget>
