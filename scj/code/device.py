@@ -462,7 +462,7 @@ if __name__ == '__main__':
     # get_camera_list()
     # print(get_camera_list())
     # print(history_camera())
-    # open_new_camera("test_camera_1", 0)
+    # open_new_camera("< cv2.VideoCapture 000001392735F8F0>", 0)
     # print(open_new_camera("test_camera_3", 0))
     # print(open_old_camera("test_camera_3"))
     # print(delete_video_or_camera("C++Primer", 1))
