@@ -1,7 +1,8 @@
 camera:
   camera_list:
   - test_camera_2
-  camera_num: 1
+  - < cv2.VideoCapture 000001392735F8F0>
+  camera_num: 2
 video:
   video_list: []
   video_num: 0
