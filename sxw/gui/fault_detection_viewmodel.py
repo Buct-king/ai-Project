@@ -197,12 +197,13 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,fault_detection
     def slotCameraButton(self):
         if self.CAM_STORAGE!=1:
             QMessageBox.critical(self, "错误", "请先选择摄像头和存储文件")
-        if self.timer_camera.isActive() == False:
-            #打开摄像头并显示图像信息
-            self.openLocalCamera()
         else:
-            #关闭摄像头并清空显示信息
-            self.closeCamera()
+            if self.timer_camera.isActive() == False:
+                #打开摄像头并显示图像信息
+                self.openLocalCamera()
+            else:
+                #关闭摄像头并清空显示信息
+                self.closeCamera()
 
     #关闭摄像头
     def closeCamera(self):
