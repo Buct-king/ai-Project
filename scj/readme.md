@@ -157,7 +157,7 @@ json = {
 
 作用：删除视频，用法同删除摄像头，api相同
 
-参数：<code>name</code>视频名称，<code>kind = 0</code>
+参数：<code>name</code>视频名称，<code>kind = 1</code>
 
 返回值：json，同摄像头
 ```python
@@ -293,7 +293,7 @@ json = {
 
 作用：删除摄像头，用法同删除视频，api相同
 
-参数：<code>name</code>摄像头名称，<code>kind = 1</code>
+参数：<code>name</code>摄像头名称，<code>kind = 0</code>
 
 返回值：json，同视频
 ```python

@@ -1,8 +1,0 @@
-camera_info:
-  camera_size_height: 720.0
-  camera_size_weight: 1280.0
-camera_name: < cv2.VideoCapture 000001392735F8F0>
-image_info: /Users/shichunjing/code/python/labProjects/concrete/fault_detection/dir_test/data/device/camera/<
-  cv2.VideoCapture 000001392735F8F0>/images/image_list.yml
-image_path: /Users/shichunjing/code/python/labProjects/concrete/fault_detection/dir_test/data/device/camera/<
-  cv2.VideoCapture 000001392735F8F0>/images
