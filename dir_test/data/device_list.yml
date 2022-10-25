@@ -1,7 +1,0 @@
-camera:
-  camera_list:
-  - test_camera_2
-  camera_num: 1
-video:
-  video_list: []
-  video_num: 0
