@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>333</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,37 +17,14 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>10</y>
-      <width>181</width>
-      <height>20</height>
+      <x>120</x>
+      <y>70</y>
+      <width>531</width>
+      <height>361</height>
      </rect>
     </property>
     <property name="text">
-     <string>设备目录</string>
-    </property>
-   </widget>
-   <widget class="QListView" name="camerasListView">
-    <property name="geometry">
-     <rect>
-      <x>70</x>
-      <y>40</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>260</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>确定</string>
+     <string>TextLabel</string>
     </property>
    </widget>
   </widget>
@@ -56,8 +33,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>420</width>
-     <height>23</height>
+     <width>800</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>

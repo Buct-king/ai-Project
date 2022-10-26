@@ -15,3 +15,7 @@ class Fault_Detection_Addition_UI():
 
     def changeIcon2IconStart(self):
         self.startPushButton.setIcon(self.iconStart)
+
+
+
+
