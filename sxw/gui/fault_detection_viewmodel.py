@@ -96,9 +96,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         # 快照
         self.snapshotPushButton.clicked.connect(self.snapshotPush)
-
-        # 其他
         self.exportPushButton.clicked.connect(self.exportSnapshotPush)
+        self.deletePushButton.clicked.connect(self.deleteSnapShotPush)
 
     '''
         tabWidget 控制以及信号量状态转变
@@ -364,9 +363,6 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             else:
                 QMessageBox.critical(self, "错误", "截图失败")
 
-    '''
-        其他
-    '''
     def exportSnapshotPush(self):
         """
         导出快照文件
@@ -380,4 +376,14 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             QMessageBox.critical(self,"错误","导出失败！")
 
 
-
+    def deleteSnapShotPush(self):
+        """
+        删除快照
+        :return:
+        """
+        # todo: 删除选中的快照 device.delete_snapshot(index),返回导出是否成功
+        flag=1
+        if flag:
+            QMessageBox.information(self,"删除文件","删除成功！")
+        else:
+            QMessageBox.critical(self,"错误","导出失败！")
