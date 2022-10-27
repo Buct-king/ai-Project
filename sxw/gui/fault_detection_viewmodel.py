@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 from child_viewmodel import Child
 from child_camera_select_viewmodel import ChildCameraSelect
 from child_camera_storge_viewmodel import ChildCameraStorage
-from child_snapshot_viewmodel import  ChildSnapshot
+from child_snapshot_viewmodel import ChildSnapshot
 
 import cv2
 
@@ -24,6 +24,18 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         fault_detection_addition_ui.Fault_Detection_Addition_UI.__init__(self)
         self.setupUi(self)
 
+        self.state_dict = {
+            "page_num": None,
+            "video_info": None,
+            "video_state": None,
+            "cap_num": None,
+            "cap_storage_name": None,
+            "cap_activate": None
+        }
+
+        # streamTabWidget
+        self.initStreamSelectTabWidget()
+
         # 视频播放器
         self.ch = Child()
         self.player = QMediaPlayer()
@@ -34,8 +46,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.horizontalSlider.setMinimum(0)
         self.horizontalSlider.setValue(0)
         self.horizontalSlider.setMaximum(1000)
-        self.videoInfo = None
-        self.cvPlayer=cv2.VideoCapture()
+        self.videoInfo = None  # 记录当前打开视频的视频名、路径等信息
+        self.cvPlayer = cv2.VideoCapture()
+        self.VIDEO_NAME = None  # 记录当前打开视频的视频名
 
         # 摄像头
         self.chCameraSelect = ChildCameraSelect()
@@ -45,11 +58,12 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.cap = cv2.VideoCapture()  # 初始化摄像头
         self.CAM_NUM = None
-        self.CAM_STORAGE = None
+        self.CAM_STORAGE = None  # 选择存储文件信号量
+        self.CAM_STORAGE_NAME = None  # 视频存储文件名
 
         # 快照
         self.SNAPSHOT = 0  # 0表示没有资源，1表示视频，2表示直播
-        self.chSnapshot=ChildSnapshot()
+        self.chSnapshot = ChildSnapshot()
 
         # 绑定回调函数
         self.slot_init()
@@ -59,6 +73,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     '''
 
     def slot_init(self):
+
+        # streamSelectTabWidget
+        self.streamSelectTabWidget.currentChanged.connect(self.streamSelectTabWidgetPush)
 
         # 视频
         self.oepnVideoPushButton.clicked.connect(lambda: self.openVideoSelect())
@@ -80,6 +97,50 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         # 快照
         self.snapshotPushButton.clicked.connect(self.snapshotPush)
 
+        # 其他
+        self.exportPushButton.clicked.connect(self.exportSnapshotPush)
+
+    '''
+        tabWidget 控制以及信号量状态转变
+    '''
+
+    def initStreamSelectTabWidget(self):
+        """
+        设置streamSelectTabWidget初始化状态以及信号量,初始tab为视频
+        :return: None
+        """
+
+        self.state_dict = {
+            "page_num": 0,
+            "video_info": None,
+            "video_state": 0,
+            "cap_num": None,
+            "cap_storage_name": None,
+            "cap_activate": None
+        }
+        self.streamSelectTabWidget.setCurrentIndex(self.state_dict["page_num"])
+
+    def streamSelectTabWidgetPush(self, index):
+        """
+        currentChanged回调函数,获得streamSelectTabWidget当前状态，并对其进行操作
+        :param index: 当先小窗口索引号，默认从0开始
+        :return: None
+        """
+
+        if index == 0:
+            print("现在是视频")
+            if self.timer_camera.isActive():
+                self.closeCamera()
+            self.state_dict["page_num"] = 0
+            self.state_dict["cap_activate"] = None
+            self.state_dict["cap_storage_name"] = None
+            self.state_dict["cap_num"] = None
+            self.openVideoSelect()
+
+        else:
+            self.player.pause()
+            self.state_dict["page_num"] = 1
+            self.state_dict["cap_activate"] = 0
 
     '''
         视频
@@ -99,13 +160,16 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         # 打开新视频状态码是 1，历史视频状态码是 2
         if vedioCode == 1:
             if device.video_judge(videoUrl) == 0:
+                # self.VIDEO_NAME = videoName
                 openInfo = device.open_new_video(videoUrl)
-                self.SNAPSHOT=1
+                # self.SNAPSHOT = 1
                 openInfo = json.loads(openInfo)
                 if openInfo["code"] == 1:
                     self.player.setMedia(QMediaContent(videoUrl))
                     self.cvPlayer.open(device.qurl_to_string(videoUrl))
-                    self.videoInfo = openInfo
+                    # self.videoInfo = openInfo
+                    self.state_dict["video_info"] = openInfo
+                    self.state_dict["video_state"] = 1
                     self.player.play()
                     self.player.pause()
                 else:
@@ -115,15 +179,18 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 QMessageBox.critical(self, "错误", "文件格式不正确")
                 self.openVideoSelect()
         else:
+            # self.VIDEO_NAME = videoName
             openInfo = device.open_old_video(videoName)
-            self.SNAPSHOT=1
+            # self.SNAPSHOT = 1
             openInfo = json.loads(openInfo)
             print(openInfo)
             if openInfo["code"] == 1:
                 videoPath = "file:///" + openInfo["video_path"] + "/" + openInfo["video_name"] + ".mp4"
                 self.player.setMedia(QMediaContent(QtCore.QUrl(videoPath)))
                 self.cvPlayer.open(openInfo["video_path"] + "/" + openInfo["video_name"] + ".mp4")
-                self.videoInfo = openInfo
+                # self.videoInfo = openInfo
+                self.state_dict["video_info"] = openInfo
+                self.state_dict["video_state"] = 1
                 self.player.play()
                 self.player.pause()
             else:
@@ -198,19 +265,20 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     # 打开摄像头
     def openLocalCamera(self):
-        flag = self.cap.open(self.CAM_NUM)
-        self.SNAPSHOT=2
-        if flag == False:
+        flag = self.cap.open(self.state_dict["cap_num"])
+        # self.SNAPSHOT = 2
+        if not flag:
             msg = QMessageBox.Warning(self, u'Warning', u'请检测相机与电脑是否连接正确',
                                       buttons=QMessageBox.Ok,
                                       defaultButton=QMessageBox.Ok)
         else:
             self.timer_camera.start(30)
+            self.state_dict["cap_activate"] = 1
             self.openCameraPushButton.setText("关闭摄像头")
 
     # 打开关闭摄像头控制
     def slotCameraButton(self):
-        if self.CAM_STORAGE != 1:
+        if self.state_dict["cap_storage_name"] is None:
             QMessageBox.critical(self, "错误", "请先选择摄像头和存储文件")
         else:
             if self.timer_camera.isActive() == False:
@@ -224,7 +292,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     def closeCamera(self):
         self.timer_camera.stop()
         self.cap.release()
-        self.SNAPSHOT=0
+        self.state_dict["cap_state"] = 0
+        # self.SNAPSHOT = 0
         self.cameraLabel.clear()
         self.openCameraPushButton.setText("打开摄像头")
 
@@ -235,21 +304,24 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     # 接收打开摄像头子窗口信号量
     def openCamera(self, cameraName, cameraCode):
-        self.CAM_NUM = cameraCode
-        self.CAM_NAME = cameraName
+        # self.CAM_NUM = cameraCode
+        # self.CAM_NAME = cameraName
+        self.state_dict["cap_num"] = cameraCode
 
     # 打开存储选择窗口
     def openCameraStorage(self):
-        if self.CAM_NUM == None:
+        if self.state_dict["cap_num"] == None:
             QMessageBox.critical(self, "错误", "请先选择摄像头")
         else:
             self.chCameraStorage.show()
             self.chCameraStorage.setStorages()
 
     def openStorage(self, storageName, storageCode):
-        self.CAM_STORAGE = 1
+        # self.CAM_STORAGE = 1
+        # self.CAM_STORAGE_NAME = storageName
+        self.state_dict["cap_storage_name"] = storageName
         if storageCode == 0:
-            device.open_new_camera(storageName, self.CAM_NUM)
+            device.open_new_camera(storageName, self.state_dict["cap_num"])
         else:
             device.open_old_camera(storageName)
 
@@ -259,37 +331,53 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     # 快照按键回调函数
     def snapshotPush(self):
-        if self.SNAPSHOT == 0:
-            QMessageBox.critical(self, "错误", "请先获取视频或摄像头资源")
-        else:
-            self.snapshot()
+        if self.state_dict["page_num"] == 1:
+            if self.state_dict["cap_activate"]==1:
+                self.snapshot(1)
+            else:
+                QMessageBox.critical(self, "错误", "请先获取摄像头资源")
+        elif self.state_dict["page_num"] == 0:
+            if self.state_dict["video_state"]==1:
+                self.snapshot(0)
+            else:
+                QMessageBox.critical(self, "错误", "请先获取视频资源")
 
-    # 完成截图再把 player out设置到 videoWidget
-    def snapshotFinished(self):
-        self.player.setVideoOutput(self.videoPlayer)
-
-    def snapshot(self):
-        if self.SNAPSHOT==1:
+    def snapshot(self,kind):
+        if kind == 0:
             if self.player.duration() == 0:
                 QMessageBox.critical(self, "错误", "请先播放视频")
             else:
-                rateOfProcess=self.player.position()/self.player.duration()
-                frameID=int(rateOfProcess*self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT))
-                self.cvPlayer.set(cv2.CAP_PROP_POS_FRAMES,frameID)
-                flag, frame =self.cvPlayer.read()
+                rateOfProcess = self.player.position() / self.player.duration()
+                frameID = int(rateOfProcess * self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT))
+                self.cvPlayer.set(cv2.CAP_PROP_POS_FRAMES, frameID)
+                flag, frame = self.cvPlayer.read()
                 if flag:
-                    self.chSnapshot.setSnapshotInfos(frame)
+                    self.chSnapshot.setSnapshotInfos(frame, kind)
                     self.chSnapshot.show()
                 else:
                     QMessageBox.critical(self, "错误", "截图失败")
-        elif self.SNAPSHOT==2:
+        elif kind==1:
             flag, frame = self.cap.read()
             if flag:
-                self.chSnapshot.setSnapshotInfos(frame)
+                self.chSnapshot.setSnapshotInfos(frame, kind)
                 self.chSnapshot.show()
             else:
                 QMessageBox.critical(self, "错误", "截图失败")
 
+    '''
+        其他
+    '''
+    def exportSnapshotPush(self):
+        """
+        导出快照文件
+        :return:
+        """
+        # todo: 执行导出快照文件服务 device.export_snapshot(),返回导出是否成功
+        flag=1
+        if flag:
+            QMessageBox.information(self,"导出文件","导出成功！")
+        else:
+            QMessageBox.critical(self,"错误","导出失败！")
 
 
 

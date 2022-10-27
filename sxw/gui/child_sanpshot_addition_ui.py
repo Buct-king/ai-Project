@@ -1,9 +1,9 @@
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtCore import Qt, QRect
-from PyQt5.QtGui import QPainter, QPen,QPixmap,QColor
+from PyQt5.QtGui import QPainter, QPen, QPixmap, QColor
+
 
 class MyLabel(QLabel):
     def __init__(self, parent=None):
@@ -55,9 +55,12 @@ class MyLabel(QLabel):
         poses.append((self.pos1.x(), self.pos1.y()))
         return poses
 
+    def getRectPos(self):
+        return [self.x0, self.y0, self.x1, self.y1]
+
     def clearRec(self):
-        self.isShow=False
-        self.x0=0
-        self.y0=0
-        self.x1=0
-        self.y1=0
+        self.isShow = False
+        self.x0 = 0
+        self.y0 = 0
+        self.x1 = 0
+        self.y1 = 0
