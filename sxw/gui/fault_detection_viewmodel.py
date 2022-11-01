@@ -3,8 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 import random
-import fault_detection, fault_detection_addition_ui  # 刚刚转为py文件的UI文件名，我的是untitled
-from PyQt5.QtWidgets import *
+import fault_detection, fault_detection_addition_ui, recognition_training_viewmodel  # 刚刚转为py文件的UI文件名，我的是untitled
 
 from child_viewmodel import Child
 from child_camera_select_viewmodel import ChildCameraSelect
@@ -66,14 +65,17 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.chSnapshot = ChildSnapshot()
 
         # 绑定回调函数
-        self.slot_init()
+        self.slot_init_fault_detetion()
+        self.slot_init_recognition_training()
 
     '''
         绑定控件的回调函数
     '''
 
-    def slot_init(self):
-
+    def slot_init_fault_detetion(self):
+        """
+            缺陷检测页面回调函数绑定
+        """
         # streamSelectTabWidget
         self.streamSelectTabWidget.currentChanged.connect(self.streamSelectTabWidgetPush)
 
@@ -331,17 +333,17 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     # 快照按键回调函数
     def snapshotPush(self):
         if self.state_dict["page_num"] == 1:
-            if self.state_dict["cap_activate"]==1:
+            if self.state_dict["cap_activate"] == 1:
                 self.snapshot(1)
             else:
                 QMessageBox.critical(self, "错误", "请先获取摄像头资源")
         elif self.state_dict["page_num"] == 0:
-            if self.state_dict["video_state"]==1:
+            if self.state_dict["video_state"] == 1:
                 self.snapshot(0)
             else:
                 QMessageBox.critical(self, "错误", "请先获取视频资源")
 
-    def snapshot(self,kind):
+    def snapshot(self, kind):
         if kind == 0:
             if self.player.duration() == 0:
                 QMessageBox.critical(self, "错误", "请先播放视频")
@@ -355,7 +357,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                     self.chSnapshot.show()
                 else:
                     QMessageBox.critical(self, "错误", "截图失败")
-        elif kind==1:
+        elif kind == 1:
             flag, frame = self.cap.read()
             if flag:
                 self.chSnapshot.setSnapshotInfos(frame, kind)
@@ -369,12 +371,11 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         :return:
         """
         # todo: 执行导出快照文件服务 device.export_snapshot(),返回导出是否成功
-        flag=1
+        flag = 1
         if flag:
-            QMessageBox.information(self,"导出文件","导出成功！")
+            QMessageBox.information(self, "导出文件", "导出成功！")
         else:
-            QMessageBox.critical(self,"错误","导出失败！")
-
+            QMessageBox.critical(self, "错误", "导出失败！")
 
     def deleteSnapShotPush(self):
         """
@@ -382,8 +383,28 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         :return:
         """
         # todo: 删除选中的快照 device.delete_snapshot(index),返回导出是否成功
-        flag=1
+        flag = 1
         if flag:
-            QMessageBox.information(self,"删除文件","删除成功！")
+            QMessageBox.information(self, "删除文件", "删除成功！")
         else:
-            QMessageBox.critical(self,"错误","导出失败！")
+            QMessageBox.critical(self, "错误", "导出失败！")
+
+    # recognition training page
+    """
+        识别训练页面的逻辑绑定
+    """
+
+    def slot_init_recognition_training(self):
+        """
+            识别训练页面的回调函数绑定
+        """
+        self.importPicPushButton.clicked.connect(self.importImagePush)
+
+    def importImagePush(self):
+        """
+        插入图片按钮回调函数，点击之后，状态成功，则正常显示成功，失败则显示插入失败
+        """
+        # todo: 判断文件是否合法
+        openFileUrl = QFileDialog.getOpenFileUrl()
+        openFilePath = openFileUrl[0].toString()[8:]
+        self.importImageLabel.setPixmap(QPixmap(openFilePath))

@@ -27,7 +27,7 @@
      <string notr="true">background-color: rgb(229, 229, 229);</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -139,7 +139,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -396,6 +396,196 @@ border-radius: 10px;  border: 2px groove gray;</string>
      <attribute name="title">
       <string>识别训练</string>
      </attribute>
+     <widget class="QLabel" name="importImageLabel">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>40</y>
+        <width>401</width>
+        <height>341</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="importPicInfosTableWidget">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>430</y>
+        <width>381</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>JPEG</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>2930*1640</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>1.64MB</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QLabel" name="importPicNameLabel">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>400</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>test.jpg</string>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="importPicFaultsTableWidget">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>530</x>
+        <y>110</y>
+        <width>391</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="showGrid">
+       <bool>false</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>false</bool>
+      </property>
+      <row>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>3</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>4</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>5</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>序号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>文件</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>已训练</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QPushButton" name="importPicPushButton">
+      <property name="geometry">
+       <rect>
+        <x>860</x>
+        <y>50</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+      </property>
+      <property name="text">
+       <string>导入图片</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="finishTrainingPushButton">
+      <property name="geometry">
+       <rect>
+        <x>870</x>
+        <y>400</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+      </property>
+      <property name="text">
+       <string>完成训练</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="importPicFaultDetailPushButton">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>400</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+      </property>
+      <property name="text">
+       <string>详情</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteImportPicFaultPicPushButton">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>400</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+      </property>
+      <property name="text">
+       <string>删除</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
+      </property>
+     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="settingPushButton">

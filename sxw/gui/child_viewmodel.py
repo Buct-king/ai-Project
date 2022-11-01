@@ -40,7 +40,6 @@ class Child(QMainWindow, child.Ui_MainWindow):
             print("您还没有选择视频文件")
             QMessageBox.critical(self, "错误", "您还未选择视频")
         else:
-            pass
             openFileUrl = QtCore.QUrl(self.historyVideosPath[self.selectedItem.row()])
             openFileName=self.historyVideosName[self.selectedItem.row()]
             print(openFileUrl)
