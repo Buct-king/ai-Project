@@ -63,9 +63,9 @@ def history_video():  # 获取历史检测过的视频/设备列表
 
 # 打开新视频
 def open_new_video(video_url_path):  # 打开新视频时，调用该函数为视频创建视频内容保存路径
-    video_path = qurl_to_string(video_url_path)
+    # video_path = qurl_to_string(video_url_path)
     # video_path = "aaaa/bbbb/cccc/dddd/abcd.mp4"  # 测试用
-    # video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
+    video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/STL源码剖析.pdf"
     return_dict = {
         'code': -1,  # 状态码，-1表示无意义
@@ -107,10 +107,19 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
         os.mkdir(device_video_path + "/" + video_name[:-4])
         os.mkdir(device_video_path + "/" + video_name[:-4] + "/images")
         with open(device_video_path + "/" + video_name[:-4] + "/" + video_name[:-4] + ".yml", 'a') as f:
+            yaml.dump(new_device_information_dict, f, allow_unicode=True)
             f.close()
+        image_list_dict = {  # 保存图像列表的字典结构
+            "device_name": video_name[:-4],
+            "image_num": 0,
+            "image_index": 0,
+            "image_list": [
+                # 存储单独的图像信息
+            ]
+        }
         with open(device_video_path + "/" + video_name[:-4] + "/images/image_list.yml", 'a') as f:
             # yaml_data = yaml.load(f, Loader=yaml.FullLoader)
-            yaml.dump(new_device_information_dict, f, allow_unicode=True)
+            yaml.dump(image_list_dict, f, allow_unicode=True)
             f.close()
         shutil.copyfile(video_path, device_video_path + "/" + video_name[:-4] + "/" + video_name)  # 复制视频副本
         conf.set('processing', 'video', video_name[:-4])  # 配置文件修改：当前正在处理的视频是该视频
@@ -389,7 +398,16 @@ def open_new_camera(camera_name, camera_code):
         }
         os.mkdir(device_camera_path + "/" + camera_name)
         os.mkdir(device_camera_path + "/" + camera_name + "/images")
+        image_list_dict = {  # 保存图像列表的字典结构
+            "device_name": camera_name,
+            "image_num": 0,
+            "image_index": 0,
+            "image_list": [
+                # 存储单独的图像信息
+            ]
+        }
         with open(device_camera_path + "/" + camera_name + "/images/image_list.yml", 'a') as f:
+            yaml.dump(image_list_dict, f, allow_unicode=True)
             f.close()
         with open(device_camera_path + "/" + camera_name + "/" + camera_name + ".yml", 'a') as f:
             # yaml_data = yaml.load(f, Loader=yaml.FullLoader)
@@ -463,8 +481,8 @@ if __name__ == '__main__':
     # print(get_camera_list())
     # print(history_camera())
     # open_new_camera("< cv2.VideoCapture 000001392735F8F0>", 0)
-    # print(open_new_camera("test_camera_3", 0))
+    print(open_new_camera("test_camera_1", 0))
     # print(open_old_camera("test_camera_3"))
-    # print(delete_video_or_camera("C++Primer", 1))
+    # print(delete_video_or_camera("test_camera_2", 0))
     pass
 
