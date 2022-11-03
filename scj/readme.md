@@ -242,7 +242,6 @@ json = {
 # 0 ,摄像头创建失败，已经存在同名的摄像头
 ```
 
-
 #### <code>open_new_camera(camera_name, camera_code)</code> 创建新摄像头
 
 作用：创建新的摄像头（起别名，创建新的独立存储文件夹）
@@ -307,4 +306,49 @@ json = {
 -2 Video/Camera does not exist! 视频/摄像头不存在
 1 OK 删除操作成功
 '''
+```
+
+## 快照相关功能
+代码位置：scj/code/snapshot.py
+
+### 快照功能函数
+
+#### <code>new_snapshot(image, video_time, device_type, note="")</code> 新增快照
+
+作用：新增快照
+
+参数：
+    :param image: 图像
+    :param video_time: 图像在视频中截取的时间
+    :param device_type: 设备类型，0表示video，1表示camera
+    :param note: 图像备注，默认为 ''
+    :return: 无
+
+返回值：无
+
+#### <code>get_image_list(device_type)</code>  获取快照列表
+
+作用：根据输入的设备类型，获取当前正在处理的设备的列表
+
+参数：
+    :param device_type: 设备类型
+    :return:
+
+返回值：json
+```python
+json = {
+    "device_name": "",
+    "image_num": 0,
+    "image_index": 0,
+    "image_list": [
+        # 存储单独的图像信息
+        {
+            "image_name": "",  # 快照名
+            "image_time": "",  # 截图时间
+            "image_note": "",  # 视频备注
+            "video_time": "",  # 在视频中的时间
+            "index": 0  # 快照编号（唯一）
+        }
+    ]
+}
 ```
