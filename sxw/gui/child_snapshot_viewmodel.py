@@ -23,6 +23,7 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
     # 绑定回调函数
     def slot_init(self):
         self.cancelPushButton.clicked.connect(self.cancelPush)
+        self.saveSnapshotPushButton.clicked.connect(self.storeSnapshotPush)
 
     def setSnapshotInfos(self, frame,stream_kind):
         show = cv2.resize(frame, (480, 320))
@@ -47,21 +48,25 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
         note=str(self.textEdit.toPlainText())
 
         post_dict = {
-            "origin_image": self.image,
-            "poses": poses,
+            "origin_image": self.image,# size(480*320)
+            "poses": poses,# [x1，y1，x2，y2]
             "time": time.asctime(),
-            "video_time": self.snapshotVideoTime,
-            "note":note
+            "video_time": self.snapshotVideoTime,# (string)
+            "note":note, # string
+            "type": 1 # 0表示视频，1表示直播
         }
         json.dumps(post_dict)
         # todo：保存快照信息
         # self.iamgeLabel.clearRec()
+        print(poses)
         self.close()
 
     def closeEvent(self,event):
         """
         重写关闭窗口方法，清除已经画了的正方形
         """
+        poses = self.iamgeLabel.getRectPos()  # 框选位置
+        print(poses)
         self.iamgeLabel.clearRec()
 
 

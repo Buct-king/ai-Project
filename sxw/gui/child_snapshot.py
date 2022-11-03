@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.iamgeLabel = child_sanpshot_addition_ui.MyLabel(self.centralwidget)
-        self.iamgeLabel.setGeometry(QtCore.QRect(30, 50, 551, 391))
+        self.iamgeLabel.setGeometry(QtCore.QRect(30, 50, 480, 320))
         self.iamgeLabel.setObjectName("iamgeLabel")
         self.saveSnapshotPushButton = QtWidgets.QPushButton(self.centralwidget)
         self.saveSnapshotPushButton.setGeometry(QtCore.QRect(660, 420, 93, 28))

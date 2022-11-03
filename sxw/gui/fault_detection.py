@@ -126,7 +126,7 @@ class Ui_MainWindow(object):
         self.tab_6 = QtWidgets.QWidget()
         self.tab_6.setObjectName("tab_6")
         self.cameraLabel = QtWidgets.QLabel(self.tab_6)
-        self.cameraLabel.setGeometry(QtCore.QRect(0, 0, 501, 291))
+        self.cameraLabel.setGeometry(QtCore.QRect(0, 0, 461, 291))
         self.cameraLabel.setText("")
         self.cameraLabel.setObjectName("cameraLabel")
         self.openCameraPushButton = QtWidgets.QPushButton(self.tab_6)
