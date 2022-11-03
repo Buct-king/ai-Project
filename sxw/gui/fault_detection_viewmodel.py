@@ -64,6 +64,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.SNAPSHOT = 0  # 0表示没有资源，1表示视频，2表示直播
         self.chSnapshot = ChildSnapshot()
 
+        # 快照列表
+        self.setSanpshotTableView()
+
         # 绑定回调函数
         self.slot_init_fault_detetion()
         self.slot_init_recognition_training()
@@ -388,6 +391,34 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             QMessageBox.information(self, "删除文件", "删除成功！")
         else:
             QMessageBox.critical(self, "错误", "导出失败！")
+
+
+
+    '''
+        快照列表
+    '''
+    def setSanpshotTableView(self):
+        print("iin")
+        self.model = QStandardItemModel(self.snapshotTableView)
+        self.snapshotTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.snapshotTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.snapshotTableView.setShowGrid(False)
+
+        # 设置数据层次结构，4行4列
+        self.model = QStandardItemModel(7, 4)
+        #设置水平方向四个头标签文本内容
+        self.model.setHorizontalHeaderLabels(['','时间','类型','编号'])
+        for row in range(7):
+            item_checked = QStandardItem()
+            item_checked.setCheckState(QtCore.Qt.Checked)
+            item_checked.setCheckable(True)
+            self.model.setItem(row,0, item_checked)
+            for column in range(1,4):
+                item=QStandardItem('row %s,column %s'%(row,column))
+                #设置每个位置的文本值
+                self.model.setItem(row,column,item)
+        self.snapshotTableView.setModel(self.model)
+
 
     # recognition training page
     """
