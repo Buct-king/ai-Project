@@ -15,6 +15,7 @@ import cv2
 import json
 import scj.code.device as device
 import scj.code.snapshot as ssnapshot
+import sxw.utils.utils as utils
 
 
 class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
@@ -227,6 +228,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         if self.player.duration() == 0:
             self.horizontalSlider.setValue(0)
         else:
+            time_text=utils.ms_to_hours(self.player.position())+\
+                      " / "+\
+                      utils.ms_to_hours(self.player.duration())
+            self.videoTimeLabel.setText(time_text)
             rateOfProcess = self.player.position() / self.player.duration()
             self.horizontalSlider.setValue(rateOfProcess * self.horizontalSlider.maximum())
 
@@ -360,7 +365,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 self.cvPlayer.set(cv2.CAP_PROP_POS_FRAMES, frameID)
                 flag, frame = self.cvPlayer.read()
                 if flag:
-                    self.chSnapshot.setSnapshotInfos(frame, kind)
+                    self.chSnapshot.setSnapshotInfos(frame, kind, self.player.position())
                     self.chSnapshot.show()
 
                 else:
@@ -368,7 +373,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         elif kind == 1:
             flag, frame = self.cap.read()
             if flag:
-                self.chSnapshot.setSnapshotInfos(frame, kind)
+                self.chSnapshot.setSnapshotInfos(frame, kind,self.player.position())
                 self.chSnapshot.show()
             else:
                 QMessageBox.critical(self, "错误", "截图失败")

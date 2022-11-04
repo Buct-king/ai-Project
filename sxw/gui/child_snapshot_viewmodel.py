@@ -10,7 +10,7 @@ import child_snapshot
 import cv2
 
 import scj.code.snapshot as ssnapshot
-
+import sxw.utils.utils as utils
 
 class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
     # 向父窗口传递打开文件名的信号量
@@ -30,14 +30,14 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
         self.cancelPushButton.clicked.connect(self.cancelPush)
         self.saveSnapshotPushButton.clicked.connect(self.storeSnapshotPush)
 
-    def setSnapshotInfos(self, frame,stream_kind):
+    def setSnapshotInfos(self, frame,stream_kind,player_position):
         show = cv2.resize(frame, (480, 320))
         show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
         self.image = show
         showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
         self.iamgeLabel.setPixmap(QPixmap.fromImage(showImage))
         self.snapshotVideoInfo="test.ma3"
-        self.snapshotVideoTime="43:00"
+        self.snapshotVideoTime=utils.ms_to_hours(player_position)
         self.snapshotID=10
         # todo: 获取 snapshotID
         self.snapshotIDLineEdit.setText(str(self.snapshotID))
