@@ -14,6 +14,7 @@ import cv2
 
 import json
 import scj.code.device as device
+import scj.code.snapshot as ssnapshot
 
 
 class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
@@ -63,6 +64,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         # 快照
         self.SNAPSHOT = 0  # 0表示没有资源，1表示视频，2表示直播
         self.chSnapshot = ChildSnapshot()
+        self.chCameraStorage._signal.connect(self.updateSnapshotsList)
 
         # 快照列表
         self.setSanpshotTableView()
@@ -171,6 +173,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 if openInfo["code"] == 1:
                     self.player.setMedia(QMediaContent(videoUrl))
                     self.cvPlayer.open(device.qurl_to_string(videoUrl))
+                    self.updateSnapshotsList(0)
                     # self.videoInfo = openInfo
                     self.state_dict["video_info"] = openInfo
                     self.state_dict["video_state"] = 1
@@ -192,6 +195,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 videoPath = "file:///" + openInfo["video_path"] + "/" + openInfo["video_name"] + ".mp4"
                 self.player.setMedia(QMediaContent(QtCore.QUrl(videoPath)))
                 self.cvPlayer.open(openInfo["video_path"] + "/" + openInfo["video_name"] + ".mp4")
+                self.updateSnapshotsList(0)
                 # self.videoInfo = openInfo
                 self.state_dict["video_info"] = openInfo
                 self.state_dict["video_state"] = 1
@@ -358,6 +362,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 if flag:
                     self.chSnapshot.setSnapshotInfos(frame, kind)
                     self.chSnapshot.show()
+
                 else:
                     QMessageBox.critical(self, "错误", "截图失败")
         elif kind == 1:
@@ -367,6 +372,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 self.chSnapshot.show()
             else:
                 QMessageBox.critical(self, "错误", "截图失败")
+        self.updateSnapshotsList(kind)
 
     def exportSnapshotPush(self):
         """
@@ -392,11 +398,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         else:
             QMessageBox.critical(self, "错误", "导出失败！")
 
-
-
     '''
         快照列表
     '''
+
     def setSanpshotTableView(self):
         print("iin")
         self.model = QStandardItemModel(self.snapshotTableView)
@@ -406,19 +411,32 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         # 设置数据层次结构，4行4列
         self.model = QStandardItemModel(7, 4)
-        #设置水平方向四个头标签文本内容
-        self.model.setHorizontalHeaderLabels(['','时间','类型','编号'])
-        for row in range(7):
-            item_checked = QStandardItem()
-            item_checked.setCheckState(QtCore.Qt.Checked)
-            item_checked.setCheckable(True)
-            self.model.setItem(row,0, item_checked)
-            for column in range(1,4):
-                item=QStandardItem('row %s,column %s'%(row,column))
-                #设置每个位置的文本值
-                self.model.setItem(row,column,item)
+        # 设置水平方向四个头标签文本内容
+        self.model.setHorizontalHeaderLabels(['', '时间', '类型', '编号'])
+
         self.snapshotTableView.setModel(self.model)
 
+    def updateSnapshotsList(self, kind):
+        snapshotsList = json.loads(ssnapshot.get_image_list(kind))
+        imagesList=snapshotsList["image_list"]
+
+
+        # 设置数据层次结构，4行4列
+        self.model = QStandardItemModel(snapshotsList["image_num"], 4)
+        # 设置水平方向四个头标签文本内容
+        self.model.setHorizontalHeaderLabels(['', '编号', '视频时间', '时间'])
+        for row in range(snapshotsList["image_num"]):
+            item_checked = QStandardItem()
+            item_checked.setCheckState(QtCore.Qt.Unchecked)
+            item_checked.setCheckable(True)
+            self.model.setItem(row, 0, item_checked)
+            itemIndex = QStandardItem(str(imagesList[row]["index"]))
+            itemVideoTime = QStandardItem(str(imagesList[row]["video_time"]))
+            itemImageTime = QStandardItem(str(imagesList[row]["image_time"]))
+            self.model.setItem(row, 1, itemIndex)
+            self.model.setItem(row,2,itemVideoTime)
+            self.model.setItem(row,3,itemImageTime)
+        self.snapshotTableView.setModel(self.model)
 
     # recognition training page
     """

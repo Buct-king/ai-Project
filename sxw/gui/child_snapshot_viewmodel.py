@@ -9,8 +9,13 @@ import child_snapshot
 
 import cv2
 
+import scj.code.snapshot as ssnapshot
+
 
 class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
+    # 向父窗口传递打开文件名的信号量
+    _signal = pyqtSignal(int)
+
     def __init__(self):
         QMainWindow.__init__(self)
         self.setupUi(self)
@@ -41,6 +46,8 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
 
     def cancelPush(self):
         # self.iamgeLabel.clearRec()
+        self._signal.emit(0)
+        print("cancelPush")
         self.close()
 
     def storeSnapshotPush(self):
@@ -48,14 +55,16 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
         note=str(self.textEdit.toPlainText())
 
         post_dict = {
-            "origin_image": self.image,# size(480*320)
+            "origin_image": self.image.tolist(),# size(480*320)
             "poses": poses,# [x1，y1，x2，y2]
             "time": time.asctime(),
             "video_time": self.snapshotVideoTime,# (string)
             "note":note, # string
-            "type": 1 # 0表示视频，1表示直播
+            "type": 0 # 0表示视频，1表示直播
         }
-        json.dumps(post_dict)
+
+        ssnapshot.new_snapshot(json.dumps(post_dict))
+        self._signal.emit(0)
         # todo：保存快照信息
         # self.iamgeLabel.clearRec()
         print(poses)
