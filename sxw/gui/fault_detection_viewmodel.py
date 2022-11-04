@@ -305,15 +305,18 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     def closeCamera(self):
         self.timer_camera.stop()
         self.cap.release()
-        self.state_dict["cap_state"] = 0
+        self.state_dict["cap_activate"] = 0
         # self.SNAPSHOT = 0
         self.cameraLabel.clear()
         self.openCameraPushButton.setText("打开摄像头")
 
     # 打开摄像头选择窗口
     def openCameraSelect(self):
-        self.chCameraSelect.show()
-        self.chCameraSelect.setCameras()
+        if self.state_dict["cap_activate"] ==1:
+            QMessageBox.critical(self, "错误", "请先关闭摄像头")
+        else:
+            self.chCameraSelect.show()
+            self.chCameraSelect.setCameras()
 
     # 接收打开摄像头子窗口信号量
     def openCamera(self, cameraName, cameraCode):
@@ -325,6 +328,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     def openCameraStorage(self):
         if self.state_dict["cap_num"] == None:
             QMessageBox.critical(self, "错误", "请先选择摄像头")
+        elif self.state_dict["cap_activate"] ==1:
+            QMessageBox.critical(self, "错误", "请先关闭摄像头")
         else:
             self.chCameraStorage.show()
             self.chCameraStorage.setStorages()
@@ -337,6 +342,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             device.open_new_camera(storageName, self.state_dict["cap_num"])
         else:
             device.open_old_camera(storageName)
+        self.updateSnapshotsList(1)
 
     '''
         快照
@@ -396,12 +402,17 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         删除快照
         :return:
         """
-        # todo: 删除选中的快照 device.delete_snapshot(index),返回导出是否成功
+
+        for i in range(self.model.rowCount()):
+            if self.model.item(i,0).checkState():
+                print(ssnapshot.delete_snapshot(int(self.model.item(i,1).text()),self.state_dict["page_num"]))
+
+        self.updateSnapshotsList(self.state_dict["page_num"])
         flag = 1
         if flag:
             QMessageBox.information(self, "删除文件", "删除成功！")
         else:
-            QMessageBox.critical(self, "错误", "导出失败！")
+            QMessageBox.critical(self, "错误", "删除失败！")
 
     '''
         快照列表
@@ -424,13 +435,13 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     def updateSnapshotsList(self, kind):
         snapshotsList = json.loads(ssnapshot.get_image_list(kind))
         imagesList=snapshotsList["image_list"]
-
+        imagesListLen=len(imagesList)
 
         # 设置数据层次结构，4行4列
-        self.model = QStandardItemModel(snapshotsList["image_num"], 4)
+        self.model = QStandardItemModel(imagesListLen, 4)
         # 设置水平方向四个头标签文本内容
         self.model.setHorizontalHeaderLabels(['', '编号', '视频时间', '时间'])
-        for row in range(snapshotsList["image_num"]):
+        for row in range(imagesListLen):
             item_checked = QStandardItem()
             item_checked.setCheckState(QtCore.Qt.Unchecked)
             item_checked.setCheckable(True)
@@ -442,6 +453,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             self.model.setItem(row,2,itemVideoTime)
             self.model.setItem(row,3,itemImageTime)
         self.snapshotTableView.setModel(self.model)
+
 
     # recognition training page
     """

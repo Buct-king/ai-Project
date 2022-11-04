@@ -56,6 +56,7 @@ class ChildCameraStorage(QMainWindow, child_camera_storge.Ui_MainWindow):
         if okPressed:
             matchStr = re.search(r"\W", text)
             if matchStr == None and (" " not in text):
+                print(text)
                 self._signal.emit(text, 0)
                 self.close()
             else:
