@@ -63,8 +63,8 @@ def history_video():  # 获取历史检测过的视频/设备列表
 
 # 打开新视频
 def open_new_video(video_url_path):  # 打开新视频时，调用该函数为视频创建视频内容保存路径
-    video_path = qurl_to_string(video_url_path)
-    # video_path = "aaaa/bbbb/cccc/dddd/abcd.mp4"  # 测试用
+    # video_path = qurl_to_string(video_url_path)
+    video_path = "/Users/shichunjing/Desktop/test_vedio.mp4"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/C++Primer.pdf"  # 测试用
     # video_path = "/Users/shichunjing/Desktop/STL源码剖析.pdf"
     return_dict = {
@@ -157,7 +157,6 @@ def open_old_video(video_name):
     conf = ConfigParser()
     conf.read(config_path)
     device_video_path = conf.get("path_config", "device_video_path")
-    # print(history_video_dict)
     if history_video_dict['devices_list'].__contains__(video_name) is not True:  # 失败，视频不存在
         return_dict['code'] = 0
         return_dict['message'] = "Video does not exist!"
@@ -470,7 +469,7 @@ def open_old_camera(camera_name):
 if __name__ == '__main__':
     # print(video_judge("xxx.mp4"))
     # print(history_video())
-    # print(open_new_video(""))
+    print(open_new_video(""))
     # print(open_old_video("C++Primer"))
     # get_file_information("/Users/shichunjing/Desktop/C++Primer.pdf")
     # print(get_video_information("C++Primer"))
@@ -481,7 +480,7 @@ if __name__ == '__main__':
     # print(get_camera_list())
     # print(history_camera())
     # open_new_camera("< cv2.VideoCapture 000001392735F8F0>", 0)
-    print(open_new_camera("test_camera_1", 0))
+    # print(open_new_camera("test_camera_1", 0))
     # print(open_old_camera("test_camera_3"))
     # print(delete_video_or_camera("test_camera_2", 0))
     pass
