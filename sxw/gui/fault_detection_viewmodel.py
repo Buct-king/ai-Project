@@ -271,6 +271,15 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         else:
             QMessageBox.critical(self, "错误", videoInfo["message"])
 
+    def AIDetectPush(self):
+        """
+        AI检测按钮回调函数
+        获取检测后的视频，更新快照列表
+        :return:
+        """
+
+
+
     '''
         摄像头
     '''
