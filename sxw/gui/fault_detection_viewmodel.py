@@ -93,8 +93,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.timer.timeout.connect(self.timerSync)
         self.horizontalSlider.sliderPressed.connect(lambda: self.sliderPressed())
         self.horizontalSlider.sliderReleased.connect(lambda: self.sliderReleased())
-        self.backOffPushButton.clicked.connect(lambda: self.lastVideo())
-        self.fastForwardPushButton.clicked.connect(lambda: self.nextVideo())
+        self.backOffPushButton.clicked.connect(lambda: self.backoffMiniChange())
+        self.fastForwardPushButton.clicked.connect(lambda: self.fastMiniChange())
 
         # 摄像头
         self.timer_camera.timeout.connect(self.show_camera)
@@ -222,6 +222,12 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     def backoffChange(self):
         self.player.setPosition(self.player.position() - 2000)
+
+    def fastMiniChange(self):
+        self.player.setPosition(self.player.position() + 200)
+
+    def backoffMiniChange(self):
+        self.player.setPosition(self.player.position() - 200)
 
     # Timer定时的回调函数，更新slider跟着视频播放进度调整位置
     def timerSync(self):

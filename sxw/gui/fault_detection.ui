@@ -286,6 +286,26 @@ border-radius: 10px;  border: 2px groove gray;</string>
          <string>00：00：00 / 00：00：00</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="AIDetectPushButton">
+        <property name="geometry">
+         <rect>
+          <x>420</x>
+          <y>300</y>
+          <width>51</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+        </property>
+        <property name="text">
+         <string>AI检测</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>C:/Users/11795/.designer/resource/文件icon.png</normaloff>C:/Users/11795/.designer/resource/文件icon.png</iconset>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_6">
        <attribute name="title">
@@ -572,7 +592,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
      <x>0</x>
      <y>0</y>
      <width>975</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
