@@ -9,9 +9,7 @@ import os
 
 
 # 添加新的快照
-def new_snapshot(json_info):
-    """
-    """
+def new_snapshot(json_info, img_pos=[]):
     info = json.loads(json_info)
     image = info["origin_image"]
     if info["type"] == 0:
@@ -29,7 +27,7 @@ def new_snapshot(json_info):
         yml_dict["image_num"] = 1 + yml_dict["image_num"]
         time_now = time.localtime()
         time_str = time.strftime("%Y%m%d-%H_%M_%S", time_now)
-        print(time_str)
+        # print(time_str)
         image_name = str(yml_dict["image_index"]) + "_" + device_name + "_" + str(time_str) + ".jpg"
         image_info = {
             "image_name": image_name,
@@ -42,7 +40,12 @@ def new_snapshot(json_info):
         yml_dict["image_list"].append(image_info)
         yaml.dump(yml_dict, f, allow_unicode=True)
         f.close()
-    cv2.imwrite(os.path.join(store_path, image_name), np.array(image))
+    image = np.array(image)
+    # print(img_pos)
+    # print(image.shape)
+    _image = image[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :]
+    # print(_image.shape)
+    cv2.imwrite(os.path.join(store_path, image_name), _image)
     return get_image_list(info["type"])
 
 
@@ -111,6 +114,7 @@ def modify_snapshot_info(device_type, index, index_=-1, image_note=""):
     return json.dumps(res_dict, ensure_ascii=False)
 
 
+# 删除快照
 def delete_snapshot(index, device_type):
     if device_type == 0:
         device_name = get_system_ini("video")
@@ -144,11 +148,11 @@ if __name__ == '__main__':
         "time": time.asctime(),
         "video_time": "self.snapshotVideoTime",  # (string)
         "note": "note",  # string
-        "type": 1  # 0表示视频，1表示直播
+        "type": 0  # 0表示视频，1表示直播
     }
     dict_ = json.dumps(post_dict, ensure_ascii=False)
     # im = cv2.imread("/Users/shichunjing/Pictures/1.jpeg")
-    # print(new_snapshot(dict_))
+    print(new_snapshot(dict_))
     #
     # print(get_image_list(0))
 
