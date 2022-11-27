@@ -29,6 +29,7 @@ class Consumer(threading.Thread):
 
 if __name__ == '__main__':
     print("---主线程开始---")
+    # 加载模型
     queue = Queue()                         # 实例化队列
     producer = Producer("Producer", queue)  # 实例化线程 Producer，并传入队列作为参数
     consumer = Consumer("Consumer", queue)  # 实例化线程 Consumer，并传入队列作为参数

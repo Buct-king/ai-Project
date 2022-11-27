@@ -1,7 +1,7 @@
 """
     工具文件
 """
-
+from PyQt5 import QtCore
 
 def ms_to_hours(millis):
     """
@@ -13,3 +13,7 @@ def ms_to_hours(millis):
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     return ("%02d:%02d:%02d" % (hours, minutes, seconds))
+
+def url_to_QUrl(url):
+    qUrl="file:///" +url
+    return QtCore.QUrl(qUrl)

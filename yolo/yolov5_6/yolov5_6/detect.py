@@ -30,7 +30,7 @@ import os
 import platform
 import sys
 
-from hubconf import yolov5s
+from yolo.yolov5_6.yolov5_6.hubconf import yolov5s
 from pathlib import Path
 
 import torch
@@ -262,6 +262,8 @@ def run(
     if update:
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
 
+    print(type(json_str))
+    print(type(result_json))
     return json_str
 
 def parse_opt():
@@ -315,7 +317,7 @@ def json_video_test(origin_vedio_path='', new_vedio_path=''):
 
 
 if __name__ == "__main__":
-    json_ans = json_video_test('C:\\Users\\11795\Videos\\test_fault.mp4', 'G:\Lab_work')
+    json_ans = json_video_test('C:\\Users\\11795\Videos\\test.mp4', 'G:\Lab_work')
     print(json_ans)
 
 # 接口：输入加载的视频地址，保存视频地址
