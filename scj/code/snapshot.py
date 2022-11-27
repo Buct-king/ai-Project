@@ -132,7 +132,8 @@ def get_image_info(device_type, index):
             "image_time": "",
             "index": -1,
             "poses": '[, , , ]',
-            "video_time": ''
+            "video_time": '',
+            "image_path": ""
         }
     }
     for img in img_list:
@@ -145,6 +146,7 @@ def get_image_info(device_type, index):
             return_dict["info"]["index"] = img["index"]
             return_dict["info"]["poses"] = img["poses"]
             return_dict["info"]["video_time"] = img["video_time"]
+            return_dict["info"]["image_path"] = store_path + "/" + img["image_name"]
             break
     return json.dumps(return_dict, ensure_ascii=False)
 
