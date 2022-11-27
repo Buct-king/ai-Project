@@ -19,7 +19,7 @@ import scj.code.snapshot as ssnapshot
 import sxw.utils.utils as utils
 import scj.code.defect_detection as defect_detection
 
-
+import yolo.yolov5_6.yolov5_6.detect_camera as detect_camera
 
 class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                       fault_detection_addition_ui.Fault_Detection_Addition_UI):
@@ -65,6 +65,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.CAM_NUM = None
         self.CAM_STORAGE = None  # 选择存储文件信号量
         self.CAM_STORAGE_NAME = None  # 视频存储文件名
+        self.detectModel=None # 识别模型
 
         # 快照
         self.SNAPSHOT = 0  # 0表示没有资源，1表示视频，2表示直播
@@ -310,6 +311,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         flag, self.image = self.cap.read()
         show = cv2.resize(self.image, (480, 320))
         show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
+        show = detect_camera.ta_camera_defect(self.detectModel, image=show)
         showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
         self.cameraLabel.setPixmap(QPixmap.fromImage(showImage))
 
@@ -322,6 +324,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                                       buttons=QMessageBox.Ok,
                                       defaultButton=QMessageBox.Ok)
         else:
+
+            detect_camera.check_requirements(exclude=('tensorboard', 'thop',))
+            device = detect_camera.select_device('')
+            self.detectModel = detect_camera.get_model()
             self.timer_camera.start(30)
             self.state_dict["cap_activate"] = 1
             self.openCameraPushButton.setText("关闭摄像头")
@@ -340,6 +346,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     # 关闭摄像头
     def closeCamera(self):
+        self.detectMode=None
         self.timer_camera.stop()
         self.cap.release()
         self.state_dict["cap_activate"] = 0
@@ -456,7 +463,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     '''
 
     def setSanpshotTableView(self):
-        print("iin")
+
+        self.snapshotTableView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)  ######允许右键产生子菜单
+        self.snapshotTableView.customContextMenuRequested.connect(self.generateMenu)  ####右键菜单
+
         self.model = QStandardItemModel(self.snapshotTableView)
         self.snapshotTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.snapshotTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -490,6 +500,30 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             self.model.setItem(row,2,itemVideoTime)
             self.model.setItem(row,3,itemImageTime)
         self.snapshotTableView.setModel(self.model)
+
+    def generateMenu(self,pos):
+        """
+        快照列表右键菜单回调函数
+        :return:
+        """
+        row_num = -1
+        for i in self.snapshotTableView.selectionModel().selection().indexes():
+            row_num = i.row()
+
+        if row_num < 500:  # 表格生效的行数，501行点击右键，不会弹出菜单
+            menu = QMenu()  # 实例化菜单
+            item1 = menu.addAction(u"详情")
+            action = menu.exec_(self.snapshotTableView.mapToGlobal(pos))
+        else:
+            return
+
+        if action == item1:
+            print("详情")
+
+
+    def openSnapshotDetails(self,pos):
+        pass
+
 
 
     # recognition training page

@@ -66,7 +66,7 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
             "type": self.stremKind  # 0表示视频，1表示直播
         }
 
-        ssnapshot.new_snapshot(json.dumps(post_dict))
+        ssnapshot.new_snapshot(json.dumps(post_dict),poses)
         self._signal.emit(0)
         # todo：保存快照信息
         # self.iamgeLabel.clearRec()
