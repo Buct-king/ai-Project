@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 import random
+import time
 import fault_detection, fault_detection_addition_ui, recognition_training_viewmodel  # 刚刚转为py文件的UI文件名，我的是untitled
 
 from child_viewmodel import Child
@@ -281,17 +282,20 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         获取检测后的视频，更新快照列表
         :return:
         """
-
+        start = time.time()
         detectedVideoUrl=defect_detection.video_defect_detection()
-        # detectedVideoUrl="G:\Lab_work\\fault_detection_new\\fault_detection\dir_test\data\device\\video\\test_fault _2\__test_fault _2\\test_fault _2"
-        # detectedVideoQUrl=utils.url_to_QUrl(detectedVideoUrl)
-        print(detectedVideoUrl.toString())
-        # self.player.setMedia(QMediaContent(detectedVideoQUrl))
+        detectedVideoQUrl=QtCore.QUrl.fromLocalFile(detectedVideoUrl)
+        print(detectedVideoQUrl)
 
-        # self.cvPlayer.open(detectedVideoUrl)
-        # self.updateSnapshotsList(0)
-        # self.player.play()
-        # self.player.pause()
+
+        self.player.setMedia(QMediaContent(detectedVideoQUrl))
+        self.cvPlayer.open(detectedVideoUrl)
+        self.updateSnapshotsList(0)
+        self.player.play()
+        self.player.pause()
+        # 中间写上代码块
+        end = time.time()
+        print('Running time: %s Seconds' % (end - start))
 
 
 
