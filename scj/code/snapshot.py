@@ -106,6 +106,49 @@ def get_image_list(device_type):
     return json.dumps(yml_dict, ensure_ascii=False)
 
 
+def get_image_info(device_type, index):
+    """
+    :param device_type: 设备类型，0视频，1摄像头
+    :param index: 快照id
+    :return: info
+    """
+    if device_type == 0:
+        device_name = get_system_ini("video")
+        store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"
+    else:
+        device_name = get_system_ini("camera")
+        store_path = get_system_ini("device_camera_path") + "/" + device_name + "/images"
+    image_list_path = store_path + "/image_list.yml"
+    with open(image_list_path, 'r') as f:  # 读取image list的内容
+        yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+        f.close()
+    img_list = yml_dict["image_list"]
+    return_dict = {
+        "code": 0,
+        "message": "None",
+        "info": {
+            "image_name": "",
+            "image_note": "",
+            "image_time": "",
+            "index": -1,
+            "poses": '[, , , ]',
+            "video_time": ''
+        }
+    }
+    for img in img_list:
+        if img["index"] == index:
+            return_dict["code"] = 1
+            return_dict["message"] = "ok"
+            return_dict["info"]["image_name"] = img["image_name"]
+            return_dict["info"]["image_note"] = img["image_note"]
+            return_dict["info"]["image_time"] = img["image_time"]
+            return_dict["info"]["index"] = img["index"]
+            return_dict["info"]["poses"] = img["poses"]
+            return_dict["info"]["video_time"] = img["video_time"]
+            break
+    return json.dumps(return_dict, ensure_ascii=False)
+
+
 # 修改快照内容
 def modify_snapshot_info(device_type, index, index_=-1, image_note=""):
     """
@@ -190,11 +233,12 @@ if __name__ == '__main__':
     }
     dict_ = json.dumps(post_dict, ensure_ascii=False)
     # im = cv2.imread("/Users/shichunjing/Pictures/1.jpeg")
-    print(new_snapshot(dict_))
+    # print(new_snapshot(dict_))
     #
     # print(get_image_list(0))
 
     # print(modify_snapshot_info(0, 2, index_=-1, image_note="note test"))
 
-    print(delete_snapshot(2, 1))
+    # print(delete_snapshot(2, 1))
+    print(get_image_info(0, 2))
     pass
