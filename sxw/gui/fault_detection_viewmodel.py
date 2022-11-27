@@ -16,6 +16,7 @@ import json
 import scj.code.device as device
 import scj.code.snapshot as ssnapshot
 import sxw.utils.utils as utils
+import scj.code.defect_detection as defect_detection
 
 
 class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
@@ -50,6 +51,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.videoInfo = None  # 记录当前打开视频的视频名、路径等信息
         self.cvPlayer = cv2.VideoCapture()
         self.VIDEO_NAME = None  # 记录当前打开视频的视频名
+
 
         # 摄像头
         self.chCameraSelect = ChildCameraSelect()
@@ -95,6 +97,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.horizontalSlider.sliderReleased.connect(lambda: self.sliderReleased())
         self.backOffPushButton.clicked.connect(lambda: self.backoffMiniChange())
         self.fastForwardPushButton.clicked.connect(lambda: self.fastMiniChange())
+        self.AIDetectPushButton.clicked.connect(lambda: self.AIDetectPush())
 
         # 摄像头
         self.timer_camera.timeout.connect(self.show_camera)
@@ -277,6 +280,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         获取检测后的视频，更新快照列表
         :return:
         """
+        defect_detection.video_defect_detection()
+
+
 
 
 
