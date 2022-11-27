@@ -52,7 +52,7 @@ def video_defect_detection():
 
 
 def json_test(original_video_path, new_video_path):
-    with open("./test/json_str.json", "r") as f:
+    with open("G:\Lab_work\\fault_detection_new\\fault_detection\scj\code\\test\json_str.json", "r") as f:
         json_data = json.load(f)
         return json_data
     pass
