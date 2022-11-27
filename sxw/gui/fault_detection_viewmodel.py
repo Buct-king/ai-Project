@@ -10,7 +10,7 @@ from child_viewmodel import Child
 from child_camera_select_viewmodel import ChildCameraSelect
 from child_camera_storge_viewmodel import ChildCameraStorage
 from child_snapshot_viewmodel import ChildSnapshot
-
+from child_snapshot_detail_viewmodel import ChildSnapshotDetails
 import cv2
 
 import json
@@ -74,6 +74,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         # 快照列表
         self.setSanpshotTableView()
+        self.childSnapshotDetails = ChildSnapshotDetails()
 
         # 绑定回调函数
         self.slot_init_fault_detetion()
@@ -518,11 +519,13 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             return
 
         if action == item1:
+            self.openSnapshotDetails(pos)
             print("详情")
 
 
     def openSnapshotDetails(self,pos):
-        pass
+        self.childSnapshotDetails.show()
+
 
 
 
