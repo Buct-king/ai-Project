@@ -32,7 +32,7 @@ def video_defect_detection():
     while is_opened and defect_num < defect_cnt:
         (flag, frame) = cap.read()  # 读取每一帧，flag表示是否读取成功，frame为图片内容
         # print("frame:", frame_num, " defect:", defect_num)
-        while frame_num == defects[defect_num]["frame_num"]:
+        while defect_num < defect_cnt and frame_num == defects[defect_num]["frame_num"]:
             post_dict = {
                 "origin_image": frame.tolist(),  # size(480*320)
                 "poses": str(defects[defect_num]["position"]),  # [x1，y1，x2，y2]
