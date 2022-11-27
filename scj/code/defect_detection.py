@@ -51,6 +51,12 @@ def video_defect_detection():
     pass
 
 
+def camera_defect_detection(image, detect_json):
+    detect_json = json.loads(detect_json)
+
+    pass
+
+
 def json_test(original_video_path, new_video_path):
     with open("G:\Lab_work\\fault_detection_new\\fault_detection\scj\code\\test\json_str.json", "r") as f:
         json_data = json.load(f)
