@@ -53,8 +53,23 @@ def video_defect_detection():
 
 
 def camera_defect_detection(image, detect_json):
+    """
+    :param image: 需要处理的图像帧
+    :param detect_json: 检测出的缺陷json，格式同视频
+    :return: 无
+    """
     detect_json = json.loads(detect_json)
-
+    for defect in detect_json["fault_list"]:
+        post_dict = {
+            "origin_image": image.tolist(),  # size(480*320)
+            "poses": str(defect["position"]),  # [x1，y1，x2，y2]
+            "time": time.asctime(),
+            "video_time": defect["time"],  # (string)
+            "note": "Recognized by AI",  # string
+            "type": 1  # 0表示视频，1表示直播
+        }
+        dict_ = json.dumps(post_dict, ensure_ascii=False)
+        new_snapshot(dict_, defect["position"])
     pass
 
 
