@@ -49,6 +49,44 @@ def new_snapshot(json_info, img_pos=[]):
     return get_image_list(info["type"])
 
 
+def new_snapshots(json_info):
+    info = json.loads(json_info)
+    if info["type"] == 0:
+        device_name = get_system_ini("video")
+        store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"
+    else:
+        device_name = get_system_ini("camera")
+        store_path = get_system_ini("device_camera_path") + "/" + device_name + "/images"
+    image_list_path = store_path + "/image_list.yml"
+    with open(image_list_path, 'r') as f:  # 读取image list的内容
+        yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+        f.close()
+    with open(image_list_path, 'w+') as f:  # 修改image list
+        for img in info['images']:
+            print(yml_dict["image_index"])
+            yml_dict["image_index"] = 1 + yml_dict["image_index"]
+            yml_dict["image_num"] = 1 + yml_dict["image_num"]
+            time_now = time.localtime()
+            time_str = time.strftime("%Y%m%d-%H_%M_%S", time_now)
+            image_name = str(yml_dict["image_index"]) + "_" + device_name + "_" + str(time_str) + ".jpg"
+            image_info = {
+                "image_name": image_name,
+                "image_time": time.strftime("%Y%m%d-%H_%M_%S", time_now),
+                "image_note": img["note"],
+                "video_time": img["video_time"],
+                "index": yml_dict["image_index"],
+                "poses": img["poses"]
+            }
+            yml_dict["image_list"].append(image_info)
+            image = np.array(img["origin_image"])
+            cv2.imwrite(os.path.join(store_path, image_name), image)
+        yaml.dump(yml_dict, f, allow_unicode=True)
+        f.close()
+    # print(_image.shape)
+    return get_image_list(info["type"])
+    pass
+
+
 # 获取快照列表
 def get_image_list(device_type):
     """
