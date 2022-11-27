@@ -19,6 +19,7 @@ import sxw.utils.utils as utils
 import scj.code.defect_detection as defect_detection
 
 
+
 class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                       fault_detection_addition_ui.Fault_Detection_Addition_UI):
     def __init__(self):
@@ -280,7 +281,18 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         获取检测后的视频，更新快照列表
         :return:
         """
-        defect_detection.video_defect_detection()
+
+        detectedVideoUrl=defect_detection.video_defect_detection()
+        # detectedVideoUrl="G:\Lab_work\\fault_detection_new\\fault_detection\dir_test\data\device\\video\\test_fault _2\__test_fault _2\\test_fault _2"
+        # detectedVideoQUrl=utils.url_to_QUrl(detectedVideoUrl)
+        print(detectedVideoUrl.toString())
+        # self.player.setMedia(QMediaContent(detectedVideoQUrl))
+
+        # self.cvPlayer.open(detectedVideoUrl)
+        # self.updateSnapshotsList(0)
+        # self.player.play()
+        # self.player.pause()
+
 
 
 

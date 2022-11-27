@@ -5,7 +5,7 @@ import scj.code.initialization as initialization
 import json
 import time
 from scj.code.snapshot import new_snapshot
-
+from yolo.yolov5_6.yolov5_6.detect import json_video_test
 
 # 视频缺陷检测
 def video_defect_detection():
@@ -17,9 +17,10 @@ def video_defect_detection():
     video_name = conf.get("processing", "video")
     video_dir_path = conf.get("path_config", "device_video_path") + "/" + video_name
     original_video_path = video_dir_path + "/" + video_name + ".mp4"
-    new_video_path = video_dir_path + "/__" + video_name + ".mp4"
-    # json_ans = function_wl(original_video_path, new_video_path)  # 调用
-    json_ans = json_test(original_video_path, new_video_path)
+    new_video_path = video_dir_path + "/__" + video_name+"/"
+    json_ans = json_video_test(original_video_path, new_video_path)  # 调用
+    json_ans=json.loads(json_ans)
+    # json_ans = json_test(original_video_path, new_video_path)
     defect_cnt = len(json_ans["fault_list"])
     defects = json_ans["fault_list"]
     cap = cv2.VideoCapture(original_video_path)
@@ -48,7 +49,7 @@ def video_defect_detection():
             break
         frame_num += 1
         # break
-    pass
+    return new_video_path + video_name + ".mp4"
 
 
 def camera_defect_detection(image, detect_json):
