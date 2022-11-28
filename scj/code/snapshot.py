@@ -6,6 +6,7 @@ import yaml
 from scj.code.tool import get_system_ini
 import json
 import os
+import xlwt
 
 
 # 添加新的快照
@@ -49,6 +50,7 @@ def new_snapshot(json_info, img_pos=[]):
     return get_image_list(info["type"])
 
 
+# 添加一组新的快照
 def new_snapshots(json_info):
     info = json.loads(json_info)
     if info["type"] == 0:
@@ -106,6 +108,7 @@ def get_image_list(device_type):
     return json.dumps(yml_dict, ensure_ascii=False)
 
 
+# 获取图像（快照）详情信息
 def get_image_info(device_type, index):
     """
     :param device_type: 设备类型，0视频，1摄像头
@@ -224,6 +227,60 @@ def delete_snapshot(index, device_type):
     return get_image_list(device_type)
 
 
+# 导出快照列表
+def export_snapshot_list(device_type, snapshot_id_list=[], file_path=""):
+    """
+    :param device_type: 设备类型，0视频，1摄像头
+    :param snapshot_id_list: 希望导出的快照id，默认为空
+    :param file_path: 希望导出的文件存储的位置，默认存储在快照文件夹
+    :return: json
+    """
+    if device_type == 0:
+        device_name = get_system_ini("video")
+        store_path = get_system_ini("device_video_path") + "/" + device_name + "/images/"
+    else:
+        device_name = get_system_ini("camera")
+        store_path = get_system_ini("device_camera_path") + "/" + device_name + "/images/"
+    image_list_path = store_path
+    if file_path != "":
+        store_path = file_path
+    work_book = xlwt.Workbook(encoding='utf-8')
+    sheet = work_book.add_sheet('缺陷检测结果')
+    # 设备信息
+    device_type_name = "视频" if device_type == 0 else "摄像头"
+    sheet.write(0, 0, '设备类型：')
+    sheet.write(0, 1, device_type_name)
+    sheet.write(0, 2, "设备名称：")
+    sheet.write(0, 3, device_name)
+    # 统计信息
+    sheet.write(1, 0, "导出快照图像数量：")
+    sheet.write(1, 1, str(len(snapshot_id_list)))
+    # 表头设置
+    sheet.write(2, 0, "快照id")
+    sheet.write(2, 1, "快照获取时间")
+    sheet.write(2, 2, "视频/摄像头内时间")
+    sheet.write(2, 3, "快照备注")
+    sheet.write(2, 4, "快照超链接")
+    # 详情信息
+    sheet_lines = 3
+    with open(image_list_path + "/image_list.yml", 'r') as f:  # 读取image list的内容
+        yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+        f.close()
+    img_list = yml_dict["image_list"]
+    for img in img_list:
+        if img["index"] in snapshot_id_list:
+            sheet.write(sheet_lines, 0, str(img["index"]))
+            sheet.write(sheet_lines, 1, img["image_time"])
+            sheet.write(sheet_lines, 2, img["video_time"])
+            sheet.write(sheet_lines, 3, img["image_note"])
+            sheet.write(sheet_lines, 4, xlwt.Formula('HYPERLINK("{}"; "{}")'.format(
+                                            image_list_path + "/" + img["image_name"],
+                                            img["image_name"])))
+            sheet_lines += 1
+    work_book.save(store_path + device_type_name + "_" + device_name + '_缺陷检测结果.xls')
+    pass
+
+
 if __name__ == '__main__':
     post_dict = {
         "origin_image": cv2.imread("/Users/shichunjing/Pictures/1.jpeg").tolist(),  # size(480*320)
@@ -242,5 +299,6 @@ if __name__ == '__main__':
     # print(modify_snapshot_info(0, 2, index_=-1, image_note="note test"))
 
     # print(delete_snapshot(2, 1))
-    print(get_image_info(0, 2))
+    # print(get_image_info(0, 2))
+    export_snapshot_list(0, [1,2,3,4,5,6,7,8,9])
     pass
