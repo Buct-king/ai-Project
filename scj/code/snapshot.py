@@ -278,7 +278,12 @@ def export_snapshot_list(device_type, snapshot_id_list=[], file_path=""):
                                             img["image_name"])))
             sheet_lines += 1
     work_book.save(store_path + device_type_name + "_" + device_name + '_缺陷检测结果.xls')
-    pass
+    return_dict = {
+        "code": 1,
+        "message": "ok",
+        "file_path": store_path + device_type_name + "_" + device_name + '_缺陷检测结果.xls'
+    }
+    return json.dumps(return_dict, ensure_ascii=False)
 
 
 if __name__ == '__main__':
@@ -293,7 +298,6 @@ if __name__ == '__main__':
     dict_ = json.dumps(post_dict, ensure_ascii=False)
     # im = cv2.imread("/Users/shichunjing/Pictures/1.jpeg")
     # print(new_snapshot(dict_))
-    #
     # print(get_image_list(0))
 
     # print(modify_snapshot_info(0, 2, index_=-1, image_note="note test"))
