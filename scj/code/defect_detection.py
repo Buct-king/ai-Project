@@ -54,7 +54,7 @@ from scj.code.snapshot import new_snapshots
 #     return new_video_path + video_name + ".mp4"
 
 
-def video_defect_detection():
+def video_defect_detection(video_path=""):
     # 获取系统配置 conf
     config_path = initialization.get_root_path() + "/system.ini"
     conf = ConfigParser()
@@ -62,7 +62,10 @@ def video_defect_detection():
     # 从conf获得当前正在处理的视频名称
     video_name = conf.get("processing", "video")
     video_dir_path = conf.get("path_config", "device_video_path") + "/" + video_name
-    original_video_path = video_dir_path + "/" + video_name + ".mp4"
+    if video_path != "":
+        original_video_path = video_path
+    else:
+        original_video_path = video_dir_path + "/" + video_name + ".mp4"
     new_video_path = video_dir_path + "/__" + video_name+"/"
     json_ans = json_video_test(original_video_path, new_video_path)  # 调用
     json_ans = json.loads(json_ans)
