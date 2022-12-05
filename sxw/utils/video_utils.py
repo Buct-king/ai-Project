@@ -39,5 +39,5 @@ def translate_frame_rate(video_url,dist_url,rate=10):
     out.release()
 
 
-translate_frame_rate("C:\\Users\\11795\Videos\\test_.mp4","C:\\Users\\11795\Videos\\temp.mp4",10)
+# translate_frame_rate("C:\\Users\\11795\Videos\\test_.mp4","C:\\Users\\11795\Videos\\temp.mp4",10)
 

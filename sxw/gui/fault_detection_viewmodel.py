@@ -4,19 +4,23 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 import random
 import time
+import os
 import fault_detection, fault_detection_addition_ui, recognition_training_viewmodel  # 刚刚转为py文件的UI文件名，我的是untitled
+import threading
 
 from child_viewmodel import Child
 from child_camera_select_viewmodel import ChildCameraSelect
 from child_camera_storge_viewmodel import ChildCameraStorage
 from child_snapshot_viewmodel import ChildSnapshot
 from child_snapshot_detail_viewmodel import ChildSnapshotDetails
+from child_progress_viewmodel import  ChildProgress
 import cv2
 
 import json
 import scj.code.device as device
 import scj.code.snapshot as ssnapshot
 import sxw.utils.utils as utils
+import sxw.utils.video_utils as vutils
 import scj.code.defect_detection as defect_detection
 
 import yolo.yolov5_6.yolov5_6.detect_camera as detect_camera
@@ -53,6 +57,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.videoInfo = None  # 记录当前打开视频的视频名、路径等信息
         self.cvPlayer = cv2.VideoCapture()
         self.VIDEO_NAME = None  # 记录当前打开视频的视频名
+        self.timer_AIDetect = QtCore.QTimer()  # 初始化定时器
+        self.childDetectProgress = ChildProgress() #视频检测进度条
+
 
 
         # 摄像头
@@ -284,20 +291,44 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         获取检测后的视频，更新快照列表
         :return:
         """
-        start = time.time()
-        detectedVideoUrl=defect_detection.video_defect_detection()
+
+        self.worker = fault_detection_addition_ui.WorkThread()
+        self.worker.trigger.connect(self.detectFinish)
+        self.worker.state_dict=self.state_dict
+        self.worker.start()
+        self.childDetectProgress.setLabel(10)
+        self.childDetectProgress.show()
+
+        # vutils.translate_frame_rate(self.state_dict["video_info"]["video_path"]+"//"+self.state_dict["video_info"]["video_name"]+".mp4",os.getcwd()+"/temp.mp4")
+
+        # detectedVideoUrl=defect_detection.video_defect_detection(os.getcwd()+"/temp.mp4")
+        # detectedVideoQUrl=QtCore.QUrl.fromLocalFile(detectedVideoUrl)
+        # print(detectedVideoQUrl)
+
+        # detectedVideoQUrl=QtCore.QUrl.fromLocalFile(detectedVideoUrl)
+        # self.player.setMedia(QMediaContent(detectedVideoQUrl))
+        # self.cvPlayer.open(detectedVideoUrl)
+        # self.updateSnapshotsList(0)
+        # self.player.play()
+        # self.player.pause()
+
+
+        # self.childDetectProgress.close()
+        # end = time.time()
+        # print('Running time: %s Seconds' % (end - start))
+        # self.Detecting = 0
+
+    def detectFinish(self,detectedVideoUrl):
         detectedVideoQUrl=QtCore.QUrl.fromLocalFile(detectedVideoUrl)
-        print(detectedVideoQUrl)
-
-
         self.player.setMedia(QMediaContent(detectedVideoQUrl))
         self.cvPlayer.open(detectedVideoUrl)
         self.updateSnapshotsList(0)
         self.player.play()
         self.player.pause()
+        self.childDetectProgress.close()
 
-        end = time.time()
-        print('Running time: %s Seconds' % (end - start))
+
+
 
 
 

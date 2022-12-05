@@ -1,4 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QProgressBar, QPushButton,QMainWindow,QProgressDialog
+import os
+import scj.code.device as device
+import scj.code.snapshot as ssnapshot
+import sxw.utils.utils as utils
+import sxw.utils.video_utils as vutils
+import scj.code.defect_detection as defect_detection
 
 class Fault_Detection_Addition_UI():
     def __init__(self):
@@ -15,6 +25,43 @@ class Fault_Detection_Addition_UI():
 
     def changeIcon2IconStart(self):
         self.startPushButton.setIcon(self.iconStart)
+
+
+class ProgressThread(QtCore.QThread): # 创建线程类
+    def __init__(self):
+        super(ProgressThread,self).__init__()
+        self.progress=QProgressDialog('', '', 0,0)
+        self.progress.setFixedSize(400,200)
+        self.progress.setWindowTitle('处理中')
+        self.progress.setLabelText('当前进度值')
+        self.progress.setCancelButtonText('取消')
+        self.progress.setRange(0, 0)
+        # self.progress.canceled.connect(lambda:print('进度对话框被取消'))
+        # self.progress.setAutoClose(True)#value为最大值时自动关闭
+    # def run(self):#重写run，为了第二次启动时初始化做准备
+
+        # self.progress.setValue(0)
+
+
+class WorkThread(QThread):
+    #实例化一个信号对象
+    trigger = pyqtSignal([str])
+
+    def __int__(self,state_dict):
+        super(WorkThread, self).__init__()
+        self.state_dict=state_dict
+
+    def run(self):
+        #开始进行工作
+        print(self.state_dict)
+        vutils.translate_frame_rate(self.state_dict["video_info"]["video_path"]+"//"+self.state_dict["video_info"]["video_name"]+".mp4",os.getcwd()+"/temp.mp4")
+        #
+        detectedVideoUrl=defect_detection.video_defect_detection(os.getcwd()+"/temp.mp4")
+        #
+        #
+        # # 工作完毕后发出信号
+        self.trigger.emit(detectedVideoUrl)
+
 
 
 
