@@ -9,6 +9,7 @@ import scj.code.snapshot as ssnapshot
 import sxw.utils.utils as utils
 import sxw.utils.video_utils as vutils
 import scj.code.defect_detection as defect_detection
+import json
 
 class Fault_Detection_Addition_UI():
     def __init__(self):
@@ -61,6 +62,25 @@ class WorkThread(QThread):
         #
         # # 工作完毕后发出信号
         self.trigger.emit(detectedVideoUrl)
+
+# 导出线程
+class ExportThread(QThread):
+    #实例化一个信号对象
+    trigger = pyqtSignal([object])
+
+    def __int__(self,state_dict,ids):
+        super(WorkThread, self).__init__()
+        self.state_dict=state_dict
+        self.ids=ids
+
+    def run(self):
+        #开始进行工作
+        status=ssnapshot.export_snapshot_list(self.state_dict["page_num"],self.ids)
+
+        #
+        #
+        # # 工作完毕后发出信号
+        self.trigger.emit(json.loads(status))
 
 
 

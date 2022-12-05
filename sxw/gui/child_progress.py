@@ -42,8 +42,11 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Detecting"))
         self.label.setText(_translate("MainWindow", "正在检测：预计需要5分钟"))
         self.label_2.setText(_translate("MainWindow", "请不要关闭本窗口"))
+
+

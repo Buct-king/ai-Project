@@ -82,6 +82,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         # 快照列表
         self.setSanpshotTableView()
         self.childSnapshotDetails = ChildSnapshotDetails()
+        self.childExportProgress = ChildProgress()  # 视频导出进度条
 
         # 绑定回调函数
         self.slot_init_fault_detetion()
@@ -473,12 +474,34 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         导出快照文件
         :return:
         """
-        # todo: 执行导出快照文件服务 device.export_snapshot(),返回导出是否成功
-        flag = 1
+        ids=[]
+        for i in range(self.model.rowCount()):
+            if self.model.item(i,0).checkState():
+                ids.append(int(self.model.item(i, 1).text()))
+
+        if len(ids)==0:
+            QMessageBox.critical(self, "错误", "导出列表为空！")
+
+        else:
+            self.export = fault_detection_addition_ui.ExportThread()
+            self.export.trigger.connect(self.exportFinish)
+            self.export.state_dict = self.state_dict
+            self.export.ids=ids
+            self.export.start()
+            self.childExportProgress.label.setText("正在导出")
+            self.childExportProgress.setTitle()
+            self.childExportProgress.show()
+
+
+    def exportFinish(self,status):
+        self.childExportProgress.close()
+        flag = status["code"]
+        print(status,type(status))
         if flag:
-            QMessageBox.information(self, "导出文件", "导出成功！")
+            QMessageBox.information(self, "导出文件", "导出成功！文件导出到\n%s"%status["file_path"])
         else:
             QMessageBox.critical(self, "错误", "导出失败！")
+
 
     def deleteSnapShotPush(self):
         """
