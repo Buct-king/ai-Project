@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Detecting</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QProgressBar" name="progressBar">
@@ -30,14 +30,39 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>63</x>
+      <x>0</x>
       <y>40</y>
-      <width>161</width>
-      <height>20</height>
+      <width>291</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>正在检测：预计需要5分钟</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>10</y>
+      <width>291</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>请不要关闭本窗口</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

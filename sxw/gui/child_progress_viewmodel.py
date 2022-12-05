@@ -21,6 +21,6 @@ class ChildProgress(QMainWindow, child_progress.Ui_MainWindow):
 
     def setLabel(self,minute):
         string="正在检测：预计需要%d分钟"%(minute)
-        self.label.setText("正在检测：预计需要%d分钟")
+        self.label.setText(string)
 
 

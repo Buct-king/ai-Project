@@ -298,7 +298,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.worker.trigger.connect(self.detectFinish)
         self.worker.state_dict=self.state_dict
         self.worker.start()
-        self.childDetectProgress.setLabel(10)
+        detectTime=self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT)/1800*2+1
+        self.childDetectProgress.setLabel(detectTime)
         self.childDetectProgress.show()
 
         self.AIDetectPushButton.setVisible(False)  # 检测按钮设置不可见

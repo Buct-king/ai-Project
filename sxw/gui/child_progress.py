@@ -21,8 +21,15 @@ class Ui_MainWindow(object):
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName("progressBar")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(63, 40, 161, 20))
+        self.label.setGeometry(QtCore.QRect(0, 40, 291, 31))
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(0, 10, 291, 31))
+        self.label_2.setTextFormat(QtCore.Qt.AutoText)
+        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_2.setWordWrap(False)
+        self.label_2.setObjectName("label_2")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 298, 23))
@@ -37,5 +44,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Detecting"))
         self.label.setText(_translate("MainWindow", "正在检测：预计需要5分钟"))
+        self.label_2.setText(_translate("MainWindow", "请不要关闭本窗口"))
