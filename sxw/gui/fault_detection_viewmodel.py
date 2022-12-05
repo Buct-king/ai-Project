@@ -194,6 +194,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                     self.state_dict["video_state"] = 1
                     self.player.play()
                     self.player.pause()
+                    self.AIDetectPushButton.setVisible(True) # 检测按钮设置可见
                 else:
                     QMessageBox.critical(self, "错误", openInfo["message"])
                     self.openVideoSelect()
@@ -216,6 +217,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 self.state_dict["video_state"] = 1
                 self.player.play()
                 self.player.pause()
+                self.AIDetectPushButton.setVisible(True)  # 检测按钮设置可见
             else:
                 QMessageBox.critical(self, "错误", openInfo["message"])
                 self.openVideoSelect()
@@ -298,6 +300,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.worker.start()
         self.childDetectProgress.setLabel(10)
         self.childDetectProgress.show()
+
+        self.AIDetectPushButton.setVisible(False)  # 检测按钮设置不可见
 
         # vutils.translate_frame_rate(self.state_dict["video_info"]["video_path"]+"//"+self.state_dict["video_info"]["video_name"]+".mp4",os.getcwd()+"/temp.mp4")
 
