@@ -295,7 +295,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.updateSnapshotsList(0)
         self.player.play()
         self.player.pause()
-        # 中间写上代码块
+
         end = time.time()
         print('Running time: %s Seconds' % (end - start))
 
@@ -519,12 +519,24 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             return
 
         if action == item1:
-            self.openSnapshotDetails(pos)
-            print("详情")
+            row=self.snapshotTableView.currentIndex().row()
+            id=int(self.model.item(row,1).text())
+            print(row)
+            print(self.model.item(row,1).text())
+            self.openSnapshotDetails(id)
 
 
-    def openSnapshotDetails(self,pos):
+    def openSnapshotDetails(self,id):
         self.childSnapshotDetails.show()
+        kind=None
+        if self.state_dict["page_num"] == 1:
+            if self.state_dict["cap_activate"] == 1:
+                kind=1
+        elif self.state_dict["page_num"] == 0:
+            if self.state_dict["video_state"] == 1:
+                kind=0
+
+        self.childSnapshotDetails.updataSnapshotInfo(kind,id)
 
 
 

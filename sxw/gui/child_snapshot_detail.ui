@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>140</y>
+      <y>130</y>
       <width>231</width>
       <height>16</height>
      </rect>
@@ -92,17 +92,17 @@
      <string>关闭</string>
     </property>
    </widget>
-   <widget class="QLabel" name="snapshotVideoInfoLabel">
+   <widget class="QLabel" name="snapshotNameLabel">
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>120</y>
+      <y>100</y>
       <width>72</width>
       <height>15</height>
      </rect>
     </property>
     <property name="text">
-     <string>视频信息</string>
+     <string>快照名称</string>
     </property>
    </widget>
    <widget class="QLabel" name="iamgeLabel">
@@ -135,7 +135,7 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>80</y>
+      <y>70</y>
       <width>231</width>
       <height>16</height>
      </rect>
@@ -168,6 +168,32 @@
     </property>
     <property name="text">
      <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="snapshotTimeLabel">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>380</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>快照时间</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="snapshotTimeShowLabel">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>400</y>
+      <width>251</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>xxxxx</string>
     </property>
    </widget>
   </widget>
