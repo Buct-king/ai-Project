@@ -346,6 +346,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         show = detect_camera.ta_camera_defect(self.detectModel, image=show)
         showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
         self.cameraLabel.setPixmap(QPixmap.fromImage(showImage))
+        self.updateSnapshotsList(1)
+
 
     # 打开摄像头
     def openLocalCamera(self):

@@ -69,7 +69,8 @@ def camera_defect_detection(image, detect_json):
             "time": time.asctime(),
             # "video_time": defect["time"],  # (string)
             "note": "Recognized by AI",  # string
-            "type": 1  # 0表示视频，1表示直播
+            "type": 1,  # 0表示视频，1表示直播
+            "video_time": None
         }
         dict_ = json.dumps(post_dict, ensure_ascii=False)
         new_snapshot(dict_, defect["position"])
@@ -234,6 +235,9 @@ def run(
             # Stream results
             im0 = annotator.result()
             if re_image:
+                json_str = json.dumps(result_json, indent=4)
+                image=cv2.imread(source)
+                camera_defect_detection(image, json_str)
                 return im0
             # im0 = cv2.resize(im0, (im0.shape[1] // 4, im0.shape[0] // 4))
             if view_img:
@@ -266,7 +270,7 @@ def run(
 
         # Print time (inference-only)
         LOGGER.info(f'{s}Done. ({t3 - t2:.3f}s)')
-    print(result_json)
+    # print(result_json)
 
     json_str = json.dumps(result_json, indent=4)
     with open('json_str.json', 'w') as json_file:
@@ -281,8 +285,8 @@ def run(
     if update:
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
 
-    print(type(json_str))
-    print(type(result_json))
+    # print(type(json_str))
+    # print(type(result_json))
     return json_str
 
 
