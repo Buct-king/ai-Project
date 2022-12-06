@@ -13,3 +13,6 @@
 
 ## 2022.12.6
 1. 优化检测显示时间 ok
+2. 导出<br>
+   命令:`pyinstaller --runtime-tmpdir G:\tmp -D in.py -p G:\Lab_work\fault_detection_new\fault_detection_1\scj `
+    
