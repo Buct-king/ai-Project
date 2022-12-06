@@ -7,6 +7,7 @@ import time
 from scj.code.snapshot import new_snapshot
 from yolo.yolov5_6.yolov5_6.detect import json_video_test
 from scj.code.snapshot import new_snapshots
+from scj.code.tool import get_system_ini
 
 
 # 视频缺陷检测
@@ -67,41 +68,49 @@ def video_defect_detection(video_path=""):
     else:
         original_video_path = video_dir_path + "/" + video_name + ".mp4"
     new_video_path = video_dir_path + "/__" + video_name+"/"
-    # json_ans = json_test(original_video_path, new_video_path)
+
     json_ans = json_video_test(original_video_path, new_video_path)  # 调用
     json_ans = json.loads(json_ans)
     defect_cnt = len(json_ans["fault_list"])
     defects = json_ans["fault_list"]
     cap = cv2.VideoCapture(original_video_path)
-    is_opened = cap.isOpened
-    defect_num = 0
-    frame_num = 1
+    # 快照存储配置获取
+    device_name = get_system_ini("video")  # 获取当前正在检测的视频名称
+    store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"  # 视频快照存储的文件
+    image_list_path = store_path + "/image_list.yml"
     image_list = {
         "images": [],
         "type": 0  # 0表示视频，1表示直播
     }
-    for defect in defects:
-        print(len(image_list['images']))
-        frame_idx = defect["frame_num"]
-        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx-1)
-        flag, img = cap.read()
-        img_pos = defect["position"]
-        post_dict = {
-            "origin_image": img[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :].tolist(),
-            "poses": str(defect["position"]),  # [x1，y1，x2，y2]
-            "time": time.asctime(),
-            "video_time": defect["time"],  # (string)
-            "note": "Recognized by AI",  # string
-        }
-        image_list['images'].append(post_dict)
-        if len(image_list['images']) >= 50:
-            new_snapshots(json.dumps(image_list))
-            image_list = {
-                "images": [],
-                "type": 0  # 0表示视频，1表示直播
+    import yaml
+    with open(image_list_path, 'r') as f:  # 读取image list的内容
+        yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+        f.close()
+    with open(image_list_path, 'w+') as f:
+        cnt = 0
+        for defect in defects:
+            cnt += 1
+            print("processing [ %d / %d]" % (cnt, len(defects)))
+            frame_idx = defect["frame_num"]
+            cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx-1)
+            flag, img = cap.read()
+            img_pos = defect["position"]
+            origin_image = img[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :]
+            time_now = time.localtime()
+            time_str = time.strftime("%Y%m%d-%H_%M_%S", time_now)
+            image_name = str(yml_dict["image_index"]) + "_" + device_name + "_" + str(time_str) + ".jpg"
+            image_info = {
+                "image_name": image_name,
+                "image_time": time.strftime("%Y%m%d-%H_%M_%S", time_now),
+                "image_note": "Recognized by AI",
+                "video_time": defect["time"],
+                "index": yml_dict["image_index"],
+                "poses": str(defect["position"])
             }
-    new_snapshots(json.dumps(image_list))
-
+            yml_dict["image_list"].append(image_info)
+            cv2.imwrite(os.path.join(store_path, image_name), origin_image)
+        yaml.dump(yml_dict, f, allow_unicode=True)
+        f.close()
     # while is_opened and defect_num < defect_cnt:
     #     (flag, frame) = cap.read()  # 读取每一帧，flag表示是否读取成功，frame为图片内容
     #     while defect_num < defect_cnt and frame_num == defects[defect_num]["frame_num"]:
@@ -123,7 +132,6 @@ def video_defect_detection(video_path=""):
     #     # break
     # print("begin saving")
     # new_snapshots(json.dumps(image_list))
-
     return new_video_path + video_name + ".mp4"
 
 
