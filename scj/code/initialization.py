@@ -8,7 +8,8 @@ import yaml
 # 获取存储结构的根目录, 根据此目录可以获取配置文件system.ini
 def get_root_path():
     # 此处暂时定位到测试目录，后面需要修改
-    root = os.path.abspath(os.path.join(os.getcwd(), "../.."))
+    # root = os.path.abspath(os.path.join(os.getcwd(), "../.."))
+    root=os.getcwd()
     return os.path.join(root, "dir_test")
 
 

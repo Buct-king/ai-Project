@@ -204,6 +204,7 @@ def run(
                         child_1['position'] = [int(xyxy[0]), int(xyxy[1]), int(xyxy[2]), int(xyxy[3])]
                         child_1['kind'] = c
                         child_1['id'] = id
+                        # print(id)
                         id += 1
                         print(child_1)
                         result_json['fault_list'].append(child_1)

@@ -132,7 +132,7 @@ def video_defect_detection(video_path=""):
     #     # break
     # print("begin saving")
     # new_snapshots(json.dumps(image_list))
-    return new_video_path + video_name + ".mp4"
+    return new_video_path  + "temp.mp4"
 
 
 def camera_defect_detection(image, detect_json):
