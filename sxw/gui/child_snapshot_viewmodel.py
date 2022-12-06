@@ -43,7 +43,7 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
         self.snapshotVideoTime = utils.ms_to_hours(player_position)
         self.snapshotID = 10
         # todo: 获取 snapshotID
-        self.snapshotIDLineEdit.setText(str(self.snapshotID))
+        # self.snapshotIDLineEdit.setText(str(self.snapshotID))
         self.snapshotVideoInfoShowLabel.setText(self.snapshotVideoInfo)
         self.snapshotVideoTimeShowLabel.setText(self.snapshotVideoTime)
 
