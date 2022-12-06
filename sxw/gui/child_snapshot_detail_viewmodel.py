@@ -12,7 +12,7 @@ class ChildSnapshotDetails(QMainWindow, child_snapshot_detail.Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setupUi(self)
-
+        self.slot_init()
 
     def slot_init(self):
         self.cancelPushButton.clicked.connect(lambda: self.cancelPush())
@@ -23,6 +23,7 @@ class ChildSnapshotDetails(QMainWindow, child_snapshot_detail.Ui_MainWindow):
     def lastSnapshotPush(self):
         pass
     def cancelPush(self):
+        print("in")
         self.close()
 
     def updataSnapshotInfo(self,kind,id):
@@ -32,7 +33,7 @@ class ChildSnapshotDetails(QMainWindow, child_snapshot_detail.Ui_MainWindow):
         self.snapshotIDShowLabel.setText(str(id))
         self.snapshotVideoTimeShowLabel.setText(info["info"]["video_time"])
         self.snapshotTimeShowLabel.setText(info["info"]["image_time"])
-        self.snapshotNameLabel.setText(info["info"]["image_name"])
+        self.snapshotVideoInfoShowLabel.setText(info["info"]["image_name"])
         image_path=info["info"]["image_path"]
         show=cv2.imread(image_path)
         show=cv2.resize(show,(551,391))

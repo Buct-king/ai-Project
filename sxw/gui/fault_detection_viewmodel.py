@@ -140,6 +140,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             "cap_storage_name": None,
             "cap_activate": None
         }
+        self.AIDetectPushButton.setVisible(False)
         self.streamSelectTabWidget.setCurrentIndex(self.state_dict["page_num"])
 
     def streamSelectTabWidgetPush(self, index):
@@ -474,6 +475,19 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         导出快照文件
         :return:
         """
+
+        if self.state_dict["page_num"] == 1:
+            if self.state_dict["cap_activate"] == 1:
+                pass
+            else:
+                QMessageBox.critical(self, "错误", "请先获取摄像头资源")
+                return
+        elif self.state_dict["page_num"] == 0:
+            if self.state_dict["video_state"] == 1:
+                pass
+            else:
+                QMessageBox.critical(self, "错误", "请先获取视频资源")
+                return
         ids=[]
         for i in range(self.model.rowCount()):
             if self.model.item(i,0).checkState():
@@ -509,16 +523,30 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         :return:
         """
 
+        if self.state_dict["page_num"] == 1:
+            if self.state_dict["cap_activate"] == 1:
+                pass
+            else:
+                QMessageBox.critical(self, "错误", "请先获取摄像头资源")
+                return
+        elif self.state_dict["page_num"] == 0:
+            if self.state_dict["video_state"] == 1:
+                pass
+            else:
+                QMessageBox.critical(self, "错误", "请先获取视频资源")
+                return
+
+        delete_cnt=0
         for i in range(self.model.rowCount()):
             if self.model.item(i,0).checkState():
                 print(ssnapshot.delete_snapshot(int(self.model.item(i,1).text()),self.state_dict["page_num"]))
-
+                delete_cnt=delete_cnt+1
         self.updateSnapshotsList(self.state_dict["page_num"])
-        flag = 1
-        if flag:
+
+        if delete_cnt:
             QMessageBox.information(self, "删除文件", "删除成功！")
         else:
-            QMessageBox.critical(self, "错误", "删除失败！")
+            QMessageBox.critical(self, "错误", "请勾选要删除的快照！")
 
     '''
         快照列表

@@ -17,47 +17,100 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tabWidget = QtWidgets.QTabWidget(self.centralwidget)
-        self.tabWidget.setGeometry(QtCore.QRect(-10, 0, 991, 491))
+        self.tabWidget.setGeometry(QtCore.QRect(10, 10, 991, 491))
         self.tabWidget.setStyleSheet("background-color: rgb(229, 229, 229);")
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
         self.exportPushButton = QtWidgets.QPushButton(self.tab)
         self.exportPushButton.setGeometry(QtCore.QRect(790, 350, 121, 41))
-        self.exportPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.exportPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("C:/Users/11795/.designer/resource/导出icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.exportPushButton.setIcon(icon)
         self.exportPushButton.setObjectName("exportPushButton")
         self.deletePushButton = QtWidgets.QPushButton(self.tab)
         self.deletePushButton.setGeometry(QtCore.QRect(590, 350, 81, 41))
-        self.deletePushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.deletePushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("C:/Users/11795/.designer/resource/删除icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.deletePushButton.setIcon(icon1)
         self.deletePushButton.setObjectName("deletePushButton")
         self.detailPushButton = QtWidgets.QPushButton(self.tab)
         self.detailPushButton.setGeometry(QtCore.QRect(690, 350, 81, 41))
-        self.detailPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.detailPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("C:/Users/11795/.designer/resource/感叹号icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.detailPushButton.setIcon(icon2)
         self.detailPushButton.setObjectName("detailPushButton")
         self.snapshotPushButton = QtWidgets.QPushButton(self.tab)
         self.snapshotPushButton.setGeometry(QtCore.QRect(500, 350, 81, 41))
-        self.snapshotPushButton.setStyleSheet("background-color: rgb(207, 0, 0);\n"
-"border-color: rgb(85, 170, 0);\n"
-"color: rgb(255, 255, 255);\n"
-"border-radius: 10px;  border: 2px groove gray;")
+        self.snapshotPushButton.setStyleSheet("QPushButton{\n"
+"    border-radius:10px;\n"
+"    border: 2px groove gray;\n"
+"    background-color: rgb(238, 0, 0);\n"
+"    \n"
+"    color: rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(238, 92, 66);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(139, 0, 0);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("C:/Users/11795/.designer/resource/相机icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.snapshotPushButton.setIcon(icon3)
         self.snapshotPushButton.setObjectName("snapshotPushButton")
         self.label = QtWidgets.QLabel(self.tab)
-        self.label.setGeometry(QtCore.QRect(561, 10, 71, 31))
+        self.label.setGeometry(QtCore.QRect(550, 20, 71, 31))
+        self.label.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
+"")
         self.label.setObjectName("label")
         self.streamSelectTabWidget = QtWidgets.QTabWidget(self.tab)
-        self.streamSelectTabWidget.setGeometry(QtCore.QRect(20, 0, 481, 411))
+        self.streamSelectTabWidget.setGeometry(QtCore.QRect(0, 0, 481, 411))
         self.streamSelectTabWidget.setObjectName("streamSelectTabWidget")
         self.tab_5 = QtWidgets.QWidget()
         self.tab_5.setObjectName("tab_5")
@@ -117,17 +170,43 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.fastForwardPushButton)
         self.oepnVideoPushButton = QtWidgets.QPushButton(self.tab_5)
         self.oepnVideoPushButton.setGeometry(QtCore.QRect(10, 320, 81, 41))
-        self.oepnVideoPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.oepnVideoPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         icon9 = QtGui.QIcon()
         icon9.addPixmap(QtGui.QPixmap("C:/Users/11795/.designer/resource/文件icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.oepnVideoPushButton.setIcon(icon9)
+        self.oepnVideoPushButton.setCheckable(True)
+        self.oepnVideoPushButton.setAutoExclusive(True)
         self.oepnVideoPushButton.setObjectName("oepnVideoPushButton")
         self.videoTimeLabel = QtWidgets.QLabel(self.tab_5)
         self.videoTimeLabel.setGeometry(QtCore.QRect(160, 300, 171, 21))
         self.videoTimeLabel.setObjectName("videoTimeLabel")
         self.AIDetectPushButton = QtWidgets.QPushButton(self.tab_5)
         self.AIDetectPushButton.setGeometry(QtCore.QRect(420, 300, 51, 41))
-        self.AIDetectPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.AIDetectPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.AIDetectPushButton.setIcon(icon9)
         self.AIDetectPushButton.setObjectName("AIDetectPushButton")
         self.streamSelectTabWidget.addTab(self.tab_5, "")
@@ -138,13 +217,52 @@ class Ui_MainWindow(object):
         self.cameraLabel.setText("")
         self.cameraLabel.setObjectName("cameraLabel")
         self.openCameraPushButton = QtWidgets.QPushButton(self.tab_6)
-        self.openCameraPushButton.setGeometry(QtCore.QRect(40, 330, 93, 28))
+        self.openCameraPushButton.setGeometry(QtCore.QRect(60, 330, 93, 28))
+        self.openCameraPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.openCameraPushButton.setObjectName("openCameraPushButton")
         self.cameraSelectPushButton = QtWidgets.QPushButton(self.tab_6)
-        self.cameraSelectPushButton.setGeometry(QtCore.QRect(220, 330, 71, 28))
+        self.cameraSelectPushButton.setGeometry(QtCore.QRect(290, 340, 71, 28))
+        self.cameraSelectPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.cameraSelectPushButton.setObjectName("cameraSelectPushButton")
         self.cameraStoragePushButton = QtWidgets.QPushButton(self.tab_6)
-        self.cameraStoragePushButton.setGeometry(QtCore.QRect(320, 330, 71, 28))
+        self.cameraStoragePushButton.setGeometry(QtCore.QRect(380, 340, 71, 28))
+        self.cameraStoragePushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.cameraStoragePushButton.setObjectName("cameraStoragePushButton")
         self.streamSelectTabWidget.addTab(self.tab_6, "")
         self.snapshotTableView = QtWidgets.QTableView(self.tab)
@@ -245,7 +363,7 @@ class Ui_MainWindow(object):
         self.streamSelectTabWidget.setTabText(self.streamSelectTabWidget.indexOf(self.tab_5), _translate("MainWindow", "视频"))
         self.openCameraPushButton.setText(_translate("MainWindow", "打开摄像头"))
         self.cameraSelectPushButton.setText(_translate("MainWindow", "设备选择"))
-        self.cameraStoragePushButton.setText(_translate("MainWindow", "历史副本"))
+        self.cameraStoragePushButton.setText(_translate("MainWindow", "存储设置"))
         self.streamSelectTabWidget.setTabText(self.streamSelectTabWidget.indexOf(self.tab_6), _translate("MainWindow", "直播"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "缺陷检测"))
         self.importImageLabel.setText(_translate("MainWindow", "TextLabel"))

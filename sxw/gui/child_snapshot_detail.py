@@ -16,47 +16,84 @@ class Ui_MainWindow(object):
         MainWindow.resize(984, 539)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.lastSnapshotPushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.lastSnapshotPushButton.setGeometry(QtCore.QRect(50, 450, 93, 28))
-        self.lastSnapshotPushButton.setObjectName("lastSnapshotPushButton")
         self.snapshotIDLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotIDLabel.setGeometry(QtCore.QRect(700, 50, 72, 15))
+        self.snapshotIDLabel.setGeometry(QtCore.QRect(669, 46, 71, 25))
+        self.snapshotIDLabel.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
+"background-color: rgb(173, 173, 173);\n"
+"border-radius: 4px;   ")
+        self.snapshotIDLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.snapshotIDLabel.setObjectName("snapshotIDLabel")
         self.snapshotNoteLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotNoteLabel.setGeometry(QtCore.QRect(700, 210, 72, 15))
+        self.snapshotNoteLabel.setGeometry(QtCore.QRect(669, 240, 51, 25))
+        self.snapshotNoteLabel.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
+"background-color: rgb(173, 173, 173);\n"
+"border-radius: 4px;   ")
+        self.snapshotNoteLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.snapshotNoteLabel.setObjectName("snapshotNoteLabel")
         self.snapshotVideoInfoShowLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotVideoInfoShowLabel.setGeometry(QtCore.QRect(700, 130, 231, 16))
+        self.snapshotVideoInfoShowLabel.setGeometry(QtCore.QRect(674, 144, 231, 21))
         self.snapshotVideoInfoShowLabel.setObjectName("snapshotVideoInfoShowLabel")
         self.snapshotVideoTimeShowLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotVideoTimeShowLabel.setGeometry(QtCore.QRect(700, 180, 251, 16))
+        self.snapshotVideoTimeShowLabel.setGeometry(QtCore.QRect(674, 210, 251, 21))
         self.snapshotVideoTimeShowLabel.setObjectName("snapshotVideoTimeShowLabel")
         self.cancelPushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.cancelPushButton.setGeometry(QtCore.QRect(860, 450, 93, 28))
+        self.cancelPushButton.setGeometry(QtCore.QRect(882, 447, 71, 31))
+        self.cancelPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.cancelPushButton.setObjectName("cancelPushButton")
         self.snapshotNameLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotNameLabel.setGeometry(QtCore.QRect(700, 100, 72, 15))
+        self.snapshotNameLabel.setGeometry(QtCore.QRect(669, 110, 71, 25))
+        self.snapshotNameLabel.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
+"background-color: rgb(173, 173, 173);\n"
+"border-radius: 4px;   ")
+        self.snapshotNameLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.snapshotNameLabel.setObjectName("snapshotNameLabel")
         self.iamgeLabel = QtWidgets.QLabel(self.centralwidget)
         self.iamgeLabel.setGeometry(QtCore.QRect(60, 40, 551, 391))
         self.iamgeLabel.setObjectName("iamgeLabel")
         self.snapshotVideoTimeLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotVideoTimeLabel.setGeometry(QtCore.QRect(700, 160, 72, 15))
+        self.snapshotVideoTimeLabel.setGeometry(QtCore.QRect(669, 176, 91, 25))
+        self.snapshotVideoTimeLabel.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
+"background-color: rgb(173, 173, 173);\n"
+"border-radius: 4px;   ")
+        self.snapshotVideoTimeLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.snapshotVideoTimeLabel.setObjectName("snapshotVideoTimeLabel")
         self.snapshotIDShowLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotIDShowLabel.setGeometry(QtCore.QRect(700, 70, 231, 16))
+        self.snapshotIDShowLabel.setGeometry(QtCore.QRect(674, 80, 101, 21))
+        self.snapshotIDShowLabel.setStyleSheet("\n"
+"border-radius: 4px;   \n"
+"font: 25 11pt \"Adobe 宋体 Std L\";")
+        self.snapshotIDShowLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.snapshotIDShowLabel.setObjectName("snapshotIDShowLabel")
-        self.nextSnapshotPushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.nextSnapshotPushButton.setGeometry(QtCore.QRect(420, 450, 93, 28))
-        self.nextSnapshotPushButton.setObjectName("nextSnapshotPushButton")
         self.snapshotNoteShowLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotNoteShowLabel.setGeometry(QtCore.QRect(700, 250, 211, 131))
+        self.snapshotNoteShowLabel.setGeometry(QtCore.QRect(674, 283, 211, 91))
+        self.snapshotNoteShowLabel.setStyleSheet("border-radius: 4px;  \n"
+"border-width: 1px;\n"
+"border-style: solid;\n"
+"border-color: rgb(0, 0, 0)")
+        self.snapshotNoteShowLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.snapshotNoteShowLabel.setWordWrap(True)
         self.snapshotNoteShowLabel.setObjectName("snapshotNoteShowLabel")
         self.snapshotTimeLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotTimeLabel.setGeometry(QtCore.QRect(690, 380, 111, 16))
+        self.snapshotTimeLabel.setGeometry(QtCore.QRect(669, 390, 71, 25))
+        self.snapshotTimeLabel.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
+"background-color: rgb(173, 173, 173);\n"
+"border-radius: 4px;   ")
+        self.snapshotTimeLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.snapshotTimeLabel.setObjectName("snapshotTimeLabel")
         self.snapshotTimeShowLabel = QtWidgets.QLabel(self.centralwidget)
-        self.snapshotTimeShowLabel.setGeometry(QtCore.QRect(690, 400, 251, 16))
+        self.snapshotTimeShowLabel.setGeometry(QtCore.QRect(674, 423, 251, 21))
         self.snapshotTimeShowLabel.setObjectName("snapshotTimeShowLabel")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -73,17 +110,15 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.lastSnapshotPushButton.setText(_translate("MainWindow", "上一条"))
         self.snapshotIDLabel.setText(_translate("MainWindow", "快照编号"))
         self.snapshotNoteLabel.setText(_translate("MainWindow", "备注"))
-        self.snapshotVideoInfoShowLabel.setText(_translate("MainWindow", "xxxxx"))
-        self.snapshotVideoTimeShowLabel.setText(_translate("MainWindow", "xxxxx"))
+        self.snapshotVideoInfoShowLabel.setText(_translate("MainWindow", "test"))
+        self.snapshotVideoTimeShowLabel.setText(_translate("MainWindow", "03：22"))
         self.cancelPushButton.setText(_translate("MainWindow", "关闭"))
         self.snapshotNameLabel.setText(_translate("MainWindow", "快照名称"))
         self.iamgeLabel.setText(_translate("MainWindow", "TextLabel"))
         self.snapshotVideoTimeLabel.setText(_translate("MainWindow", "视频内时间"))
-        self.snapshotIDShowLabel.setText(_translate("MainWindow", "xxxxx"))
-        self.nextSnapshotPushButton.setText(_translate("MainWindow", "下一条"))
-        self.snapshotNoteShowLabel.setText(_translate("MainWindow", "TextLabel"))
+        self.snapshotIDShowLabel.setText(_translate("MainWindow", "1"))
+        self.snapshotNoteShowLabel.setText(_translate("MainWindow", "TextLabeldsfsfsfsfsfsfsdfsdfsfsfweeweqwfwfwe"))
         self.snapshotTimeLabel.setText(_translate("MainWindow", "快照时间"))
-        self.snapshotTimeShowLabel.setText(_translate("MainWindow", "xxxxx"))
+        self.snapshotTimeShowLabel.setText(_translate("MainWindow", "2022-1-20"))

@@ -17,8 +17,8 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>0</y>
+      <x>10</x>
+      <y>10</y>
       <width>991</width>
       <height>491</height>
      </rect>
@@ -43,7 +43,19 @@
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
       </property>
       <property name="text">
        <string>导出当前列表</string>
@@ -63,7 +75,19 @@
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
       </property>
       <property name="text">
        <string>删除</string>
@@ -83,7 +107,19 @@
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
       </property>
       <property name="text">
        <string>详情</string>
@@ -103,10 +139,25 @@
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: rgb(207, 0, 0);
-border-color: rgb(85, 170, 0);
-color: rgb(255, 255, 255);
-border-radius: 10px;  border: 2px groove gray;</string>
+       <string notr="true">QPushButton{
+	border-radius:10px;
+	border: 2px groove gray;
+	background-color: rgb(238, 0, 0);
+	
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:hover
+{
+    background-color:rgb(238, 92, 66);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(139, 0, 0);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
       </property>
       <property name="text">
        <string> 快照</string>
@@ -119,11 +170,15 @@ border-radius: 10px;  border: 2px groove gray;</string>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
-        <x>561</x>
-        <y>10</y>
+        <x>550</x>
+        <y>20</y>
         <width>71</width>
         <height>31</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;
+</string>
       </property>
       <property name="text">
        <string>快照记录</string>
@@ -132,7 +187,7 @@ border-radius: 10px;  border: 2px groove gray;</string>
      <widget class="QTabWidget" name="streamSelectTabWidget">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>0</x>
         <y>0</y>
         <width>481</width>
         <height>411</height>
@@ -263,7 +318,19 @@ border-radius: 10px;  border: 2px groove gray;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
         </property>
         <property name="text">
          <string>打开...</string>
@@ -271,6 +338,12 @@ border-radius: 10px;  border: 2px groove gray;</string>
         <property name="icon">
          <iconset>
           <normaloff>C:/Users/11795/.designer/resource/文件icon.png</normaloff>C:/Users/11795/.designer/resource/文件icon.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="videoTimeLabel">
@@ -296,7 +369,19 @@ border-radius: 10px;  border: 2px groove gray;</string>
          </rect>
         </property>
         <property name="styleSheet">
-         <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
         </property>
         <property name="text">
          <string>AI检测</string>
@@ -327,11 +412,26 @@ border-radius: 10px;  border: 2px groove gray;</string>
        <widget class="QPushButton" name="openCameraPushButton">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>60</x>
           <y>330</y>
           <width>93</width>
           <height>28</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
         </property>
         <property name="text">
          <string>打开摄像头</string>
@@ -340,11 +440,26 @@ border-radius: 10px;  border: 2px groove gray;</string>
        <widget class="QPushButton" name="cameraSelectPushButton">
         <property name="geometry">
          <rect>
-          <x>220</x>
-          <y>330</y>
+          <x>290</x>
+          <y>340</y>
           <width>71</width>
           <height>28</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
         </property>
         <property name="text">
          <string>设备选择</string>
@@ -353,14 +468,29 @@ border-radius: 10px;  border: 2px groove gray;</string>
        <widget class="QPushButton" name="cameraStoragePushButton">
         <property name="geometry">
          <rect>
-          <x>320</x>
-          <y>330</y>
+          <x>380</x>
+          <y>340</y>
           <width>71</width>
           <height>28</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+        </property>
         <property name="text">
-         <string>历史副本</string>
+         <string>存储设置</string>
         </property>
        </widget>
       </widget>

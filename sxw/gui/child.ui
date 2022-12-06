@@ -23,6 +23,21 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+    </property>
     <property name="text">
      <string>浏览</string>
     </property>
@@ -46,6 +61,21 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+    </property>
     <property name="text">
      <string>打开</string>
     </property>
@@ -54,10 +84,13 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>14</y>
       <width>72</width>
-      <height>15</height>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;</string>
     </property>
     <property name="text">
      <string>历史视频</string>
@@ -70,7 +103,7 @@
      <x>0</x>
      <y>0</y>
      <width>494</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
