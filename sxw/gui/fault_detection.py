@@ -331,6 +331,11 @@ class Ui_MainWindow(object):
         self.deleteImportPicFaultPicPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
         self.deleteImportPicFaultPicPushButton.setIcon(icon1)
         self.deleteImportPicFaultPicPushButton.setObjectName("deleteImportPicFaultPicPushButton")
+        self.annotationPushButton = QtWidgets.QPushButton(self.tab_2)
+        self.annotationPushButton.setGeometry(QtCore.QRect(640, 30, 81, 41))
+        self.annotationPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.annotationPushButton.setIcon(icon1)
+        self.annotationPushButton.setObjectName("annotationPushButton")
         self.tabWidget.addTab(self.tab_2, "")
         self.settingPushButton = QtWidgets.QPushButton(self.centralwidget)
         self.settingPushButton.setGeometry(QtCore.QRect(880, 10, 41, 28))
@@ -345,7 +350,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.streamSelectTabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -395,6 +400,7 @@ class Ui_MainWindow(object):
         self.finishTrainingPushButton.setText(_translate("MainWindow", "完成训练"))
         self.importPicFaultDetailPushButton.setText(_translate("MainWindow", "详情"))
         self.deleteImportPicFaultPicPushButton.setText(_translate("MainWindow", "删除"))
+        self.annotationPushButton.setText(_translate("MainWindow", "标注"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "识别训练"))
         self.settingPushButton.setText(_translate("MainWindow", "设置"))
 from PyQt5.QtMultimediaWidgets import QVideoWidget

@@ -24,6 +24,7 @@ import sxw.utils.video_utils as vutils
 import scj.code.defect_detection as defect_detection
 
 import yolo.yolov5_6.yolov5_6.detect_camera as detect_camera
+# import labelImg.labelImg as label_img
 
 class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                       fault_detection_addition_ui.Fault_Detection_Addition_UI):
@@ -640,6 +641,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             识别训练页面的回调函数绑定
         """
         self.importPicPushButton.clicked.connect(self.importImagePush)
+        self.annotationPushButton.clicked.connect(self.annotationPush)
 
     def importImagePush(self):
         """
@@ -649,3 +651,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         openFileUrl = QFileDialog.getOpenFileUrl()
         openFilePath = openFileUrl[0].toString()[8:]
         self.importImageLabel.setPixmap(QPixmap(openFilePath))
+
+    def annotationPush(self):
+        # label_img.get_main_app()
+        pass
+

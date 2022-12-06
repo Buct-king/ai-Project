@@ -27,7 +27,7 @@
      <string notr="true">background-color: rgb(229, 229, 229);</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -694,6 +694,26 @@ QPushButton:pressed
       </property>
       <property name="text">
        <string>删除</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="annotationPushButton">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>30</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+      </property>
+      <property name="text">
+       <string>标注</string>
       </property>
       <property name="icon">
        <iconset>

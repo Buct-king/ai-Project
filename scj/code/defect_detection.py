@@ -67,9 +67,9 @@ def video_defect_detection(video_path=""):
     else:
         original_video_path = video_dir_path + "/" + video_name + ".mp4"
     new_video_path = video_dir_path + "/__" + video_name+"/"
-    json_ans = json_test(original_video_path, new_video_path)
-    # json_ans = json_video_test(original_video_path, new_video_path)  # 调用
-    # json_ans = json.loads(json_ans)
+    # json_ans = json_test(original_video_path, new_video_path)
+    json_ans = json_video_test(original_video_path, new_video_path)  # 调用
+    json_ans = json.loads(json_ans)
     defect_cnt = len(json_ans["fault_list"])
     defects = json_ans["fault_list"]
     cap = cv2.VideoCapture(original_video_path)
