@@ -62,9 +62,11 @@ def new_snapshots(json_info):
         device_name = get_system_ini("camera")
         store_path = get_system_ini("device_camera_path") + "/" + device_name + "/images"
     image_list_path = store_path + "/image_list.yml"
+    print("读取image_list_path", time.time())
     with open(image_list_path, 'r') as f:  # 读取image list的内容
         yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
         f.close()
+    print("开始修改image_list_path", time.time())
     with open(image_list_path, 'w+') as f:  # 修改image list
         for img in info['images']:
             # print(yml_dict["image_index"])
@@ -84,8 +86,10 @@ def new_snapshots(json_info):
             yml_dict["image_list"].append(image_info)
             image = np.array(img["origin_image"])
             cv2.imwrite(os.path.join(store_path, image_name), image)
+        print("开始保存", time.time())
         yaml.dump(yml_dict, f, allow_unicode=True)
         f.close()
+    print("全部完成", time.time())
     # print("over")
     # return get_image_list(info["type"])
     return
