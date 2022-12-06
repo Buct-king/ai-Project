@@ -53,6 +53,8 @@ def new_snapshot(json_info, img_pos=[]):
 # 添加一组新的快照
 def new_snapshots(json_info):
     info = json.loads(json_info)
+    if len(info["images"]) == 0:
+        return
     if info["type"] == 0:
         device_name = get_system_ini("video")
         store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"
@@ -65,7 +67,7 @@ def new_snapshots(json_info):
         f.close()
     with open(image_list_path, 'w+') as f:  # 修改image list
         for img in info['images']:
-            print(yml_dict["image_index"])
+            # print(yml_dict["image_index"])
             yml_dict["image_index"] = 1 + yml_dict["image_index"]
             yml_dict["image_num"] = 1 + yml_dict["image_num"]
             time_now = time.localtime()
@@ -84,9 +86,9 @@ def new_snapshots(json_info):
             cv2.imwrite(os.path.join(store_path, image_name), image)
         yaml.dump(yml_dict, f, allow_unicode=True)
         f.close()
-    # print(_image.shape)
-    return get_image_list(info["type"])
-    pass
+    # print("over")
+    # return get_image_list(info["type"])
+    return
 
 
 # 获取快照列表

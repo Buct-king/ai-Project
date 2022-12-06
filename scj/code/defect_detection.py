@@ -67,45 +67,63 @@ def video_defect_detection(video_path=""):
     else:
         original_video_path = video_dir_path + "/" + video_name + ".mp4"
     new_video_path = video_dir_path + "/__" + video_name+"/"
-    json_ans = json_video_test(original_video_path, new_video_path)  # 调用
-    json_ans = json.loads(json_ans)
-    # json_ans = json_test(original_video_path, new_video_path)
+    json_ans = json_test(original_video_path, new_video_path)
+    # json_ans = json_video_test(original_video_path, new_video_path)  # 调用
+    # json_ans = json.loads(json_ans)
     defect_cnt = len(json_ans["fault_list"])
     defects = json_ans["fault_list"]
     cap = cv2.VideoCapture(original_video_path)
     is_opened = cap.isOpened
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     defect_num = 0
     frame_num = 1
     image_list = {
         "images": [],
         "type": 0  # 0表示视频，1表示直播
     }
-    while is_opened and defect_num < defect_cnt:
-        print("[", defect_num, "/", defect_cnt, "]")
-        (flag, frame) = cap.read()  # 读取每一帧，flag表示是否读取成功，frame为图片内容
-        # print("frame:", frame_num, " defect:", defect_num)
-        while defect_num < defect_cnt and frame_num == defects[defect_num]["frame_num"]:
-            img_pos = defects[defect_num]["position"]
-            post_dict = {
-                "origin_image": frame[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :].tolist(),  # size(480*320)
-                "poses": str(defects[defect_num]["position"]),  # [x1，y1，x2，y2]
-                "time": time.asctime(),
-                "video_time": defects[defect_num]["time"],  # (string)
-                "note": "Recognized by AI",  # string
+    for defect in defects:
+        print(len(image_list['images']))
+        frame_idx = defect["frame_num"]
+        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx-1)
+        flag, img = cap.read()
+        img_pos = defect["position"]
+        post_dict = {
+            "origin_image": img[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :].tolist(),
+            "poses": str(defect["position"]),  # [x1，y1，x2，y2]
+            "time": time.asctime(),
+            "video_time": defect["time"],  # (string)
+            "note": "Recognized by AI",  # string
+        }
+        image_list['images'].append(post_dict)
+        if len(image_list['images']) >= 50:
+            new_snapshots(json.dumps(image_list))
+            image_list = {
+                "images": [],
+                "type": 0  # 0表示视频，1表示直播
             }
-            dict_ = json.dumps(post_dict, ensure_ascii=False)
-            # new_snapshot(dict_, defects[defect_num]["position"])
-            image_list['images'].append(post_dict)
-            defect_num = defect_num + 1
-        if flag is not True:
-            break
-        frame_num += 1
-        # break
-    print("begin saving")
     new_snapshots(json.dumps(image_list))
+
+    # while is_opened and defect_num < defect_cnt:
+    #     (flag, frame) = cap.read()  # 读取每一帧，flag表示是否读取成功，frame为图片内容
+    #     while defect_num < defect_cnt and frame_num == defects[defect_num]["frame_num"]:
+    #         img_pos = defects[defect_num]["position"]
+    #         post_dict = {
+    #             "origin_image": frame[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :].tolist(),  # size(480*320)
+    #             "poses": str(defects[defect_num]["position"]),  # [x1，y1，x2，y2]
+    #             "time": time.asctime(),
+    #             "video_time": defects[defect_num]["time"],  # (string)
+    #             "note": "Recognized by AI",  # string
+    #         }
+    #         dict_ = json.dumps(post_dict, ensure_ascii=False)
+    #         # new_snapshot(dict_, defects[defect_num]["position"])
+    #         image_list['images'].append(post_dict)
+    #         defect_num = defect_num + 1
+    #     if flag is not True:
+    #         break
+    #     frame_num += 1
+    #     # break
+    # print("begin saving")
+    # new_snapshots(json.dumps(image_list))
+
     return new_video_path + video_name + ".mp4"
 
 
@@ -137,6 +155,15 @@ def json_test(original_video_path, new_video_path):
     pass
 
 
+def cap_test():
+    cap = cv2.VideoCapture('/Users/shichunjing/code/python/labProjects/concrete/fault_detection/dir_test/data/device/video/test_vedio/test_vedio.mp4')  # 返回一个capture对象
+    cap.set(cv2.CAP_PROP_POS_FRAMES, 0)  # 设置要获取的帧号
+    a, b = cap.read()  # read方法返回一个布尔值和一个视频帧。若帧读取成功，则返回True
+    print(a)
+    cv2.imwrite("/Users/shichunjing/Desktop/test.jpg", b)
+
+
 if __name__ == '__main__':
     video_defect_detection()
+    # cap_test()
     pass
