@@ -91,6 +91,8 @@ def video_defect_detection(video_path=""):
         for defect in defects:
             cnt += 1
             print("processing [ %d / %d]" % (cnt, len(defects)))
+            yml_dict["image_index"] = 1 + yml_dict["image_index"]
+            yml_dict["image_num"] = 1 + yml_dict["image_num"]
             frame_idx = defect["frame_num"]
             cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx-1)
             flag, img = cap.read()
