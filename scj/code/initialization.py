@@ -47,6 +47,11 @@ def directory_ini():
         os.mkdir(path + "/model/models")
     if os.path.isfile(path + "/model/models/model_list.yml") is not True:  # 初始化配置文件
         with open(path + "/model/models/model_list.yml", 'a') as f:
+            yaml_dict = {
+                'model_num': 0,
+                'model_list': []
+            }
+            yaml.dump(yaml_dict, f, allow_unicode=True)
             f.close()
     if os.path.isfile(path + "/system.ini") is not True:  # 初始化配置文件
         conf = ConfigParser()
