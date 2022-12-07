@@ -10,7 +10,7 @@ import torch
 import yaml
 from tqdm import tqdm
 
-from utils.general import LOGGER, colorstr
+from yolo.yolov5_6.yolov5_6.utils.general import LOGGER, colorstr
 
 PREFIX = colorstr('AutoAnchor: ')
 

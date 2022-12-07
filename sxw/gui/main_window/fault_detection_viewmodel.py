@@ -9,6 +9,7 @@ import os
 import threading
 import cv2
 import json
+import datetime
 
 from sxw.gui.main_window import fault_detection
 from sxw.gui.main_window import fault_detection_addition_ui
@@ -19,7 +20,7 @@ from sxw.gui.child_camera_select.child_camera_select_viewmodel import ChildCamer
 from sxw.gui.child_camera_storage.child_camera_storge_viewmodel import ChildCameraStorage
 from sxw.gui.child_snapshot.child_snapshot_viewmodel import ChildSnapshot
 from sxw.gui.child_snapshot_detail.child_snapshot_detail_viewmodel import ChildSnapshotDetails
-from sxw.gui.child_progress.child_progress_viewmodel import  ChildProgress
+from sxw.gui.child_progress.child_progress_viewmodel import ChildProgress
 
 import scj.code.device as device
 import scj.code.snapshot as ssnapshot
@@ -27,9 +28,10 @@ import sxw.utils.utils as utils
 import sxw.utils.video_utils as vutils
 import scj.code.defect_detection as defect_detection
 import yolo.yolov5_6.yolov5_6.detect_camera as detect_camera
-# import labelImg.labelImg as label_img
+import labelImg.labelImg as label_img
 
 from main import ROOT
+
 
 class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                       fault_detection_addition_ui.Fault_Detection_Addition_UI):
@@ -67,9 +69,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.cvPlayer = cv2.VideoCapture()
         self.VIDEO_NAME = None  # 记录当前打开视频的视频名
         self.timer_AIDetect = QtCore.QTimer()  # 初始化定时器
-        self.childDetectProgress = ChildProgress() #视频检测进度条
-
-
+        self.childDetectProgress = ChildProgress()  # 视频检测进度条
 
         # 摄像头
         self.chCameraSelect = ChildCameraSelect()
@@ -81,7 +81,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.CAM_NUM = None
         self.CAM_STORAGE = None  # 选择存储文件信号量
         self.CAM_STORAGE_NAME = None  # 视频存储文件名
-        self.detectModel=None # 识别模型
+        self.detectModel = None  # 识别模型
 
         # 快照
         self.SNAPSHOT = 0  # 0表示没有资源，1表示视频，2表示直播
@@ -107,6 +107,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         """
         # streamSelectTabWidget
         self.streamSelectTabWidget.currentChanged.connect(self.streamSelectTabWidgetPush)
+
+        # tabWidget窗口变化绑定回调函数
+        self.tabWidget.currentChanged.connect(self.tabWidgetCurrentChanged)
 
         # 视频
         self.oepnVideoPushButton.clicked.connect(lambda: self.openVideoSelect())
@@ -137,25 +140,27 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         :return:
         """
         self.iconStop = QtGui.QIcon()
-        self.iconStop.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/暂停.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.iconStop.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/暂停.png")), QtGui.QIcon.Normal,
+                                QtGui.QIcon.Off)
 
         self.iconStart = QtGui.QIcon()
-        self.iconStart.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/开始.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.iconStart.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/开始.png")), QtGui.QIcon.Normal,
+                                 QtGui.QIcon.Off)
 
         self.iconLast = QtGui.QIcon()
         self.iconLast.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/上一个icon.png")), QtGui.QIcon.Normal,
-                                 QtGui.QIcon.Off)
+                                QtGui.QIcon.Off)
         self.iconNext = QtGui.QIcon()
         self.iconNext.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/下一个icon.png")), QtGui.QIcon.Normal,
-                                 QtGui.QIcon.Off)
+                                QtGui.QIcon.Off)
 
         self.iconBackoff = QtGui.QIcon()
         self.iconBackoff.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/快进icon.png")), QtGui.QIcon.Normal,
-                                 QtGui.QIcon.Off)
+                                   QtGui.QIcon.Off)
 
         self.iconForward = QtGui.QIcon()
         self.iconForward.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/快退icon.png")), QtGui.QIcon.Normal,
-                                 QtGui.QIcon.Off)
+                                   QtGui.QIcon.Off)
 
         self.startPushButton.setIcon(self.iconStart)
         self.nextPushButton.setIcon(self.iconNext)
@@ -229,6 +234,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 # self.SNAPSHOT = 1
                 openInfo = json.loads(openInfo)
                 if openInfo["code"] == 1:
+                    print()
                     self.player.setMedia(QMediaContent(videoUrl))
                     self.cvPlayer.open(device.qurl_to_string(videoUrl))
                     self.updateSnapshotsList(0)
@@ -237,7 +243,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                     self.state_dict["video_state"] = 1
                     self.player.play()
                     self.player.pause()
-                    self.AIDetectPushButton.setVisible(True) # 检测按钮设置可见
+                    self.AIDetectPushButton.setVisible(True)  # 检测按钮设置可见
                 else:
                     QMessageBox.critical(self, "错误", openInfo["message"])
                     self.openVideoSelect()
@@ -293,9 +299,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         if self.player.duration() == 0:
             self.horizontalSlider.setValue(0)
         else:
-            time_text=utils.ms_to_hours(self.player.position())+\
-                      " / "+\
-                      utils.ms_to_hours(self.player.duration())
+            time_text = utils.ms_to_hours(self.player.position()) + \
+                        " / " + \
+                        utils.ms_to_hours(self.player.duration())
             self.videoTimeLabel.setText(time_text)
             rateOfProcess = self.player.position() / self.player.duration()
             self.horizontalSlider.setValue(rateOfProcess * self.horizontalSlider.maximum())
@@ -339,9 +345,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         self.worker = fault_detection_addition_ui.WorkThread()
         self.worker.trigger.connect(self.detectFinish)
-        self.worker.state_dict=self.state_dict
+        self.worker.state_dict = self.state_dict
         self.worker.start()
-        detectTime=self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT)/1800*2+1
+        detectTime = self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT) / 1800 * 2 + 1
         self.childDetectProgress.setLabel(detectTime)
         self.childDetectProgress.show()
 
@@ -360,29 +366,20 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         # self.player.play()
         # self.player.pause()
 
-
         # self.childDetectProgress.close()
         # end = time.time()
         # print('Running time: %s Seconds' % (end - start))
         # self.Detecting = 0
 
-    def detectFinish(self,detectedVideoUrl):
+    def detectFinish(self, detectedVideoUrl):
         print(detectedVideoUrl)
-        detectedVideoQUrl=QtCore.QUrl.fromLocalFile(detectedVideoUrl)
+        detectedVideoQUrl = QtCore.QUrl.fromLocalFile(detectedVideoUrl)
         self.player.setMedia(QMediaContent(detectedVideoQUrl))
         self.cvPlayer.open(detectedVideoUrl)
         self.updateSnapshotsList(0)
         self.player.play()
         self.player.pause()
         self.childDetectProgress.close()
-
-
-
-
-
-
-
-
 
     '''
         摄像头
@@ -396,7 +393,6 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
         self.cameraLabel.setPixmap(QPixmap.fromImage(showImage))
         self.updateSnapshotsList(1)
-
 
     # 打开摄像头
     def openLocalCamera(self):
@@ -429,7 +425,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     # 关闭摄像头
     def closeCamera(self):
-        self.detectMode=None
+        self.detectMode = None
         self.timer_camera.stop()
         self.cap.release()
         self.state_dict["cap_activate"] = 0
@@ -439,7 +435,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     # 打开摄像头选择窗口
     def openCameraSelect(self):
-        if self.state_dict["cap_activate"] ==1:
+        if self.state_dict["cap_activate"] == 1:
             QMessageBox.critical(self, "错误", "请先关闭摄像头")
         else:
             self.chCameraSelect.show()
@@ -455,7 +451,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     def openCameraStorage(self):
         if self.state_dict["cap_num"] == None:
             QMessageBox.critical(self, "错误", "请先选择摄像头")
-        elif self.state_dict["cap_activate"] ==1:
+        elif self.state_dict["cap_activate"] == 1:
             QMessageBox.critical(self, "错误", "请先关闭摄像头")
         else:
             self.chCameraStorage.show()
@@ -506,7 +502,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         elif kind == 1:
             flag, frame = self.cap.read()
             if flag:
-                self.chSnapshot.setSnapshotInfos(frame, kind,self.player.position())
+                self.chSnapshot.setSnapshotInfos(frame, kind, self.player.position())
                 self.chSnapshot.show()
             else:
                 QMessageBox.critical(self, "错误", "截图失败")
@@ -530,34 +526,32 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             else:
                 QMessageBox.critical(self, "错误", "请先获取视频资源")
                 return
-        ids=[]
+        ids = []
         for i in range(self.model.rowCount()):
-            if self.model.item(i,0).checkState():
+            if self.model.item(i, 0).checkState():
                 ids.append(int(self.model.item(i, 1).text()))
 
-        if len(ids)==0:
+        if len(ids) == 0:
             QMessageBox.critical(self, "错误", "导出列表为空！")
 
         else:
             self.export = fault_detection_addition_ui.ExportThread()
             self.export.trigger.connect(self.exportFinish)
             self.export.state_dict = self.state_dict
-            self.export.ids=ids
+            self.export.ids = ids
             self.export.start()
             self.childExportProgress.label.setText("正在导出")
             self.childExportProgress.setTitle()
             self.childExportProgress.show()
 
-
-    def exportFinish(self,status):
+    def exportFinish(self, status):
         self.childExportProgress.close()
         flag = status["code"]
-        print(status,type(status))
+        print(status, type(status))
         if flag:
-            QMessageBox.information(self, "导出文件", "导出成功！文件导出到\n%s"%status["file_path"])
+            QMessageBox.information(self, "导出文件", "导出成功！文件导出到\n%s" % status["file_path"])
         else:
             QMessageBox.critical(self, "错误", "导出失败！")
-
 
     def deleteSnapShotPush(self):
         """
@@ -578,11 +572,11 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 QMessageBox.critical(self, "错误", "请先获取视频资源")
                 return
 
-        delete_cnt=0
+        delete_cnt = 0
         for i in range(self.model.rowCount()):
-            if self.model.item(i,0).checkState():
-                print(ssnapshot.delete_snapshot(int(self.model.item(i,1).text()),self.state_dict["page_num"]))
-                delete_cnt=delete_cnt+1
+            if self.model.item(i, 0).checkState():
+                print(ssnapshot.delete_snapshot(int(self.model.item(i, 1).text()), self.state_dict["page_num"]))
+                delete_cnt = delete_cnt + 1
         self.updateSnapshotsList(self.state_dict["page_num"])
 
         if delete_cnt:
@@ -613,8 +607,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     def updateSnapshotsList(self, kind):
         snapshotsList = json.loads(ssnapshot.get_image_list(kind))
-        imagesList=snapshotsList["image_list"]
-        imagesListLen=len(imagesList)
+        imagesList = snapshotsList["image_list"]
+        imagesListLen = len(imagesList)
 
         # 设置数据层次结构，4行4列
         self.model = QStandardItemModel(imagesListLen, 4)
@@ -629,11 +623,11 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             itemVideoTime = QStandardItem(str(imagesList[row]["video_time"]))
             itemImageTime = QStandardItem(str(imagesList[row]["image_time"]))
             self.model.setItem(row, 1, itemIndex)
-            self.model.setItem(row,2,itemVideoTime)
-            self.model.setItem(row,3,itemImageTime)
+            self.model.setItem(row, 2, itemVideoTime)
+            self.model.setItem(row, 3, itemImageTime)
         self.snapshotTableView.setModel(self.model)
 
-    def generateMenu(self,pos):
+    def generateMenu(self, pos):
         """
         快照列表右键菜单回调函数
         :return:
@@ -650,39 +644,124 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             return
 
         if action == item1:
-            row=self.snapshotTableView.currentIndex().row()
-            id=int(self.model.item(row,1).text())
+            row = self.snapshotTableView.currentIndex().row()
+            id = int(self.model.item(row, 1).text())
             print(row)
-            print(self.model.item(row,1).text())
+            print(self.model.item(row, 1).text())
             self.openSnapshotDetails(id)
 
-
-    def openSnapshotDetails(self,id):
+    def openSnapshotDetails(self, id):
         self.childSnapshotDetails.show()
-        kind=None
+        kind = None
         if self.state_dict["page_num"] == 1:
             if self.state_dict["cap_activate"] == 1:
-                kind=1
+                kind = 1
         elif self.state_dict["page_num"] == 0:
             if self.state_dict["video_state"] == 1:
-                kind=0
+                kind = 0
 
-        self.childSnapshotDetails.updataSnapshotInfo(kind,id)
-
-
-
+        self.childSnapshotDetails.updataSnapshotInfo(kind, id)
 
     # recognition training page
     """
         识别训练页面的逻辑绑定
     """
 
+    def tabWidgetCurrentChanged(self,index):
+
+        if index==1:
+            self.setDatasetListTableView()
+            self.setModelsListTableView()
+            self.updateDatasetListTableView()
+            self.updateModelsListTableView()
+
     def slot_init_recognition_training(self):
         """
             识别训练页面的回调函数绑定
         """
-        self.importPicPushButton.clicked.connect(self.importImagePush)
-        self.annotationPushButton.clicked.connect(self.annotationPush)
+        # self.annotationPushButton.clicked.connect(self.annotationPush)
+
+    def setDatasetListTableView(self):
+        """
+        设置数据集列表的数据model
+        :return:
+        """
+        self.datasetTableView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)  ######允许右键产生子菜单
+        self.datasetTableView.customContextMenuRequested.connect(self.generateMenu)  ####右键菜单
+
+        self.datasetModel = QStandardItemModel(self.modelsTableView)
+        self.datasetTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.datasetTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.datasetTableView.setShowGrid(False)
+
+        # 设置数据层次结构，4行4列
+        self.datasetModel = QStandardItemModel(7, 5)
+        # 设置水平方向四个头标签文本内容
+        self.datasetModel.setHorizontalHeaderLabels(['', '编号', '名称', '保存时间', '数据量'])
+
+        for i in range(7):
+            item_checked = QStandardItem()
+            item_checked.setCheckState(QtCore.Qt.Unchecked)
+            item_checked.setCheckable(True)
+            self.datasetModel.setItem(i, 0, item_checked)
+            itemIndex = QStandardItem(str(i + 1))
+            itemName = QStandardItem("dataset_" + str(i + 1))
+            itemTime = QStandardItem(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+            itemCount = QStandardItem(str(100))
+            self.datasetModel.setItem(i, 1, itemIndex)
+            self.datasetModel.setItem(i, 2, itemName)
+            self.datasetModel.setItem(i, 3, itemTime)
+            self.datasetModel.setItem(i, 4, itemCount)
+
+        self.datasetTableView.setModel(self.datasetModel)
+
+    def updateDatasetListTableView(self):
+        """
+        更新数据集列表的数据
+        :return:
+        """
+
+        # todo：请求后端接口
+
+    def updateModelsListTableView(self):
+        """
+        更新模型列表的数据
+        :return:
+        """
+
+        # todo：请求后端接口
+
+    def setModelsListTableView(self):
+        """
+        设置模型列表的数据model
+        :return:
+        """
+        self.modelsTableView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)  ######允许右键产生子菜单
+        self.modelsTableView.customContextMenuRequested.connect(self.generateMenu)  ####右键菜单
+
+        self.modelsModel = QStandardItemModel(self.modelsTableView)
+        self.modelsTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.modelsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.modelsTableView.setShowGrid(False)
+
+        # 设置数据层次结构，4行4列
+        self.modelsModel = QStandardItemModel(7, 4)
+        # 设置水平方向四个头标签文本内容
+        self.modelsModel.setHorizontalHeaderLabels(['', '编号', '名称', '保存时间'])
+
+        for i in range(7):
+            item_checked = QStandardItem()
+            item_checked.setCheckState(QtCore.Qt.Unchecked)
+            item_checked.setCheckable(True)
+            self.modelsModel.setItem(i, 0, item_checked)
+            itemIndex = QStandardItem(str(i + 1))
+            itemName = QStandardItem("model_" + str(i + 1))
+            itemTime = QStandardItem(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+            self.modelsModel.setItem(i, 1, itemIndex)
+            self.modelsModel.setItem(i, 2, itemName)
+            self.modelsModel.setItem(i, 3, itemTime)
+
+        self.modelsTableView.setModel(self.modelsModel)
 
     def importImagePush(self):
         """
@@ -694,6 +773,5 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.importImageLabel.setPixmap(QPixmap(openFilePath))
 
     def annotationPush(self):
-        # label_img.get_main_app()
+        label_img.get_main_app()
         pass
-

@@ -15,4 +15,11 @@
 1. 优化检测显示时间 ok
 2. 导出<br>
    命令:`pyinstaller --runtime-tmpdir G:\tmp -D in.py -p G:\Lab_work\fault_detection_new\fault_detection_1\scj `
+
+## 2022.12.7
+1. 接口需求：模型列表、数据集列表
+2. 标注后的数据集保存到指定目录（修改labelImg)
+3. 假页面完成
+4. 标注按钮调用labelImg.exe
+
     
