@@ -8,6 +8,7 @@ import yaml
 # 获取存储结构的根目录, 根据此目录可以获取配置文件system.ini
 def get_root_path():
     # 此处暂时定位到测试目录，后面需要修改
+    # return "C://"
     root = os.path.abspath(os.path.join(os.getcwd(), "../.."))
     return os.path.join(root, "dir_test")
 
@@ -46,6 +47,11 @@ def directory_ini():
         os.mkdir(path + "/model/models")
     if os.path.isfile(path + "/model/models/model_list.yml") is not True:  # 初始化配置文件
         with open(path + "/model/models/model_list.yml", 'a') as f:
+            yaml_dict = {
+                'model_num': 0,
+                'model_list': []
+            }
+            yaml.dump(yaml_dict, f, allow_unicode=True)
             f.close()
     if os.path.isfile(path + "/system.ini") is not True:  # 初始化配置文件
         conf = ConfigParser()

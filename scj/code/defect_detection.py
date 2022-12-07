@@ -78,10 +78,6 @@ def video_defect_detection(video_path=""):
     device_name = get_system_ini("video")  # 获取当前正在检测的视频名称
     store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"  # 视频快照存储的文件
     image_list_path = store_path + "/image_list.yml"
-    image_list = {
-        "images": [],
-        "type": 0  # 0表示视频，1表示直播
-    }
     import yaml
     with open(image_list_path, 'r') as f:  # 读取image list的内容
         yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
@@ -91,6 +87,8 @@ def video_defect_detection(video_path=""):
         for defect in defects:
             cnt += 1
             print("processing [ %d / %d]" % (cnt, len(defects)))
+            yml_dict["image_index"] = 1 + yml_dict["image_index"]
+            yml_dict["image_num"] = 1 + yml_dict["image_num"]
             frame_idx = defect["frame_num"]
             cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx-1)
             flag, img = cap.read()
