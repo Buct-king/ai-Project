@@ -27,7 +27,7 @@
      <string notr="true">background-color: rgb(229, 229, 229);</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -194,7 +194,7 @@ QPushButton:pressed
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -513,8 +513,8 @@ QPushButton:pressed
      <widget class="QPushButton" name="annotationPushButton">
       <property name="geometry">
        <rect>
-        <x>830</x>
-        <y>40</y>
+        <x>850</x>
+        <y>30</y>
         <width>81</width>
         <height>41</height>
        </rect>
@@ -533,10 +533,10 @@ QPushButton:pressed
      <widget class="QPushButton" name="deleteModelPushButton">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>350</y>
+        <x>230</x>
+        <y>10</y>
         <width>81</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -550,11 +550,11 @@ QPushButton:pressed
         <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
       </property>
      </widget>
-     <widget class="QPushButton" name="deleteDatasetPushButton">
+     <widget class="QPushButton" name="importDatasetPushButton">
       <property name="geometry">
        <rect>
-        <x>430</x>
-        <y>340</y>
+        <x>60</x>
+        <y>350</y>
         <width>81</width>
         <height>41</height>
        </rect>
@@ -563,7 +563,7 @@ QPushButton:pressed
        <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
       </property>
       <property name="text">
-       <string>删除数据集</string>
+       <string>导入数据集</string>
       </property>
       <property name="icon">
        <iconset>
@@ -587,27 +587,10 @@ QPushButton:pressed
        <string>模型列表</string>
       </property>
      </widget>
-     <widget class="QLabel" name="datasetListLabel">
-      <property name="geometry">
-       <rect>
-        <x>420</x>
-        <y>20</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;
-</string>
-      </property>
-      <property name="text">
-       <string>数据集列表</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="trainingPushButton">
       <property name="geometry">
        <rect>
-        <x>830</x>
+        <x>200</x>
         <y>350</y>
         <width>81</width>
         <height>41</height>
@@ -637,11 +620,28 @@ QPushButton:pressed
      <widget class="QTableView" name="datasetTableView">
       <property name="geometry">
        <rect>
-        <x>410</x>
+        <x>360</x>
         <y>50</y>
-        <width>281</width>
+        <width>431</width>
         <height>261</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="datasetLabel">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>10</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;
+</string>
+      </property>
+      <property name="text">
+       <string>数据集</string>
       </property>
      </widget>
     </widget>
