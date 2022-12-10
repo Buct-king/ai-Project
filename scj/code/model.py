@@ -102,8 +102,9 @@ def delete_model(index):
 
 
 # 训练新模型
-def train(parameter, old_model_idx=0, model_name=""):
+def train(parameter, dataset_path, old_model_idx=0, model_name=""):
     """
+    :param dataset_path: 训练数据集地址
     :param parameter: 训练的模型参数
     :param old_model_idx: 在哪个模型基础上训练，默认不在旧的模型基础上训练
     :param model_name: 新模型的名字，不传入则默认起名
@@ -137,11 +138,11 @@ def train(parameter, old_model_idx=0, model_name=""):
     with open(model_list_path, 'w+') as f:
         yaml.dump(model_list_dict, f, allow_unicode=True)
         f.close()
-    return test_train(parameter=parameter, save_path=model_save_path, old_model_path=old_model_path)
+    return test_train(parameter=parameter, save_path=model_save_path, old_model_path=old_model_path, dataset_path=dataset_path)
 
 
 # 模拟训练函数
-def test_train(parameter, save_path, old_model_path):
+def test_train(parameter, save_path, old_model_path, dataset_path):
     """
     :param parameter: 参数json
     :param save_path: 模型保存的位置(文件夹)
