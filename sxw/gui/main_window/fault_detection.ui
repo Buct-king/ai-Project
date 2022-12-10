@@ -27,7 +27,7 @@
      <string notr="true">background-color: rgb(229, 229, 229);</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -194,7 +194,7 @@ QPushButton:pressed
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_5">
        <attribute name="title">
@@ -513,14 +513,26 @@ QPushButton:pressed
      <widget class="QPushButton" name="annotationPushButton">
       <property name="geometry">
        <rect>
-        <x>850</x>
-        <y>30</y>
+        <x>860</x>
+        <y>10</y>
         <width>81</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
       </property>
       <property name="text">
        <string>标注</string>
@@ -540,7 +552,19 @@ QPushButton:pressed
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
       </property>
       <property name="text">
        <string>删除模型</string>
@@ -553,14 +577,26 @@ QPushButton:pressed
      <widget class="QPushButton" name="importDatasetPushButton">
       <property name="geometry">
        <rect>
-        <x>60</x>
-        <y>350</y>
+        <x>420</x>
+        <y>10</y>
         <width>81</width>
-        <height>41</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
       </property>
       <property name="text">
        <string>导入数据集</string>
@@ -590,14 +626,26 @@ QPushButton:pressed
      <widget class="QPushButton" name="trainingPushButton">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>350</y>
+        <x>850</x>
+        <y>410</y>
         <width>81</width>
         <height>41</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
       </property>
       <property name="text">
        <string>训练</string>
@@ -613,27 +661,39 @@ QPushButton:pressed
         <x>20</x>
         <y>50</y>
         <width>291</width>
-        <height>261</height>
+        <height>351</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 4px;  
+border-width: 1px;
+border-style: solid;
+border-color: rgb(0, 0, 0)</string>
       </property>
      </widget>
      <widget class="QTableView" name="datasetTableView">
       <property name="geometry">
        <rect>
-        <x>360</x>
+        <x>330</x>
         <y>50</y>
-        <width>431</width>
-        <height>261</height>
+        <width>621</width>
+        <height>351</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 4px;  
+border-width: 1px;
+border-style: solid;
+border-color: rgb(0, 0, 0)</string>
       </property>
      </widget>
      <widget class="QLabel" name="datasetLabel">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>10</y>
+        <x>330</x>
+        <y>20</y>
         <width>71</width>
-        <height>31</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -643,6 +703,93 @@ QPushButton:pressed
       <property name="text">
        <string>数据集</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="importAnnotationPushButton">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>420</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>导入标注信息</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QLabel" name="annotationLabel">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>420</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;
+background-color: rgb(173, 173, 173);
+border-radius: 8px;   </string>
+      </property>
+      <property name="text">
+       <string>标注信息路径:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="annotationShowLabel">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>420</y>
+        <width>261</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string>未导入！</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
      </widget>
     </widget>
    </widget>
@@ -650,7 +797,7 @@ QPushButton:pressed
     <property name="geometry">
      <rect>
       <x>880</x>
-      <y>10</y>
+      <y>5</y>
       <width>41</width>
       <height>28</height>
      </rect>

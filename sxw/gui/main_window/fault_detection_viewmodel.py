@@ -667,19 +667,22 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         识别训练页面的逻辑绑定
     """
 
-    def tabWidgetCurrentChanged(self,index):
+    def tabWidgetCurrentChanged(self, index):
 
-        if index==1:
+        if index == 1:
             self.setDatasetListTableView()
             self.setModelsListTableView()
-            self.updateDatasetListTableView()
+            # self.updateDatasetListTableView()
             self.updateModelsListTableView()
 
     def slot_init_recognition_training(self):
         """
             识别训练页面的回调函数绑定
         """
-        # self.annotationPushButton.clicked.connect(self.annotationPush)
+        self.annotationPushButton.clicked.connect(self.annotationPush)
+        self.importDatasetPushButton.clicked.connect(self.importDatasetPush)
+        self.importAnnotationPushButton.clicked.connect(self.improtAnnotationPush)
+        self.trainingPushButton.clicked.connect(self.trainingPush)
 
     def setDatasetListTableView(self):
         """
@@ -693,33 +696,41 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.datasetTableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.datasetTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.datasetTableView.setShowGrid(False)
+        self.setIconSize(QtCore.QSize(200, 170))
+        self.datasetTableView.verticalHeader().setDefaultSectionSize(155)
+        self.datasetTableView.horizontalHeader().setDefaultSectionSize(155)
+
 
         # 设置数据层次结构，4行4列
-        self.datasetModel = QStandardItemModel(7, 5)
-        # 设置水平方向四个头标签文本内容
-        self.datasetModel.setHorizontalHeaderLabels(['', '编号', '名称', '保存时间', '数据量'])
+        # self.datasetModel = QStandardItemModel(3, 5)
+        # # 设置水平方向四个头标签文本内容
+        # self.datasetModel.setHorizontalHeaderLabels(['', '编号', '名称', '保存时间', '数据量'])
 
-        for i in range(7):
-            item_checked = QStandardItem()
-            item_checked.setCheckState(QtCore.Qt.Unchecked)
-            item_checked.setCheckable(True)
-            self.datasetModel.setItem(i, 0, item_checked)
-            itemIndex = QStandardItem(str(i + 1))
-            itemName = QStandardItem("dataset_" + str(i + 1))
-            itemTime = QStandardItem(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-            itemCount = QStandardItem(str(100))
-            self.datasetModel.setItem(i, 1, itemIndex)
-            self.datasetModel.setItem(i, 2, itemName)
-            self.datasetModel.setItem(i, 3, itemTime)
-            self.datasetModel.setItem(i, 4, itemCount)
 
-        self.datasetTableView.setModel(self.datasetModel)
-
-    def updateDatasetListTableView(self):
+    def updateDatasetListTableView(self,directoryName):
         """
         更新数据集列表的数据
         :return:
         """
+
+        filenames = os.listdir(directoryName)
+        img_paths = []
+        for file in filenames:
+            if file[-4:] == ".png" or file[-4:] == ".jpg" or file[-4:] == ".JPG" or file[-4:] == ".PNG":
+                img_paths.append(os.path.join(directoryName, file))
+
+        for i in range(len(img_paths)):
+            item = QStandardItem(QtGui.QIcon(img_paths[i]), "")
+            self.datasetModel.setItem(int(i/4),int(i%4),item)
+
+        self.datasetTableView.setModel(self.datasetModel)
+        self.datasetTableView.setIconSize(QtCore.QSize(150, 150))
+
+
+
+
+
+
 
         # todo：请求后端接口
 
@@ -772,6 +783,23 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         openFilePath = openFileUrl[0].toString()[8:]
         self.importImageLabel.setPixmap(QPixmap(openFilePath))
 
+    def importDatasetPush(self):
+        directoryName = QFileDialog.getExistingDirectory()
+        if directoryName=="":
+            return
+        self.updateDatasetListTableView(directoryName)
+        print(directoryName)
+
     def annotationPush(self):
-        label_img.get_main_app()
+
+        os.system(os.path.join(ROOT, 'labelImg.exe'))
         pass
+
+    def improtAnnotationPush(self):
+        directoryName = QFileDialog.getExistingDirectory()
+        if directoryName=="":
+            return
+        self.annotationShowLabel.setText(directoryName)
+
+    def trainingPush(self):
+        QMessageBox.information(self, "训练", "训练结束!")

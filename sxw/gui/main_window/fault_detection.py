@@ -272,18 +272,54 @@ class Ui_MainWindow(object):
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
         self.annotationPushButton = QtWidgets.QPushButton(self.tab_2)
-        self.annotationPushButton.setGeometry(QtCore.QRect(850, 30, 81, 41))
-        self.annotationPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.annotationPushButton.setGeometry(QtCore.QRect(860, 10, 81, 31))
+        self.annotationPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.annotationPushButton.setIcon(icon1)
         self.annotationPushButton.setObjectName("annotationPushButton")
         self.deleteModelPushButton = QtWidgets.QPushButton(self.tab_2)
         self.deleteModelPushButton.setGeometry(QtCore.QRect(230, 10, 81, 31))
-        self.deleteModelPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.deleteModelPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.deleteModelPushButton.setIcon(icon1)
         self.deleteModelPushButton.setObjectName("deleteModelPushButton")
         self.importDatasetPushButton = QtWidgets.QPushButton(self.tab_2)
-        self.importDatasetPushButton.setGeometry(QtCore.QRect(60, 350, 81, 41))
-        self.importDatasetPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.importDatasetPushButton.setGeometry(QtCore.QRect(420, 10, 81, 31))
+        self.importDatasetPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.importDatasetPushButton.setIcon(icon1)
         self.importDatasetPushButton.setObjectName("importDatasetPushButton")
         self.modelsListLabel = QtWidgets.QLabel(self.tab_2)
@@ -292,24 +328,84 @@ class Ui_MainWindow(object):
 "")
         self.modelsListLabel.setObjectName("modelsListLabel")
         self.trainingPushButton = QtWidgets.QPushButton(self.tab_2)
-        self.trainingPushButton.setGeometry(QtCore.QRect(200, 350, 81, 41))
-        self.trainingPushButton.setStyleSheet("border-radius: 10px;  border: 2px groove gray;")
+        self.trainingPushButton.setGeometry(QtCore.QRect(850, 410, 81, 41))
+        self.trainingPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
         self.trainingPushButton.setIcon(icon1)
         self.trainingPushButton.setObjectName("trainingPushButton")
         self.modelsTableView = QtWidgets.QTableView(self.tab_2)
-        self.modelsTableView.setGeometry(QtCore.QRect(20, 50, 291, 261))
+        self.modelsTableView.setGeometry(QtCore.QRect(20, 50, 291, 351))
+        self.modelsTableView.setStyleSheet("border-radius: 4px;  \n"
+"border-width: 1px;\n"
+"border-style: solid;\n"
+"border-color: rgb(0, 0, 0)")
         self.modelsTableView.setObjectName("modelsTableView")
         self.datasetTableView = QtWidgets.QTableView(self.tab_2)
-        self.datasetTableView.setGeometry(QtCore.QRect(360, 50, 431, 261))
+        self.datasetTableView.setGeometry(QtCore.QRect(330, 50, 621, 351))
+        self.datasetTableView.setStyleSheet("border-radius: 4px;  \n"
+"border-width: 1px;\n"
+"border-style: solid;\n"
+"border-color: rgb(0, 0, 0)")
         self.datasetTableView.setObjectName("datasetTableView")
         self.datasetLabel = QtWidgets.QLabel(self.tab_2)
-        self.datasetLabel.setGeometry(QtCore.QRect(370, 10, 71, 31))
+        self.datasetLabel.setGeometry(QtCore.QRect(330, 20, 71, 21))
         self.datasetLabel.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
 "")
+        self.datasetLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.datasetLabel.setObjectName("datasetLabel")
+        self.importAnnotationPushButton = QtWidgets.QPushButton(self.tab_2)
+        self.importAnnotationPushButton.setGeometry(QtCore.QRect(20, 420, 91, 31))
+        self.importAnnotationPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
+        self.importAnnotationPushButton.setIcon(icon1)
+        self.importAnnotationPushButton.setObjectName("importAnnotationPushButton")
+        self.annotationLabel = QtWidgets.QLabel(self.tab_2)
+        self.annotationLabel.setGeometry(QtCore.QRect(330, 420, 121, 31))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.annotationLabel.sizePolicy().hasHeightForWidth())
+        self.annotationLabel.setSizePolicy(sizePolicy)
+        self.annotationLabel.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
+"background-color: rgb(173, 173, 173);\n"
+"border-radius: 8px;   ")
+        self.annotationLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.annotationLabel.setObjectName("annotationLabel")
+        self.annotationShowLabel = QtWidgets.QLabel(self.tab_2)
+        self.annotationShowLabel.setGeometry(QtCore.QRect(460, 420, 261, 31))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.annotationShowLabel.sizePolicy().hasHeightForWidth())
+        self.annotationShowLabel.setSizePolicy(sizePolicy)
+        self.annotationShowLabel.setStyleSheet("")
+        self.annotationShowLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.annotationShowLabel.setObjectName("annotationShowLabel")
         self.tabWidget.addTab(self.tab_2, "")
         self.settingPushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.settingPushButton.setGeometry(QtCore.QRect(880, 10, 41, 28))
+        self.settingPushButton.setGeometry(QtCore.QRect(880, 5, 41, 28))
         self.settingPushButton.setObjectName("settingPushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -321,8 +417,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(1)
-        self.streamSelectTabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
+        self.streamSelectTabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -348,6 +444,9 @@ class Ui_MainWindow(object):
         self.modelsListLabel.setText(_translate("MainWindow", "模型列表"))
         self.trainingPushButton.setText(_translate("MainWindow", "训练"))
         self.datasetLabel.setText(_translate("MainWindow", "数据集"))
+        self.importAnnotationPushButton.setText(_translate("MainWindow", "导入标注信息"))
+        self.annotationLabel.setText(_translate("MainWindow", "标注信息路径:"))
+        self.annotationShowLabel.setText(_translate("MainWindow", "未导入！"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "识别训练"))
         self.settingPushButton.setText(_translate("MainWindow", "设置"))
 from PyQt5.QtMultimediaWidgets import QVideoWidget
