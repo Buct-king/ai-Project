@@ -21,6 +21,8 @@ from sxw.gui.child_camera_storage.child_camera_storge_viewmodel import ChildCame
 from sxw.gui.child_snapshot.child_snapshot_viewmodel import ChildSnapshot
 from sxw.gui.child_snapshot_detail.child_snapshot_detail_viewmodel import ChildSnapshotDetails
 from sxw.gui.child_progress.child_progress_viewmodel import ChildProgress
+from sxw.gui.child_model_select.child_model_select_viewmodel import ChildModelSelect
+from sxw.gui.child_fps_select.child_fps_select_viewmodle import ChildFpsSelect
 
 import scj.code.device as device
 import scj.code.snapshot as ssnapshot
@@ -48,6 +50,18 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             "cap_storage_name": None,
             "cap_activate": None
         }
+
+        self.parameters={
+            "model_id": 0,
+            "detect_fps":10
+        }
+
+        # init 菜单
+        self.childModelSelect=ChildModelSelect()
+        self.childModelSelect._signal.connect(self.updateModelId)
+        self.childFpsSelect=ChildFpsSelect()
+        self.childFpsSelect._signal.connect(self.updateDetectFps)
+        self.initMenuAction()
 
         # streamTabWidget
         self.initStreamSelectTabWidget()
@@ -105,6 +119,11 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         """
             缺陷检测页面回调函数绑定
         """
+
+        # 菜单栏回调函数绑定
+
+        # self.localfile_action.triggered.connect(self.openLocalFile)
+
         # streamSelectTabWidget
         self.streamSelectTabWidget.currentChanged.connect(self.streamSelectTabWidgetPush)
 
@@ -134,6 +153,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.exportPushButton.clicked.connect(self.exportSnapshotPush)
         self.deletePushButton.clicked.connect(self.deleteSnapShotPush)
 
+
+    """
+        初始化相关
+    """
     def iniIcon(self):
         """
         Icon初始化
@@ -167,6 +190,47 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.lastPushButton.setIcon(self.iconLast)
         self.backOffPushButton.setIcon(self.iconForward)
         self.fastForwardPushButton.setIcon(self.iconBackoff)
+
+    """
+        菜单栏
+    """
+    def initMenuAction(self):
+        """
+        初始化菜单栏信息
+        :return:
+        """
+
+        def setModel():
+            """
+            模型设置的回调函数
+            """
+            self.childModelSelect.show()
+
+        def setDetectFps():
+            """
+            检测频率设置的回调函数
+            :return:
+            """
+            self.childFpsSelect.show()
+
+
+        self.actionSetModel.triggered.connect(setModel)
+        self.actionDetectFps.triggered.connect(setDetectFps)
+        self.menu.addAction(self.actionSetModel)
+        self.menu.addAction(self.actionDetectFps)
+        self.menubar.addAction(self.menu.menuAction())
+
+    def updateModelId(self,id):
+
+        self.parameters["model_id"]=id
+        print(self.parameters["model_id"])
+
+    def updateDetectFps(self,fps):
+        self.parameters["detect_fps"]=fps
+        print(fps)
+
+
+
 
     '''
         tabWidget 控制以及信号量状态转变
