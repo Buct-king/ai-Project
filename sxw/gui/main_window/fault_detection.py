@@ -364,52 +364,13 @@ class Ui_MainWindow(object):
 "")
         self.datasetLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.datasetLabel.setObjectName("datasetLabel")
-        self.importAnnotationPushButton = QtWidgets.QPushButton(self.tab_2)
-        self.importAnnotationPushButton.setGeometry(QtCore.QRect(20, 420, 91, 31))
-        self.importAnnotationPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
-"\n"
-"QPushButton:hover\n"
-"{\n"
-"    background-color:rgb(193, 205, 205);\n"
-"}\n"
-"\n"
-"QPushButton:pressed\n"
-"{\n"
-"    background-color:rgb(131, 139, 139);\n"
-"    padding-left:3px;\n"
-"    padding-top:3px;\n"
-"}")
-        self.importAnnotationPushButton.setIcon(icon1)
-        self.importAnnotationPushButton.setObjectName("importAnnotationPushButton")
-        self.annotationLabel = QtWidgets.QLabel(self.tab_2)
-        self.annotationLabel.setGeometry(QtCore.QRect(330, 420, 121, 31))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.annotationLabel.sizePolicy().hasHeightForWidth())
-        self.annotationLabel.setSizePolicy(sizePolicy)
-        self.annotationLabel.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
-"background-color: rgb(173, 173, 173);\n"
-"border-radius: 8px;   ")
-        self.annotationLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.annotationLabel.setObjectName("annotationLabel")
-        self.annotationShowLabel = QtWidgets.QLabel(self.tab_2)
-        self.annotationShowLabel.setGeometry(QtCore.QRect(460, 420, 261, 31))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.annotationShowLabel.sizePolicy().hasHeightForWidth())
-        self.annotationShowLabel.setSizePolicy(sizePolicy)
-        self.annotationShowLabel.setStyleSheet("")
-        self.annotationShowLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.annotationShowLabel.setObjectName("annotationShowLabel")
         self.tabWidget.addTab(self.tab_2, "")
         self.settingPushButton = QtWidgets.QPushButton(self.centralwidget)
         self.settingPushButton.setGeometry(QtCore.QRect(880, 5, 41, 28))
         self.settingPushButton.setObjectName("settingPushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 975, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 975, 26))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(self.menubar)
         self.menu.setObjectName("menu")
@@ -457,9 +418,6 @@ class Ui_MainWindow(object):
         self.modelsListLabel.setText(_translate("MainWindow", "模型列表"))
         self.trainingPushButton.setText(_translate("MainWindow", "训练"))
         self.datasetLabel.setText(_translate("MainWindow", "数据集"))
-        self.importAnnotationPushButton.setText(_translate("MainWindow", "导入标注信息"))
-        self.annotationLabel.setText(_translate("MainWindow", "标注信息路径:"))
-        self.annotationShowLabel.setText(_translate("MainWindow", "未导入！"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "识别训练"))
         self.settingPushButton.setText(_translate("MainWindow", "设置"))
         self.menu.setTitle(_translate("MainWindow", "设置"))

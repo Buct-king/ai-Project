@@ -55,7 +55,7 @@ import json
 from scj.code.snapshot import new_snapshot
 
 
-def camera_defect_detection(image, detect_json):
+def camera_defect_detection(image, detect_json,save=False):
     """
     :param image: 需要处理的图像帧
     :param detect_json: 检测出的缺陷json，格式同视频
@@ -73,8 +73,9 @@ def camera_defect_detection(image, detect_json):
             "video_time": None
         }
         dict_ = json.dumps(post_dict, ensure_ascii=False)
-        new_snapshot(dict_, defect["position"])
-    pass
+        if save:
+            new_snapshot(dict_, defect["position"])
+
 
 
 def xyxy_center_id(xyxy):
@@ -112,7 +113,8 @@ def run(
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
         re_image=False,
-        model=None
+        model=None,
+        save=False
 ):
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
@@ -236,8 +238,8 @@ def run(
             im0 = annotator.result()
             if re_image:
                 json_str = json.dumps(result_json, indent=4)
-                image=cv2.imread(source)
-                camera_defect_detection(image, json_str)
+                image = cv2.imread(source)
+                camera_defect_detection(image, json_str,save)
                 return im0
             # im0 = cv2.resize(im0, (im0.shape[1] // 4, im0.shape[0] // 4))
             if view_img:
@@ -352,31 +354,30 @@ def t_camera_defect(image=None):
     # camera_defect_detection(image, j)
 
 
-def ta_camera_defect(model,image=None):
+def ta_camera_defect(model, image=None, save=False):
     opt = parse_opt()
     cv2.imwrite('./t.jpg', image)
     opt.source = './t.jpg'
     opt.re_image = True
-    im = run(model=model, **vars(opt))
+    im = run(model=model, save=save, **vars(opt))
     return im
 
-def test_my():
 
+def test_my():
     check_requirements(exclude=('tensorboard', 'thop',))
     device = select_device('')
     model = DetectMultiBackend(ROOT / 'best.pt', device=device, dnn=False, data=ROOT / 'data/coco128.yaml', fp16=False)
-    im = cv2.imread(r'G:\Lab_work\fault_detection_new\fault_detection\yolo\yolov5_6\yolov5_6\15f4c3abfa5c2cc47d6ac1a849beac3.jpg')
-    res=ta_camera_defect(model,image=im)
+    im = cv2.imread(
+        r'G:\Lab_work\fault_detection_new\fault_detection\yolo\yolov5_6\yolov5_6\15f4c3abfa5c2cc47d6ac1a849beac3.jpg')
+    res = ta_camera_defect(model, image=im)
     cv2.imwrite('./r.jpg', res)
 
-def get_model():
 
+def get_model():
     check_requirements(exclude=('tensorboard', 'thop',))
     device = select_device('')
     model = DetectMultiBackend(ROOT / 'best.pt', device=device, dnn=False, data=ROOT / 'data/coco128.yaml', fp16=False)
     return model
-
-
 
 
 if __name__ == "__main__":

@@ -53,7 +53,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         self.parameters={
             "model_id": 0,
-            "detect_fps":10
+            "detect_fps":10,
+            "dataset_path":None
         }
 
         # init 菜单
@@ -410,6 +411,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.worker = fault_detection_addition_ui.WorkThread()
         self.worker.trigger.connect(self.detectFinish)
         self.worker.state_dict = self.state_dict
+        self.worker.rate=self.parameters["detect_fps"]
         self.worker.start()
         detectTime = self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT) / 1800 * 2 + 1
         self.childDetectProgress.setLabel(detectTime)
@@ -453,10 +455,12 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         flag, self.image = self.cap.read()
         show = cv2.resize(self.image, (480, 320))
         show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
-        show = detect_camera.ta_camera_defect(self.detectModel, image=show)
+
+        show = detect_camera.ta_camera_defect(self.detectModel, image=show,save=True)
         showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
         self.cameraLabel.setPixmap(QPixmap.fromImage(showImage))
         self.updateSnapshotsList(1)
+
 
     # 打开摄像头
     def openLocalCamera(self):
@@ -471,7 +475,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             detect_camera.check_requirements(exclude=('tensorboard', 'thop',))
             device = detect_camera.select_device('')
             self.detectModel = detect_camera.get_model()
-            self.timer_camera.start(30)
+            self.timer_camera.start(200)
             self.state_dict["cap_activate"] = 1
             self.openCameraPushButton.setText("关闭摄像头")
 
@@ -745,7 +749,6 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         """
         self.annotationPushButton.clicked.connect(self.annotationPush)
         self.importDatasetPushButton.clicked.connect(self.importDatasetPush)
-        self.importAnnotationPushButton.clicked.connect(self.improtAnnotationPush)
         self.trainingPushButton.clicked.connect(self.trainingPush)
 
     def setDatasetListTableView(self):
@@ -851,19 +854,27 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         directoryName = QFileDialog.getExistingDirectory()
         if directoryName=="":
             return
-        self.updateDatasetListTableView(directoryName)
+        self.updateDatasetListTableView(os.path.join(directoryName,"images"))
+        self.parameters["dataset_path"]=directoryName
         print(directoryName)
 
     def annotationPush(self):
 
+        def createDatasetDir():
+            curr_time = datetime.datetime.now()
+            dataset_root=os.path.join(ROOT, "dataset")
+            dir_path=os.path.join(dataset_root,"dataset_"+str(curr_time.date())+"_"+str(int(time.time())))
+            os.makedirs(dir_path)
+            os.makedirs(os.path.join(dir_path,"images"))
+            os.makedirs(os.path.join(dir_path, "annotations"))
+            os.makedirs(os.path.join(dir_path, "labels"))
+            return dir_path
+        QMessageBox.information(self, "训练", "请将数据存入%s下对应目录"%createDatasetDir())
         os.system(os.path.join(ROOT, 'labelImg.exe'))
+
         pass
 
-    def improtAnnotationPush(self):
-        directoryName = QFileDialog.getExistingDirectory()
-        if directoryName=="":
-            return
-        self.annotationShowLabel.setText(directoryName)
 
     def trainingPush(self):
+
         QMessageBox.information(self, "训练", "训练结束!")

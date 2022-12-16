@@ -48,14 +48,15 @@ class WorkThread(QThread):
     #实例化一个信号对象
     trigger = pyqtSignal([str])
 
-    def __int__(self,state_dict):
+    def __int__(self,state_dict,rate):
         super(WorkThread, self).__init__()
         self.state_dict=state_dict
+        self.rate=rate
 
     def run(self):
         #开始进行工作
         print(self.state_dict)
-        vutils.translate_frame_rate(self.state_dict["video_info"]["video_path"]+"//"+self.state_dict["video_info"]["video_name"]+".mp4",os.getcwd()+"/temp.mp4")
+        vutils.translate_frame_rate(self.state_dict["video_info"]["video_path"]+"//"+self.state_dict["video_info"]["video_name"]+".mp4",os.getcwd()+"/temp.mp4",self.rate)
         #
         detectedVideoUrl=defect_detection.video_defect_detection(os.getcwd()+"/temp.mp4")
         #
