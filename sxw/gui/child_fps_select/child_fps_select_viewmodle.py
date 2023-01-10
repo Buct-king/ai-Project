@@ -36,6 +36,7 @@ class ChildFpsSelect(QMainWindow, child_fps_select.Ui_MainWindow):
         if text.isdigit():
             self._signal.emit(int(text))
             QMessageBox.information(self, "检测帧率设置", "您设置的帧率为:%d" % int(text))
+            self.presentDetectFpsLabel.setText("当前检测帧率：%dfps"%(int(text)))
             self.close()
         else:
             QMessageBox.critical(self, "错误", "请输入正确的数字")

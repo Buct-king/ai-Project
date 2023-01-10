@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
-    <height>309</height>
+    <width>503</width>
+    <height>396</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,8 +30,8 @@
    <widget class="QPushButton" name="okModelSelectPushButton">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>220</y>
+      <x>210</x>
+      <y>320</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -45,22 +45,9 @@
      <rect>
       <x>30</x>
       <y>40</y>
-      <width>256</width>
-      <height>151</height>
+      <width>441</width>
+      <height>271</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="presentModelLabel">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>20</y>
-      <width>181</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>当前模型</string>
     </property>
    </widget>
   </widget>
@@ -69,8 +56,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>445</width>
-     <height>26</height>
+     <width>503</width>
+     <height>23</height>
     </rect>
    </property>
   </widget>

@@ -3,6 +3,7 @@ import os
 import time
 from configparser import ConfigParser
 from scj.code import initialization
+from yolo.yolov5_6.yolov5_6.train2 import test_train
 import yaml
 
 
@@ -142,14 +143,14 @@ def train(parameter, dataset_path, old_model_idx=0, model_name=""):
 
 
 # 模拟训练函数
-def test_train(parameter, save_path, old_model_path, dataset_path):
-    """
-    :param parameter: 参数json
-    :param save_path: 模型保存的位置(文件夹)
-    :param old_model_path: 在哪个模型的基础上训练，该模型的地址，若为""则从头训练
-    :return:
-    """
-    return
+# def test_train(parameter, save_path, old_model_path, dataset_path):
+#     """
+#     :param parameter: 参数json
+#     :param save_path: 模型保存的位置(文件夹)
+#     :param old_model_path: 在哪个模型的基础上训练，该模型的地址，若为""则从头训练
+#     :return:
+#     """
+#     return
 
 
 # 创建临时文件夹及临时文件

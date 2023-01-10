@@ -23,12 +23,14 @@ from sxw.gui.child_snapshot_detail.child_snapshot_detail_viewmodel import ChildS
 from sxw.gui.child_progress.child_progress_viewmodel import ChildProgress
 from sxw.gui.child_model_select.child_model_select_viewmodel import ChildModelSelect
 from sxw.gui.child_fps_select.child_fps_select_viewmodle import ChildFpsSelect
+from sxw.gui.child_train_result.child_train_result_viewmodel import ChildTrainResult
 
 import scj.code.device as device
 import scj.code.snapshot as ssnapshot
 import sxw.utils.utils as utils
 import sxw.utils.video_utils as vutils
 import scj.code.defect_detection as defect_detection
+import scj.code.model as smodel
 import yolo.yolov5_6.yolov5_6.detect_camera as detect_camera
 import labelImg.labelImg as label_img
 
@@ -51,16 +53,16 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             "cap_activate": None
         }
 
-        self.parameters={
+        self.parameters = {
             "model_id": 0,
-            "detect_fps":10,
-            "dataset_path":None
+            "detect_fps": 10,
+            "dataset_path": None
         }
 
         # init 菜单
-        self.childModelSelect=ChildModelSelect()
+        self.childModelSelect = ChildModelSelect()
         self.childModelSelect._signal.connect(self.updateModelId)
-        self.childFpsSelect=ChildFpsSelect()
+        self.childFpsSelect = ChildFpsSelect()
         self.childFpsSelect._signal.connect(self.updateDetectFps)
         self.initMenuAction()
 
@@ -108,6 +110,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.childSnapshotDetails = ChildSnapshotDetails()
         self.childExportProgress = ChildProgress()  # 视频导出进度条
 
+        # 识别训练
+        self.childTrainResult = ChildTrainResult()
+
         # 绑定回调函数
         self.slot_init_fault_detetion()
         self.slot_init_recognition_training()
@@ -154,10 +159,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.exportPushButton.clicked.connect(self.exportSnapshotPush)
         self.deletePushButton.clicked.connect(self.deleteSnapShotPush)
 
-
     """
         初始化相关
     """
+
     def iniIcon(self):
         """
         Icon初始化
@@ -195,6 +200,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
     """
         菜单栏
     """
+
     def initMenuAction(self):
         """
         初始化菜单栏信息
@@ -212,8 +218,8 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             检测频率设置的回调函数
             :return:
             """
+            self.AIDetectPushButton.setVisible(True)
             self.childFpsSelect.show()
-
 
         self.actionSetModel.triggered.connect(setModel)
         self.actionDetectFps.triggered.connect(setDetectFps)
@@ -221,17 +227,14 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.menu.addAction(self.actionDetectFps)
         self.menubar.addAction(self.menu.menuAction())
 
-    def updateModelId(self,id):
+    def updateModelId(self, id):
 
-        self.parameters["model_id"]=id
+        self.parameters["model_id"] = id
         print(self.parameters["model_id"])
 
-    def updateDetectFps(self,fps):
-        self.parameters["detect_fps"]=fps
+    def updateDetectFps(self, fps):
+        self.parameters["detect_fps"] = fps
         print(fps)
-
-
-
 
     '''
         tabWidget 控制以及信号量状态转变
@@ -408,16 +411,28 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         :return:
         """
 
-        self.worker = fault_detection_addition_ui.WorkThread()
-        self.worker.trigger.connect(self.detectFinish)
-        self.worker.state_dict = self.state_dict
-        self.worker.rate=self.parameters["detect_fps"]
-        self.worker.start()
-        detectTime = self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT) / 1800 * 2 + 1
-        self.childDetectProgress.setLabel(detectTime)
-        self.childDetectProgress.show()
+        # 把旧快照都删掉
+        # 获取快照列表，删除对应id快照，更新快照列表
+        imagesList=json.loads(ssnapshot.get_image_list(0))["image_list"]
+        for image in imagesList:
+            ssnapshot.delete_snapshot(image["index"],0)
+            print(image["index"])
+        self.updateSnapshotsList(0)
 
-        self.AIDetectPushButton.setVisible(False)  # 检测按钮设置不可见
+
+
+
+        # self.worker = fault_detection_addition_ui.WorkThread()
+        # self.worker.trigger.connect(self.detectFinish)
+        # self.worker.state_dict = self.state_dict
+        # self.worker.rate = self.parameters["detect_fps"]
+        # self.worker.start()
+        # detectTime = self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT) / 1800 * 2 + 1
+        # self.childDetectProgress.setLabel(detectTime)
+        # self.childDetectProgress.show()
+        #
+        # self.AIDetectPushButton.setVisible(False)  # 检测按钮设置不可见
+
 
         # vutils.translate_frame_rate(self.state_dict["video_info"]["video_path"]+"//"+self.state_dict["video_info"]["video_name"]+".mp4",os.getcwd()+"/temp.mp4")
 
@@ -456,11 +471,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         show = cv2.resize(self.image, (480, 320))
         show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
 
-        show = detect_camera.ta_camera_defect(self.detectModel, image=show,save=True)
+        show = detect_camera.ta_camera_defect(self.detectModel, image=show, save=True)
         showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
         self.cameraLabel.setPixmap(QPixmap.fromImage(showImage))
         self.updateSnapshotsList(1)
-
 
     # 打开摄像头
     def openLocalCamera(self):
@@ -729,6 +743,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 kind = 0
 
         self.childSnapshotDetails.updataSnapshotInfo(kind, id)
+        self.childSnapshotDetails.kind=kind
+        self.childSnapshotDetails.indexNow=id
+        self.childSnapshotDetails.getSnapshotList()
 
     # recognition training page
     """
@@ -767,14 +784,12 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.datasetTableView.verticalHeader().setDefaultSectionSize(155)
         self.datasetTableView.horizontalHeader().setDefaultSectionSize(155)
 
-
         # 设置数据层次结构，4行4列
         # self.datasetModel = QStandardItemModel(3, 5)
         # # 设置水平方向四个头标签文本内容
         # self.datasetModel.setHorizontalHeaderLabels(['', '编号', '名称', '保存时间', '数据量'])
 
-
-    def updateDatasetListTableView(self,directoryName):
+    def updateDatasetListTableView(self, directoryName):
         """
         更新数据集列表的数据
         :return:
@@ -788,16 +803,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         for i in range(len(img_paths)):
             item = QStandardItem(QtGui.QIcon(img_paths[i]), "")
-            self.datasetModel.setItem(int(i/4),int(i%4),item)
+            self.datasetModel.setItem(int(i / 4), int(i % 4), item)
 
         self.datasetTableView.setModel(self.datasetModel)
         self.datasetTableView.setIconSize(QtCore.QSize(150, 150))
-
-
-
-
-
-
 
         # todo：请求后端接口
 
@@ -852,29 +861,54 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     def importDatasetPush(self):
         directoryName = QFileDialog.getExistingDirectory()
-        if directoryName=="":
+        if directoryName == "":
             return
-        self.updateDatasetListTableView(os.path.join(directoryName,"images"))
-        self.parameters["dataset_path"]=directoryName
+        if not os.path.exists(os.path.join(directoryName, "images")):
+            QMessageBox.critical(self, "错误", "导入的数据集有误")
+            return
+        self.updateDatasetListTableView(os.path.join(directoryName, "images"))
+        self.parameters["dataset_path"] = directoryName
         print(directoryName)
 
     def annotationPush(self):
 
         def createDatasetDir():
             curr_time = datetime.datetime.now()
-            dataset_root=os.path.join(ROOT, "dataset")
-            dir_path=os.path.join(dataset_root,"dataset_"+str(curr_time.date())+"_"+str(int(time.time())))
+            dataset_root = os.path.join(ROOT, "dataset")
+            dir_path = os.path.join(dataset_root, "dataset_" + str(curr_time.date()) + "_" + str(int(time.time())))
             os.makedirs(dir_path)
-            os.makedirs(os.path.join(dir_path,"images"))
+            os.makedirs(os.path.join(dir_path, "images"))
             os.makedirs(os.path.join(dir_path, "annotations"))
             os.makedirs(os.path.join(dir_path, "labels"))
             return dir_path
-        QMessageBox.information(self, "训练", "请将数据存入%s下对应目录"%createDatasetDir())
+
+        QMessageBox.information(self, "训练", "请将数据存入%s下对应目录" % createDatasetDir())
         os.system(os.path.join(ROOT, 'labelImg.exe'))
 
         pass
 
-
     def trainingPush(self):
+
+        if os.path.exists(self.parameters["dataset_path"]):
+            dir_path = self.parameters["dataset_path"]
+            images_dir = os.path.join(dir_path, "images")
+            annotation_dir = os.path.join(dir_path, "xmls")
+            labels_dir = os.path.join(dir_path, "labels")
+            if os.path.exists(images_dir) and os.path.exists(annotation_dir) and os.path.exists(labels_dir):
+                parameter = {'epochs': 1,
+                             'batch_size': 2,
+                             'workers': 8
+                             }
+                if self.epochsLineEdit.text().isdigit():
+                    parameter["epochs"] = int(self.epochsLineEdit.text())
+                if self.workersLineEdit.text().isdigit():
+                    parameter["workers"] = int(self.workersLineEdit.text())
+                if self.batchSizeLineEdit.text().isdigit():
+                    parameter["batch_size"] = int(self.batchSizeLineEdit.text())
+                save_path = smodel.train(parameter=parameter, dataset_path=dir_path)
+                self.childTrainResult.setPics(save_path)
+                self.childTrainResult.show()
+        elif self.parameters["dataset_path"] == "" or self.parameters["dataset_path"] is None:
+            QMessageBox.critical(self, "错误", "请先获取数据集")
 
         QMessageBox.information(self, "训练", "训练结束!")

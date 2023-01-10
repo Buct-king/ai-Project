@@ -658,6 +658,7 @@ def test_train(parameter, save_path, old_model_path, dataset_path):
     opt.data = yaml_name
     opt.save_best_path = save_path
     main(opt)
+    return save_path
 
 
 if __name__ == "__main__":
@@ -669,7 +670,7 @@ if __name__ == "__main__":
     save_path = r'G:\Lab_work\fault_detection_new\fault_detection_v1.1\datas\test1'
 
     old_model_path = ''
-    dataset_path = r'G:\Lab_work\fault_detection_new\fault_detection_v1.1\datas\test1'
+    dataset_path = r'G:\Lab_work\fault_detection_new\train'
     test_train(parameter, save_path, old_model_path, dataset_path)
 
     # /root/dada/da/name -> dataset_path

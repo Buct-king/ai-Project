@@ -100,6 +100,38 @@ class Ui_MainWindow(object):
         self.snapshotTimeShowLabel = QtWidgets.QLabel(self.centralwidget)
         self.snapshotTimeShowLabel.setGeometry(QtCore.QRect(674, 423, 251, 21))
         self.snapshotTimeShowLabel.setObjectName("snapshotTimeShowLabel")
+        self.lastPushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.lastPushButton.setGeometry(QtCore.QRect(110, 440, 71, 31))
+        self.lastPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
+        self.lastPushButton.setObjectName("lastPushButton")
+        self.nextPushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.nextPushButton.setGeometry(QtCore.QRect(400, 440, 71, 31))
+        self.nextPushButton.setStyleSheet("QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    background-color:rgb(193, 205, 205);\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color:rgb(131, 139, 139);\n"
+"    padding-left:3px;\n"
+"    padding-top:3px;\n"
+"}")
+        self.nextPushButton.setObjectName("nextPushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 984, 23))
@@ -127,3 +159,5 @@ class Ui_MainWindow(object):
         self.snapshotNoteShowLabel.setText(_translate("MainWindow", "TextLabeldsfsfsfsfsfsfsdfsdfsfsfweeweqwfwfwe"))
         self.snapshotTimeLabel.setText(_translate("MainWindow", "快照时间"))
         self.snapshotTimeShowLabel.setText(_translate("MainWindow", "2022-1-20"))
+        self.lastPushButton.setText(_translate("MainWindow", "上一张"))
+        self.nextPushButton.setText(_translate("MainWindow", "下一张"))

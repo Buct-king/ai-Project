@@ -12,19 +12,57 @@ class ChildSnapshotDetails(QMainWindow, child_snapshot_detail.Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setupUi(self)
+        self.indexNow=None
+        self.kind=None
+        self.snapshotList=None
+        self.idSet=[]
+        self.maxSnapshotIndex=None
         self.slot_init()
 
     def slot_init(self):
         self.cancelPushButton.clicked.connect(lambda: self.cancelPush())
-
-    def nextSnapshotPush(self):
-        pass
+        self.lastPushButton.clicked.connect(lambda: self.lastSnapshotPush())
+        self.nextPushButton.clicked.connect(lambda: self.nextSnapshotPush())
 
     def lastSnapshotPush(self):
-        pass
+        find=self.indexNow-1
+        while (find not in self.idSet):
+            find-=1
+            if find <=0:
+                break
+        if find <=0:
+            QMessageBox.information(self, "警告", "已经是第一张快照")
+        else:
+            self.updataSnapshotInfo(self.kind,find)
+            self.indexNow=find
+            print(self.indexNow, self.maxSnapshotIndex)
+
+    def nextSnapshotPush(self):
+        find = self.indexNow + 1
+        while (find not in self.idSet):
+            find += 1
+            if find >= self.maxSnapshotIndex:
+                break
+        if find >= self.maxSnapshotIndex:
+            QMessageBox.information(self, "警告", "已经是最后一张快照")
+        else:
+            self.updataSnapshotInfo(self.kind, find)
+            self.indexNow = find
+            print(self.indexNow,self.maxSnapshotIndex)
+
     def cancelPush(self):
         print("in")
         self.close()
+
+    def getSnapshotList(self):
+        if self.kind is None:
+            return
+        self.snapshotList=json.loads(ssnapshot.get_image_list(self.kind))
+        image_list=self.snapshotList["image_list"]
+        for snapshot in image_list:
+            self.idSet.append(snapshot["index"])
+        self.maxSnapshotIndex=self.snapshotList["image_index"]
+
 
     def updataSnapshotInfo(self,kind,id):
         jsonInfos=ssnapshot.get_image_info(kind,id)
