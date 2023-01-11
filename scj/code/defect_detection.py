@@ -93,7 +93,10 @@ def video_defect_detection(video_path=""):
             cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx-1)
             flag, img = cap.read()
             img_pos = defect["position"]
-            origin_image = img[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :]
+            # origin_image = img[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :]  # 快照截图
+            cv2.rectangle(img, (img_pos[0], img_pos[1]), (img_pos[2], img_pos[3]), (0, 255, 0), 3)  # 目标快照区域特定颜色标注
+            origin_image = img  # 全局快照
+            # origin_image = img[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :]
             time_now = time.localtime()
             time_str = time.strftime("%Y%m%d-%H_%M_%S", time_now)
             image_name = str(yml_dict["image_index"]) + "_" + device_name + "_" + str(time_str) + ".jpg"

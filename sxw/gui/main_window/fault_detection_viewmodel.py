@@ -61,8 +61,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         # init 菜单
         self.childModelSelect = ChildModelSelect()
+        self.childModelSelect.setWindowModality(QtCore.Qt.ApplicationModal)
         self.childModelSelect._signal.connect(self.updateModelId)
         self.childFpsSelect = ChildFpsSelect()
+        self.childFpsSelect.setWindowModality(QtCore.Qt.ApplicationModal)
         self.childFpsSelect._signal.connect(self.updateDetectFps)
         self.initMenuAction()
 
@@ -74,6 +76,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         # 视频播放器
         self.ch = Child()
+        self.ch.setWindowModality(QtCore.Qt.ApplicationModal)
         self.player = QMediaPlayer()
         self.player.setVideoOutput(self.videoPlayer)
         self.ch._signal.connect(self.openVideoFile)
@@ -90,8 +93,10 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
         # 摄像头
         self.chCameraSelect = ChildCameraSelect()
+        self.chCameraSelect.setWindowModality(QtCore.Qt.ApplicationModal)
         self.chCameraSelect._signal.connect(self.openCamera)
         self.chCameraStorage = ChildCameraStorage()
+        self.chCameraStorage.setWindowModality(QtCore.Qt.ApplicationModal)
         self.chCameraStorage._signal.connect(self.openStorage)
         self.timer_camera = QtCore.QTimer()  # 初始化定时器
         self.cap = cv2.VideoCapture()  # 初始化摄像头
@@ -108,11 +113,12 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         # 快照列表
         self.setSanpshotTableView()
         self.childSnapshotDetails = ChildSnapshotDetails()
+        self.childSnapshotDetails.setWindowModality(QtCore.Qt.ApplicationModal)
         self.childExportProgress = ChildProgress()  # 视频导出进度条
 
         # 识别训练
         self.childTrainResult = ChildTrainResult()
-
+        self.childTrainResult.setWindowModality(QtCore.Qt.ApplicationModal)
         # 绑定回调函数
         self.slot_init_fault_detetion()
         self.slot_init_recognition_training()
@@ -414,24 +420,34 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         # 把旧快照都删掉
         # 获取快照列表，删除对应id快照，更新快照列表
         imagesList=json.loads(ssnapshot.get_image_list(0))["image_list"]
+        indexs=[]
         for image in imagesList:
-            ssnapshot.delete_snapshot(image["index"],0)
-            print(image["index"])
+            indexs.append(image["index"])
+        cnt=0
+        while True:
+            cnt=cnt+1
+            imagesList = json.loads(ssnapshot.delete_snapshot_list(indexs,0))["image_list"]
+            if len(imagesList)==0:
+                break
+            if cnt>=100:
+                break
+
+
         self.updateSnapshotsList(0)
 
 
 
 
-        # self.worker = fault_detection_addition_ui.WorkThread()
-        # self.worker.trigger.connect(self.detectFinish)
-        # self.worker.state_dict = self.state_dict
-        # self.worker.rate = self.parameters["detect_fps"]
-        # self.worker.start()
-        # detectTime = self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT) / 1800 * 2 + 1
-        # self.childDetectProgress.setLabel(detectTime)
-        # self.childDetectProgress.show()
-        #
-        # self.AIDetectPushButton.setVisible(False)  # 检测按钮设置不可见
+        self.worker = fault_detection_addition_ui.WorkThread()
+        self.worker.trigger.connect(self.detectFinish)
+        self.worker.state_dict = self.state_dict
+        self.worker.rate = self.parameters["detect_fps"]
+        self.worker.start()
+        detectTime = self.cvPlayer.get(cv2.CAP_PROP_FRAME_COUNT) / 1800 * 2 + 1
+        self.childDetectProgress.setLabel(detectTime)
+        self.childDetectProgress.show()
+
+        self.AIDetectPushButton.setVisible(False)  # 检测按钮设置不可见
 
 
         # vutils.translate_frame_rate(self.state_dict["video_info"]["video_path"]+"//"+self.state_dict["video_info"]["video_name"]+".mp4",os.getcwd()+"/temp.mp4")

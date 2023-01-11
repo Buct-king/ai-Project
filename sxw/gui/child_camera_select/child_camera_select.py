@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
         self.camerasListView.setGeometry(QtCore.QRect(70, 40, 256, 192))
         self.camerasListView.setObjectName("camerasListView")
         self.okCameraSelectPushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.okCameraSelectPushButton.setGeometry(QtCore.QRect(160, 260, 75, 23))
+        self.okCameraSelectPushButton.setGeometry(QtCore.QRect(160, 250, 75, 23))
         self.okCameraSelectPushButton.setObjectName("okCameraSelectPushButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)

@@ -20,7 +20,7 @@
       <x>60</x>
       <y>230</y>
       <width>93</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -58,7 +58,7 @@ QPushButton:pressed
       <x>340</x>
       <y>230</y>
       <width>93</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -94,6 +94,34 @@ QPushButton:pressed
     </property>
     <property name="text">
      <string>历史视频</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="deletePushButton">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>230</y>
+      <width>93</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+    </property>
+    <property name="text">
+     <string>删除</string>
     </property>
    </widget>
   </widget>

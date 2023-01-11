@@ -291,6 +291,32 @@ def export_snapshot_list(device_type, snapshot_id_list=[], file_path=""):
     }
     return json.dumps(return_dict, ensure_ascii=False)
 
+# 批量删除快照
+def delete_snapshot_list(indexes, device_type):
+    """
+    :param indexes: 快照的id`列表`
+    :param device_type: 设备类型，0表示视频，1表示摄像头
+    :return: 新的快照列表
+    """
+    if device_type == 0:
+        device_name = get_system_ini("video")
+        store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"
+    else:
+        device_name = get_system_ini("camera")
+        store_path = get_system_ini("device_camera_path") + "/" + device_name + "/images"
+    image_list_path = store_path + "/image_list.yml"
+    with open(image_list_path, 'r') as f:  # 读取image list的内容
+        yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+        f.close()
+    for img in yml_dict["image_list"]:
+        if img["index"] in indexes:
+            os.remove(store_path + "/" + img["image_name"])
+            yml_dict["image_list"].remove(img)
+    with open(image_list_path, 'w+') as f:  # 修改image list
+        yaml.dump(yml_dict, f, allow_unicode=True)
+        f.close()
+    return get_image_list(device_type)
+
 
 if __name__ == '__main__':
     post_dict = {

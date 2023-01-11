@@ -24,6 +24,7 @@ class Child(QMainWindow, child.Ui_MainWindow):
     def slot_init(self):
         self.searchPushButton.clicked.connect(lambda: self.searchVideoFile())
         self.openVedioPushButton.clicked.connect(lambda: self.openHistoryVideoFile())
+        self.deletePushButton.clicked.connect(lambda: self.deleteHistoryVideosPush())
 
     # 查找视频文件
     def searchVideoFile(self):
@@ -75,7 +76,30 @@ class Child(QMainWindow, child.Ui_MainWindow):
         count = historyVideos["devices_cnt"]
         historyVideosName=list(historyVideos["devices_list"].keys())
         historyVideosPath=list(historyVideos["devices_list"].values())
+        print(historyVideosName)
         return historyVideosName, historyVideosPath
 
     def setHistoryVideosInfo(self):
         self.historyVideosName, self.historyVideosPath = self.getHistoryVideosInfo()
+
+    def deleteHistoryVideosPush(self):
+        """
+        删除选中的历史文件按钮回调函数
+        :return:
+        """
+        if self.selectedItem == None:
+            print("您还没有选择视频文件")
+            QMessageBox.critical(self, "错误", "您还未选择视频")
+        else:
+            fileName = self.historyVideosName[self.selectedItem.row()]
+            print(fileName)
+            return_dict=json.loads(device.delete_video_or_camera(kind=1,name=fileName))
+            print(return_dict["code"])
+            if return_dict["code"]==1:
+                self.historyVideosName, self.historyVideosPath = self.getHistoryVideosInfo()
+                self.setHistoryVideos()
+                QMessageBox.information(self, "删除", "历史文件删除成功")
+
+            else:
+                QMessageBox.critical(self, "错误", return_dict["message"])
+
