@@ -316,6 +316,48 @@ QPushButton:pressed
      <string>下一张</string>
     </property>
    </widget>
+   <widget class="QLabel" name="snapshotVideoTimeLabel_2">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>46</y>
+      <width>111</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;
+background-color: rgb(173, 173, 173);
+border-radius: 4px;   </string>
+    </property>
+    <property name="text">
+     <string>激光标尺距离</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="snapshotIDShowLabel_2">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>80</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+border-radius: 4px;   
+font: 25 11pt &quot;Adobe 宋体 Std L&quot;;</string>
+    </property>
+    <property name="text">
+     <string>100px</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

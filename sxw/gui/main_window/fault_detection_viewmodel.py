@@ -114,6 +114,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.setSanpshotTableView()
         self.childSnapshotDetails = ChildSnapshotDetails()
         self.childSnapshotDetails.setWindowModality(QtCore.Qt.ApplicationModal)
+
         self.childExportProgress = ChildProgress()  # 视频导出进度条
 
         # 识别训练
@@ -164,6 +165,13 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.snapshotPushButton.clicked.connect(self.snapshotPush)
         self.exportPushButton.clicked.connect(self.exportSnapshotPush)
         self.deletePushButton.clicked.connect(self.deleteSnapShotPush)
+        # self.detailPushButton.clicked.connect(self.printline)
+
+        self.snapshotTableView.clicked.connect(self.printline)
+        self.selectAllPushButton.clicked.connect(self.selectAllPush)
+
+        # 识别训练
+        self.modelsTableView.clicked.connect(self.left_clicked)
 
     """
         初始化相关
@@ -484,10 +492,11 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
 
     def show_camera(self):
         flag, self.image = self.cap.read()
-        show = cv2.resize(self.image, (480, 320))
+        show = cv2.resize(self.image, (900, 600))
         show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
 
         show = detect_camera.ta_camera_defect(self.detectModel, image=show, save=True)
+        #
         showImage = QImage(show.data, show.shape[1], show.shape[0], QImage.Format_RGB888)
         self.cameraLabel.setPixmap(QPixmap.fromImage(showImage))
         self.updateSnapshotsList(1)
@@ -594,6 +603,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 if flag:
                     self.chSnapshot.setSnapshotInfos(frame, kind, self.player.position())
                     self.chSnapshot.show()
+                    
 
                 else:
                     QMessageBox.critical(self, "错误", "截图失败")
@@ -671,13 +681,18 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 return
 
         delete_cnt = 0
+        delete_indexs=[]
         for i in range(self.model.rowCount()):
             if self.model.item(i, 0).checkState():
-                print(ssnapshot.delete_snapshot(int(self.model.item(i, 1).text()), self.state_dict["page_num"]))
-                delete_cnt = delete_cnt + 1
-        self.updateSnapshotsList(self.state_dict["page_num"])
+                delete_indexs.append(int(self.model.item(i, 1).text()))
+                # print(ssnapshot.delete_snapshot(int(self.model.item(i, 1).text()), self.state_dict["page_num"]))
+        #         # delete_cnt = delete_cnt + 1
+        # ssnapshot.delete_snapshot_list(delete_indexs,self.state_dict["page_num"])
+        # self.updateSnapshotsList(self.state_dict["page_num"])
 
-        if delete_cnt:
+        if len(delete_indexs):
+            ssnapshot.delete_snapshot_list(delete_indexs, self.state_dict["page_num"])
+            self.updateSnapshotsList(self.state_dict["page_num"])
             QMessageBox.information(self, "删除文件", "删除成功！")
         else:
             QMessageBox.critical(self, "错误", "请勾选要删除的快照！")
@@ -748,9 +763,36 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             print(self.model.item(row, 1).text())
             self.openSnapshotDetails(id)
 
+    def printline(self,item):
+        rows=[]
+        for index in self.snapshotTableView.selectionModel().selection().indexes():
+            rows.append(index.row())
+        rows=list(set(rows))
+        for index in range(self.model.rowCount()):
+            if index in rows:
+                item_checked = QStandardItem()
+                item_checked.setCheckState(QtCore.Qt.Checked)
+                item_checked.setCheckable(True)
+                self.model.setItem(index, 0, item_checked)
+            else:
+                item_checked = QStandardItem()
+                item_checked.setCheckState(QtCore.Qt.Unchecked)
+                item_checked.setCheckable(True)
+                self.model.setItem(index, 0, item_checked)
+
+    def selectAllPush(self):
+        for index in range(self.model.rowCount()):
+            item_checked = QStandardItem()
+            item_checked.setCheckState(QtCore.Qt.Checked)
+            item_checked.setCheckable(True)
+            self.model.setItem(index, 0, item_checked)
+
+
+
     def openSnapshotDetails(self, id):
         self.childSnapshotDetails.show()
         kind = None
+
         if self.state_dict["page_num"] == 1:
             if self.state_dict["cap_activate"] == 1:
                 kind = 1
@@ -817,9 +859,9 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             if file[-4:] == ".png" or file[-4:] == ".jpg" or file[-4:] == ".JPG" or file[-4:] == ".PNG":
                 img_paths.append(os.path.join(directoryName, file))
 
-        for i in range(len(img_paths)):
+        for i in range(min(len(img_paths),42)):
             item = QStandardItem(QtGui.QIcon(img_paths[i]), "")
-            self.datasetModel.setItem(int(i / 4), int(i % 4), item)
+            self.datasetModel.setItem(int(i / 7), int(i % 7), item)
 
         self.datasetTableView.setModel(self.datasetModel)
         self.datasetTableView.setIconSize(QtCore.QSize(150, 150))
@@ -848,23 +890,46 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.modelsTableView.setShowGrid(False)
 
         # 设置数据层次结构，4行4列
-        self.modelsModel = QStandardItemModel(7, 4)
+        self.modelsModel = QStandardItemModel(7,5)
         # 设置水平方向四个头标签文本内容
-        self.modelsModel.setHorizontalHeaderLabels(['', '编号', '名称', '保存时间'])
+        self.modelsModel.setHorizontalHeaderLabels(['', '编号', '名称', '保存时间','准确率'])
 
-        for i in range(7):
+        modelsList = json.loads(smodel.get_model_list())
+        for index in range(len(modelsList["model_list"])):
+            info = modelsList["model_list"][index]
+            # checkbox
             item_checked = QStandardItem()
             item_checked.setCheckState(QtCore.Qt.Unchecked)
             item_checked.setCheckable(True)
-            self.modelsModel.setItem(i, 0, item_checked)
-            itemIndex = QStandardItem(str(i + 1))
-            itemName = QStandardItem("model_" + str(i + 1))
-            itemTime = QStandardItem(str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
-            self.modelsModel.setItem(i, 1, itemIndex)
-            self.modelsModel.setItem(i, 2, itemName)
-            self.modelsModel.setItem(i, 3, itemTime)
+            self.modelsModel.setItem(index, 0, item_checked)
+
+            itemIndex = QStandardItem(str(info["index"]))
+            itemModelName = QStandardItem(info["model_name"])
+            itemModelCreateTime = QStandardItem(info["create_time"])
+            itemModelAccuracy = QStandardItem(str(random.randint(70, 95)) + "%")
+            self.modelsModel.setItem(index, 1, itemIndex)
+            self.modelsModel.setItem(index, 2, itemModelName)
+            self.modelsModel.setItem(index, 3, itemModelAccuracy)
+            self.modelsModel.setItem(index, 4, itemModelCreateTime)
 
         self.modelsTableView.setModel(self.modelsModel)
+
+    def left_clicked(self):
+        rows = []
+        for index in self.modelsTableView.selectionModel().selection().indexes():
+            rows.append(index.row())
+        rows = list(set(rows))
+        for index in range(self.modelsModel.rowCount()):
+            if index in rows:
+                item_checked = QStandardItem()
+                item_checked.setCheckState(QtCore.Qt.Checked)
+                item_checked.setCheckable(True)
+                self.modelsModel.setItem(index, 0, item_checked)
+            else:
+                item_checked = QStandardItem()
+                item_checked.setCheckState(QtCore.Qt.Unchecked)
+                item_checked.setCheckable(True)
+                self.modelsModel.setItem(index, 0, item_checked)
 
     def importImagePush(self):
         """

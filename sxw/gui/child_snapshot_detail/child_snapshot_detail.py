@@ -132,6 +132,20 @@ class Ui_MainWindow(object):
 "    padding-top:3px;\n"
 "}")
         self.nextPushButton.setObjectName("nextPushButton")
+        self.snapshotVideoTimeLabel_2 = QtWidgets.QLabel(self.centralwidget)
+        self.snapshotVideoTimeLabel_2.setGeometry(QtCore.QRect(820, 46, 111, 25))
+        self.snapshotVideoTimeLabel_2.setStyleSheet("font: 25 11pt \"Adobe 宋体 Std L\";\n"
+"background-color: rgb(173, 173, 173);\n"
+"border-radius: 4px;   ")
+        self.snapshotVideoTimeLabel_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.snapshotVideoTimeLabel_2.setObjectName("snapshotVideoTimeLabel_2")
+        self.snapshotIDShowLabel_2 = QtWidgets.QLabel(self.centralwidget)
+        self.snapshotIDShowLabel_2.setGeometry(QtCore.QRect(830, 80, 101, 21))
+        self.snapshotIDShowLabel_2.setStyleSheet("\n"
+"border-radius: 4px;   \n"
+"font: 25 11pt \"Adobe 宋体 Std L\";")
+        self.snapshotIDShowLabel_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.snapshotIDShowLabel_2.setObjectName("snapshotIDShowLabel_2")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 984, 23))
@@ -161,3 +175,5 @@ class Ui_MainWindow(object):
         self.snapshotTimeShowLabel.setText(_translate("MainWindow", "2022-1-20"))
         self.lastPushButton.setText(_translate("MainWindow", "上一张"))
         self.nextPushButton.setText(_translate("MainWindow", "下一张"))
+        self.snapshotVideoTimeLabel_2.setText(_translate("MainWindow", "激光标尺距离"))
+        self.snapshotIDShowLabel_2.setText(_translate("MainWindow", "100px"))

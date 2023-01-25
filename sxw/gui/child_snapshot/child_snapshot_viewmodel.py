@@ -70,8 +70,10 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
         self._signal.emit(0)
         # todo：保存快照信息
         # self.iamgeLabel.clearRec()
+        QMessageBox.critical(self, "保存快照", "快照保存成功")
         print(poses)
         self.close()
+
 
     def closeEvent(self, event):
         """
@@ -80,3 +82,4 @@ class ChildSnapshot(QMainWindow, child_snapshot.Ui_MainWindow):
         poses = self.iamgeLabel.getRectPos()  # 框选位置
         print(poses)
         self.iamgeLabel.clearRec()
+

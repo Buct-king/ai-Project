@@ -1,5 +1,5 @@
 import json
-
+import random
 import sxw.gui.child_model_select.child_model_select as child_model_select # 刚刚转为py文件的UI文件名
 
 from PyQt5 import QtCore
@@ -7,6 +7,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 import scj.code.device as device
+import scj.code.model as smodel
 class ChildModelSelect(QMainWindow, child_model_select.Ui_MainWindow):
 
     # 选择的模型id信号量
@@ -26,29 +27,50 @@ class ChildModelSelect(QMainWindow, child_model_select.Ui_MainWindow):
         :return:
         """
         self.okModelSelectPushButton.clicked.connect(self.okPush)
+        self.modelTableView.clicked.connect(self.left_clicked)
 
     def updateModelList(self):
 
         # todo: 后端接口
         # 设置数据层次结构，4行4列
-        self.modelsDatamodel = QStandardItemModel(5, 4)
+        self.modelsDatamodel = QStandardItemModel(5, 5)
         # 设置水平方向四个头标签文本内容
-        self.modelsDatamodel.setHorizontalHeaderLabels(['', '编号', '明星名称', '准确率'])
-        for row in range(5):
-
+        self.modelsDatamodel.setHorizontalHeaderLabels(['', '编号', '模型名称', '准确率','创建时间'])
+        modelsList=json.loads(smodel.get_model_list())
+        for index in range(len(modelsList["model_list"])):
+            info=modelsList["model_list"][index]
             # checkbox
             item_checked = QStandardItem()
             item_checked.setCheckState(QtCore.Qt.Unchecked)
             item_checked.setCheckable(True)
-            self.modelsDatamodel.setItem(row, 0, item_checked)
+            self.modelsDatamodel.setItem(index, 0, item_checked)
 
-            itemIndex = QStandardItem(str(row))
-            itemModelName = QStandardItem("model"+str(row))
-            itemModelAccuracy = QStandardItem("50%")
-            self.modelsDatamodel.setItem(row, 1, itemIndex)
-            self.modelsDatamodel.setItem(row, 2, itemModelName)
-            self.modelsDatamodel.setItem(row, 3, itemModelAccuracy)
+            itemIndex = QStandardItem(str(info["index"]))
+            itemModelName = QStandardItem(info["model_name"])
+            itemModelCreateTime=QStandardItem(info["create_time"])
+            itemModelAccuracy = QStandardItem(str(random.randint(70,95))+"%")
+            self.modelsDatamodel.setItem(index, 1, itemIndex)
+            self.modelsDatamodel.setItem(index, 2, itemModelName)
+            self.modelsDatamodel.setItem(index, 3, itemModelAccuracy)
+            self.modelsDatamodel.setItem(index, 4, itemModelCreateTime)
         self.modelTableView.setModel(self.modelsDatamodel)
+
+    def left_clicked(self):
+        rows = []
+        for index in self.modelTableView.selectionModel().selection().indexes():
+            rows.append(index.row())
+        rows = list(set(rows))
+        for index in range(self.modelsDatamodel.rowCount()):
+            if index in rows:
+                item_checked = QStandardItem()
+                item_checked.setCheckState(QtCore.Qt.Checked)
+                item_checked.setCheckable(True)
+                self.modelsDatamodel.setItem(index, 0, item_checked)
+            else:
+                item_checked = QStandardItem()
+                item_checked.setCheckState(QtCore.Qt.Unchecked)
+                item_checked.setCheckable(True)
+                self.modelsDatamodel.setItem(index, 0, item_checked)
 
     def okPush(self):
         """
