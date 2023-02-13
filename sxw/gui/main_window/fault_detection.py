@@ -414,8 +414,11 @@ class Ui_MainWindow(object):
         self.actionSetModel.setObjectName("actionSetModel")
         self.actionDetectFps = QtWidgets.QAction(MainWindow)
         self.actionDetectFps.setObjectName("actionDetectFps")
+        self.actionCovertVideo = QtWidgets.QAction(MainWindow)
+        self.actionCovertVideo.setObjectName("actionCovertVideo")
         self.menu.addAction(self.actionSetModel)
         self.menu.addAction(self.actionDetectFps)
+        self.menu.addAction(self.actionCovertVideo)
         self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -459,4 +462,5 @@ class Ui_MainWindow(object):
         self.actionselect_fps.setText(_translate("MainWindow", "检测频率设置"))
         self.actionSetModel.setText(_translate("MainWindow", "模型设置"))
         self.actionDetectFps.setText(_translate("MainWindow", "检测频率设置"))
+        self.actionCovertVideo.setText(_translate("MainWindow", "视频格式转换"))
 from PyQt5.QtMultimediaWidgets import QVideoWidget

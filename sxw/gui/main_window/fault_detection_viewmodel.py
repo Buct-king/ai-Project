@@ -24,6 +24,7 @@ from sxw.gui.child_progress.child_progress_viewmodel import ChildProgress
 from sxw.gui.child_model_select.child_model_select_viewmodel import ChildModelSelect
 from sxw.gui.child_fps_select.child_fps_select_viewmodle import ChildFpsSelect
 from sxw.gui.child_train_result.child_train_result_viewmodel import ChildTrainResult
+from sxw.gui.child_covert_video.child_covert_video_viewmodel import ChildCovertVideo
 
 import scj.code.device as device
 import scj.code.snapshot as ssnapshot
@@ -32,7 +33,7 @@ import sxw.utils.video_utils as vutils
 import scj.code.defect_detection as defect_detection
 import scj.code.model as smodel
 import yolo.yolov5_6.yolov5_6.detect_camera as detect_camera
-import labelImg.labelImg as label_img
+
 
 from main import ROOT
 
@@ -66,6 +67,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
         self.childFpsSelect = ChildFpsSelect()
         self.childFpsSelect.setWindowModality(QtCore.Qt.ApplicationModal)
         self.childFpsSelect._signal.connect(self.updateDetectFps)
+        self.childCovertVideo=ChildCovertVideo()
         self.initMenuAction()
 
         # streamTabWidget
@@ -235,10 +237,21 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             self.AIDetectPushButton.setVisible(True)
             self.childFpsSelect.show()
 
+        def setCovertVideo():
+            """
+            转换视频格式回调函数
+            :return:
+            """
+            self.childCovertVideo.show()
+
+
+
         self.actionSetModel.triggered.connect(setModel)
         self.actionDetectFps.triggered.connect(setDetectFps)
+        self.actionCovertVideo.triggered.connect(setCovertVideo)
         self.menu.addAction(self.actionSetModel)
         self.menu.addAction(self.actionDetectFps)
+        self.menu.addAction(self.actionCovertVideo)
         self.menubar.addAction(self.menu.menuAction())
 
     def updateModelId(self, id):
@@ -959,7 +972,7 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
             dir_path = os.path.join(dataset_root, "dataset_" + str(curr_time.date()) + "_" + str(int(time.time())))
             os.makedirs(dir_path)
             os.makedirs(os.path.join(dir_path, "images"))
-            os.makedirs(os.path.join(dir_path, "annotations"))
+            os.makedirs(os.path.join(dir_path, "xmls"))
             os.makedirs(os.path.join(dir_path, "labels"))
             return dir_path
 

@@ -792,6 +792,7 @@ border-color: rgb(0, 0, 0)</string>
     </property>
     <addaction name="actionSetModel"/>
     <addaction name="actionDetectFps"/>
+    <addaction name="actionCovertVideo"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -814,6 +815,11 @@ border-color: rgb(0, 0, 0)</string>
   <action name="actionDetectFps">
    <property name="text">
     <string>检测频率设置</string>
+   </property>
+  </action>
+  <action name="actionCovertVideo">
+   <property name="text">
+    <string>视频格式转换</string>
    </property>
   </action>
  </widget>

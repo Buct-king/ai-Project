@@ -175,5 +175,5 @@ class Ui_MainWindow(object):
         self.snapshotTimeShowLabel.setText(_translate("MainWindow", "2022-1-20"))
         self.lastPushButton.setText(_translate("MainWindow", "上一张"))
         self.nextPushButton.setText(_translate("MainWindow", "下一张"))
-        self.snapshotVideoTimeLabel_2.setText(_translate("MainWindow", "激光标尺距离"))
-        self.snapshotIDShowLabel_2.setText(_translate("MainWindow", "100px"))
+        self.snapshotVideoTimeLabel_2.setText(_translate("MainWindow", "缺陷尺寸"))
+        self.snapshotIDShowLabel_2.setText(_translate("MainWindow", "10cm"))

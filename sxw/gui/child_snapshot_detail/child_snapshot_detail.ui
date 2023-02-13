@@ -331,7 +331,7 @@ background-color: rgb(173, 173, 173);
 border-radius: 4px;   </string>
     </property>
     <property name="text">
-     <string>激光标尺距离</string>
+     <string>缺陷尺寸</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -352,7 +352,7 @@ border-radius: 4px;
 font: 25 11pt &quot;Adobe 宋体 Std L&quot;;</string>
     </property>
     <property name="text">
-     <string>100px</string>
+     <string>10cm</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
