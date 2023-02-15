@@ -329,9 +329,13 @@ class Fault_Detection(QMainWindow, fault_detection.Ui_MainWindow,
                 # self.SNAPSHOT = 1
                 openInfo = json.loads(openInfo)
                 if openInfo["code"] == 1:
-                    print()
-                    self.player.setMedia(QMediaContent(videoUrl))
-                    self.cvPlayer.open(device.qurl_to_string(videoUrl))
+                    print(videoUrl,openInfo)
+
+                    openQurl="file:///"+openInfo["video_path"]+"/"+openInfo["video_name"]+".mp4"
+                    print(videoUrl, openQurl)
+
+                    self.player.setMedia(QMediaContent(QtCore.QUrl(openQurl)))
+                    self.cvPlayer.open(device.qurl_to_string(QtCore.QUrl(openQurl)))
                     self.updateSnapshotsList(0)
                     # self.videoInfo = openInfo
                     self.state_dict["video_info"] = openInfo
