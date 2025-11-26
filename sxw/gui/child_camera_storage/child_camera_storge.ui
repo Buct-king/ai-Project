@@ -6,58 +6,102 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
-    <height>410</height>
+    <width>750</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>设备选择</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(242, 242, 242);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QListView" name="historyStorageListView">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>110</y>
-      <width>256</width>
-      <height>192</height>
+      <x>395</x>
+      <y>70</y>
+      <width>275</width>
+      <height>390</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>80</y>
-      <width>54</width>
-      <height>12</height>
+      <x>395</x>
+      <y>45</y>
+      <width>71</width>
+      <height>21</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Adobe Devanagari</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>历史文件</string>
+     <string>存储位置</string>
     </property>
    </widget>
    <widget class="QPushButton" name="createNewFilePushButton">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>320</y>
-      <width>75</width>
-      <height>23</height>
+      <x>642</x>
+      <y>48</y>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color:  #F2F2F2;
+border:none;
+color: #CCCCCC;
+border-radius: 1px;
+}
+
+QPushButton:hover {
+    background-color: #ABABAB;
+}
+
+QPushButton:pressed {
+    background-color:#848484;
+}
+border:none;</string>
+    </property>
     <property name="text">
-     <string>创建新文件</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="openHistoryFilePushButton">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>320</y>
-      <width>75</width>
-      <height>23</height>
+      <x>610</x>
+      <y>490</y>
+      <width>93</width>
+      <height>36</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{background-color: #CCCCCC;}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
     </property>
     <property name="text">
      <string>打开</string>
@@ -66,14 +110,63 @@
    <widget class="QPushButton" name="deleteOldFilePushButton">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>320</y>
-      <width>75</width>
-      <height>23</height>
+      <x>612</x>
+      <y>48</y>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color:  #F2F2F2;
+border:none;
+color: #CCCCCC;
+border-radius: 1px;
+}
+
+QPushButton:hover {
+    background-color: #ABABAB;
+}
+
+QPushButton:pressed {
+    background-color:#848484;
+}
+border:none;</string>
+    </property>
     <property name="text">
-     <string>删除文件</string>
+     <string/>
+    </property>
+   </widget>
+   <widget class="QListView" name="camerasListView">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>70</y>
+      <width>275</width>
+      <height>390</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>45</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Adobe Devanagari</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>选择摄像机</string>
     </property>
    </widget>
   </widget>
@@ -82,7 +175,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>448</width>
+     <width>750</width>
      <height>26</height>
     </rect>
    </property>

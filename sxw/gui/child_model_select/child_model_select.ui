@@ -6,22 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
-    <height>396</height>
+    <width>500</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(242, 242, 242);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="modelListLabel">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>10</y>
-      <width>181</width>
+      <y>20</y>
+      <width>81</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>模型列表</string>
@@ -30,10 +38,10 @@
    <widget class="QPushButton" name="okModelSelectPushButton">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>320</y>
-      <width>75</width>
-      <height>23</height>
+      <x>200</x>
+      <y>510</y>
+      <width>93</width>
+      <height>36</height>
      </rect>
     </property>
     <property name="text">
@@ -46,8 +54,12 @@
       <x>30</x>
       <y>40</y>
       <width>441</width>
-      <height>271</height>
+      <height>451</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(179, 179, 179);
+background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
   </widget>
@@ -56,7 +68,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>503</width>
+     <width>500</width>
      <height>23</height>
     </rect>
    </property>

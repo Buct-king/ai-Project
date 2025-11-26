@@ -6,25 +6,28 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>494</width>
-    <height>344</height>
+    <width>500</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>视频选择</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(242, 242, 242);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="searchPushButton">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>230</y>
+      <x>260</x>
+      <y>510</y>
       <width>93</width>
-      <height>31</height>
+      <height>36</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+     <string notr="true">QPushButton{background-color: #CCCCCC;}
 
 QPushButton:hover
 {
@@ -45,24 +48,30 @@ QPushButton:pressed
    <widget class="QListView" name="videosHistoryListView">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>40</x>
       <y>50</y>
-      <width>256</width>
-      <height>161</height>
+      <width>421</width>
+      <height>451</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
     </property>
    </widget>
    <widget class="QPushButton" name="openVedioPushButton">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>230</y>
+      <x>360</x>
+      <y>510</y>
       <width>93</width>
-      <height>31</height>
+      <height>36</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+     <string notr="true">QPushButton{background-color: #CCCCCC;}
 
 QPushButton:hover
 {
@@ -83,9 +92,9 @@ QPushButton:pressed
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>14</y>
-      <width>72</width>
+      <x>40</x>
+      <y>28</y>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -99,29 +108,31 @@ QPushButton:pressed
    <widget class="QPushButton" name="deletePushButton">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>230</y>
-      <width>93</width>
-      <height>31</height>
+      <x>437</x>
+      <y>25</y>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
-
-QPushButton:hover
-{
-    background-color:rgb(193, 205, 205);
+     <string notr="true">QPushButton {
+    background-color:  #F2F2F2;
+border:none;
+color: #CCCCCC;
+border-radius: 1px;
 }
 
-QPushButton:pressed
-{
-    background-color:rgb(131, 139, 139);
-    padding-left:3px;
-    padding-top:3px;
-}</string>
+QPushButton:hover {
+    background-color: #ABABAB;
+}
+
+QPushButton:pressed {
+    background-color:#848484;
+}
+border:none;</string>
     </property>
     <property name="text">
-     <string>删除</string>
+     <string/>
     </property>
    </widget>
   </widget>
@@ -130,7 +141,7 @@ QPushButton:pressed
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>494</width>
+     <width>500</width>
      <height>23</height>
     </rect>
    </property>

@@ -9,6 +9,8 @@ from yolo.yolov5_6.yolov5_6.detect import json_video_test
 from scj.code.snapshot import new_snapshots
 from scj.code.tool import get_system_ini
 
+from sxw.utils.cal_distance import calDistance
+
 
 # 视频缺陷检测
 # def video_defect_detection():
@@ -74,6 +76,13 @@ def video_defect_detection(video_path=""):
     defect_cnt = len(json_ans["fault_list"])
     defects = json_ans["fault_list"]
     cap = cv2.VideoCapture(original_video_path)
+
+    # 0330
+    # from scj.code.duplicate_removal import video_duplicate_remove
+    # defects = video_duplicate_remove(defect_dict=defects, cap=cap)
+    # end 0330
+
+
     # 快照存储配置获取
     device_name = get_system_ini("video")  # 获取当前正在检测的视频名称
     store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"  # 视频快照存储的文件
@@ -100,13 +109,21 @@ def video_defect_detection(video_path=""):
             time_now = time.localtime()
             time_str = time.strftime("%Y%m%d-%H_%M_%S", time_now)
             image_name = str(yml_dict["image_index"]) + "_" + device_name + "_" + str(time_str) + ".jpg"
+
+            ratio = calDistance(img)
+            _w = img_pos[2] - img_pos[0]
+            _h = img_pos[3] - img_pos[1]
+            unit = "pix" if ratio == 1 else "cm"
             image_info = {
                 "image_name": image_name,
                 "image_time": time.strftime("%Y%m%d-%H_%M_%S", time_now),
                 "image_note": "Recognized by AI",
                 "video_time": defect["time"],
                 "index": yml_dict["image_index"],
-                "poses": str(defect["position"])
+                "poses": str(defect["position"]),
+                "size_h": _h * ratio,
+                "size_w": _w * ratio,
+                "unit": "cm"
             }
             yml_dict["image_list"].append(image_info)
             cv2.imwrite(os.path.join(store_path, image_name), origin_image)

@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1680</width>
+    <height>951</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1680</width>
+      <height>950</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(229, 229, 229);</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>缺陷检测</string>
+     </attribute>
+     <widget class="QPushButton" name="selectAllPushButton">
+      <property name="geometry">
+       <rect>
+        <x>1570</x>
+        <y>10</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>全选</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</normaloff>C:/Users/11795/.designer/resource/感叹号icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>10</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;
+</string>
+      </property>
+      <property name="text">
+       <string>快照记录</string>
+      </property>
+     </widget>
+     <widget class="QTabWidget" name="streamSelectTabWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1101</width>
+        <height>861</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>视频</string>
+       </attribute>
+       <widget class="QVideoWidget" name="videoPlayer" native="true">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>40</y>
+          <width>900</width>
+          <height>600</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(94, 94, 94);</string>
+        </property>
+       </widget>
+       <widget class="QSlider" name="horizontalSlider">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>710</y>
+          <width>1001</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>750</y>
+          <width>761</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="backOffPushButton">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../resource/快退icon.png</normaloff>../../resource/快退icon.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="lastPushButton">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../resource/上一个icon.png</normaloff>../../resource/上一个icon.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="startPushButton">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../resource/开始.png</normaloff>../../resource/开始.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="nextPushButton">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../resource/下一个icon.png</normaloff>../../resource/下一个icon.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="fastForwardPushButton">
+           <property name="styleSheet">
+            <string notr="true">border-radius: 10px;  border: 2px groove gray;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../resource/跨进icon.png</normaloff>../../resource/跨进icon.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="oepnVideoPushButton">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>770</y>
+          <width>81</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+        </property>
+        <property name="text">
+         <string>打开...</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>C:/Users/11795/.designer/resource/文件icon.png</normaloff>C:/Users/11795/.designer/resource/文件icon.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="videoTimeLabel">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>670</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>00：00：00 / 00：00：00</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="AIDetectPushButton">
+        <property name="geometry">
+         <rect>
+          <x>1030</x>
+          <y>760</y>
+          <width>51</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+        </property>
+        <property name="text">
+         <string>AI检测</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>C:/Users/11795/.designer/resource/文件icon.png</normaloff>C:/Users/11795/.designer/resource/文件icon.png</iconset>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_6">
+       <attribute name="title">
+        <string>直播</string>
+       </attribute>
+       <widget class="QLabel" name="cameraLabel">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>20</y>
+          <width>900</width>
+          <height>600</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 4px;  
+border-width: 1px;
+border-style: solid;
+border-color: rgb(0, 0, 0)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="openCameraPushButton">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>690</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+        </property>
+        <property name="text">
+         <string>打开摄像头</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="cameraSelectPushButton">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>690</y>
+          <width>71</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+        </property>
+        <property name="text">
+         <string>设备选择</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="cameraStoragePushButton">
+        <property name="geometry">
+         <rect>
+          <x>310</x>
+          <y>690</y>
+          <width>71</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+        </property>
+        <property name="text">
+         <string>存储设置</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_9">
+       <attribute name="title">
+        <string>识别训练</string>
+       </attribute>
+      </widget>
+     </widget>
+     <widget class="QTableView" name="snapshotTableView">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>40</y>
+        <width>491</width>
+        <height>741</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="exportPushButton">
+      <property name="geometry">
+       <rect>
+        <x>1490</x>
+        <y>800</y>
+        <width>121</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>导出当前列表</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/导出icon.png</normaloff>C:/Users/11795/.designer/resource/导出icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="snapshotPushButton">
+      <property name="geometry">
+       <rect>
+        <x>1130</x>
+        <y>800</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+	border-radius:10px;
+	border: 2px groove gray;
+	background-color: rgb(238, 0, 0);
+	
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:hover
+{
+    background-color:rgb(238, 92, 66);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(139, 0, 0);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>快照</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/相机icon.png</normaloff>C:/Users/11795/.designer/resource/相机icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deletePushButton">
+      <property name="geometry">
+       <rect>
+        <x>1230</x>
+        <y>800</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>删除</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>识别训练</string>
+     </attribute>
+     <widget class="QPushButton" name="annotationPushButton">
+      <property name="geometry">
+       <rect>
+        <x>1500</x>
+        <y>10</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>标注</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="deleteModelPushButton">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>10</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>删除模型</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="importDatasetPushButton">
+      <property name="geometry">
+       <rect>
+        <x>980</x>
+        <y>10</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>导入数据集</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QLabel" name="modelsListLabel">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>20</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;
+</string>
+      </property>
+      <property name="text">
+       <string>模型列表</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="trainingPushButton">
+      <property name="geometry">
+       <rect>
+        <x>1480</x>
+        <y>820</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+      </property>
+      <property name="text">
+       <string>训练</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>C:/Users/11795/.designer/resource/删除icon.png</normaloff>C:/Users/11795/.designer/resource/删除icon.png</iconset>
+      </property>
+     </widget>
+     <widget class="QTableView" name="modelsTableView">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>50</y>
+        <width>451</width>
+        <height>761</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 4px;  
+border-width: 1px;
+border-style: solid;
+border-color: rgb(0, 0, 0)</string>
+      </property>
+     </widget>
+     <widget class="QTableView" name="datasetTableView">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>50</y>
+        <width>1031</width>
+        <height>761</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-radius: 4px;  
+border-width: 1px;
+border-style: solid;
+border-color: rgb(0, 0, 0)</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="datasetLabel">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>20</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 11pt &quot;Adobe 宋体 Std L&quot;;
+</string>
+      </property>
+      <property name="text">
+       <string>数据集</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>830</y>
+        <width>641</width>
+        <height>26</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="parametersSetLabel">
+         <property name="text">
+          <string>参数设置</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>epochs:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="epochsLineEdit">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>batch_size:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="batchSizeLineEdit">
+         <property name="text">
+          <string>2</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>workers:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="workersLineEdit">
+         <property name="text">
+          <string>8</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1680</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>设置</string>
+    </property>
+    <addaction name="actionSetModel"/>
+    <addaction name="actionDetectFps"/>
+    <addaction name="actionCovertVideo"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+   </widget>
+   <addaction name="menu_3"/>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionselect_model">
+   <property name="text">
+    <string>模型设置</string>
+   </property>
+  </action>
+  <action name="actionselect_fps">
+   <property name="text">
+    <string>检测频率设置</string>
+   </property>
+  </action>
+  <action name="actionSetModel">
+   <property name="text">
+    <string>模型设置</string>
+   </property>
+  </action>
+  <action name="actionDetectFps">
+   <property name="text">
+    <string>检测频率设置</string>
+   </property>
+  </action>
+  <action name="actionCovertVideo">
+   <property name="text">
+    <string>视频格式转换</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QVideoWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">PyQt5.QtMultimediaWidgets</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

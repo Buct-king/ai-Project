@@ -11,6 +11,7 @@ import sxw.utils.video_utils as vutils
 import scj.code.defect_detection as defect_detection
 import json
 from main import ROOT
+import threading
 class Fault_Detection_Addition_UI():
     def __init__(self):
 
@@ -63,6 +64,25 @@ class WorkThread(QThread):
         #
         # # 工作完毕后发出信号
         self.trigger.emit(detectedVideoUrl)
+
+
+class RemovalVideoThread(QThread):
+    #实例化一个信号对象
+    trigger = pyqtSignal([str])
+
+    def __int__(self,video_name):
+        super(RemovalVideoThread, self).__init__()
+        self.video_name=video_name
+
+
+    def run(self):
+
+        import scj.code.duplicate_removal as duplicate_removal
+        duplicate_removal.video_duplicate_remove_2(self.video_name)
+        #
+        #
+        # # 工作完毕后发出信号
+        self.trigger.emit("1")
 
 # 导出线程
 class ExportThread(QThread):

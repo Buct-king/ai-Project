@@ -7,12 +7,14 @@ from scj.code.tool import get_system_ini
 import json
 import os
 import xlwt
+from sxw.utils.cal_distance import calDistance
 
 
 # 添加新的快照
-def new_snapshot(json_info, img_pos=[]):
+def new_snapshot(json_info, img_pos=None):
+    if img_pos is None:
+        img_pos = []
     info = json.loads(json_info)
-    image = info["origin_image"]
     if info["type"] == 0:
         device_name = get_system_ini("video")
         store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"
@@ -20,6 +22,11 @@ def new_snapshot(json_info, img_pos=[]):
         device_name = get_system_ini("camera")
         store_path = get_system_ini("device_camera_path") + "/" + device_name + "/images"
     image_list_path = store_path + "/image_list.yml"
+    image = info["origin_image"]
+    image = np.array(image,np.uint8)
+    ratio = calDistance(image)
+    # ratio = 1
+    unit = "pix" if ratio == 1 else "cm"
     with open(image_list_path, 'r') as f:  # 读取image list的内容
         yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
         f.close()
@@ -30,23 +37,29 @@ def new_snapshot(json_info, img_pos=[]):
         time_str = time.strftime("%Y%m%d-%H_%M_%S", time_now)
         # print(time_str)
         image_name = str(yml_dict["image_index"]) + "_" + device_name + "_" + str(time_str) + ".jpg"
+        _w=img_pos[2]-img_pos[0]
+        _h=img_pos[3]-img_pos[1]
         image_info = {
             "image_name": image_name,
             "image_time": time.strftime("%Y%m%d-%H_%M_%S", time_now),
             "image_note": info["note"],
             "video_time": info["video_time"],
             "index": yml_dict["image_index"],
-            "poses": info["poses"]
+            "poses": info["poses"],
+            "size_h": _h * ratio,
+            "size_w": _w * ratio,
+            "unit": "cm"
         }
+        print(image_info)
         yml_dict["image_list"].append(image_info)
         yaml.dump(yml_dict, f, allow_unicode=True)
         f.close()
-    image = np.array(image)
+    # _image = image[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :]
+    # print(info["poses"])
     # print(img_pos)
-    # print(image.shape)
-    _image = image[img_pos[1]:img_pos[3], img_pos[0]:img_pos[2], :]
-    # print(_image.shape)
-    cv2.imwrite(os.path.join(store_path, image_name), _image)
+    # img_pos = info["poses"]
+    cv2.rectangle(image, (img_pos[0], img_pos[1]), (img_pos[2], img_pos[3]), (0, 255, 0), 3)  # 目标快照区域特定颜色标注
+    cv2.imwrite(os.path.join(store_path, image_name), image)
     return get_image_list(info["type"])
 
 
@@ -74,17 +87,22 @@ def new_snapshots(json_info):
             yml_dict["image_num"] = 1 + yml_dict["image_num"]
             time_now = time.localtime()
             time_str = time.strftime("%Y%m%d-%H_%M_%S", time_now)
-            image_name = str(yml_dict["image_index"]) + "_" + device_name + "_" + str(time_str) + ".jpg"
+            image_name = str(yml_dict["image_Dindex"]) + "_" + device_name + "_" + str(time_str) + ".jpg"
+            image = np.array(img["origin_image"])
+            ratio = calDistance(image)
+            unit = "pix" if ratio == 1 else "cm"
             image_info = {
                 "image_name": image_name,
                 "image_time": time.strftime("%Y%m%d-%H_%M_%S", time_now),
                 "image_note": img["note"],
                 "video_time": img["video_time"],
                 "index": yml_dict["image_index"],
-                "poses": img["poses"]
+                "poses": img["poses"],
+                "size_h": image.shape[0] * ratio,
+                "size_w": image.shape[1] * ratio,
+                "unit": unit
             }
             yml_dict["image_list"].append(image_info)
-            image = np.array(img["origin_image"])
             cv2.imwrite(os.path.join(store_path, image_name), image)
         print("开始保存", time.time())
         yaml.dump(yml_dict, f, allow_unicode=True)
@@ -142,7 +160,10 @@ def get_image_info(device_type, index):
             "index": -1,
             "poses": '[, , , ]',
             "video_time": '',
-            "image_path": ""
+            "image_path": "",
+            "size_h": -1,
+            "size_w": -1,
+            "unit": "unit"
         }
     }
     for img in img_list:
@@ -156,6 +177,9 @@ def get_image_info(device_type, index):
             return_dict["info"]["poses"] = img["poses"]
             return_dict["info"]["video_time"] = img["video_time"]
             return_dict["info"]["image_path"] = store_path + "/" + img["image_name"]
+            return_dict["info"]["size_h"] = img["size_h"]
+            return_dict["info"]["size_w"] = img["size_w"]
+            return_dict["info"]["unit"] = "cm"
             break
     return json.dumps(return_dict, ensure_ascii=False)
 
@@ -163,6 +187,7 @@ def get_image_info(device_type, index):
 # 修改快照内容
 def modify_snapshot_info(device_type, index, index_=-1, image_note=""):
     """
+    :param device_type:
     :param index: 快照原来的index
     :param index_: 希望修改的index
     :param image_note: 希望修改的图像备注
@@ -233,6 +258,35 @@ def delete_snapshot(index, device_type):
     return get_image_list(device_type)
 
 
+# 批量删除快照
+def delete_snapshot_list(indexes, device_type):
+    """
+    :param indexes: 快照的id`列表`
+    :param device_type: 设备类型，0表示视频，1表示摄像头
+    :return: 新的快照列表
+    """
+    print(indexes)
+    if device_type == 0:
+        device_name = get_system_ini("video")
+        store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"
+    else:
+        device_name = get_system_ini("camera")
+        store_path = get_system_ini("device_camera_path") + "/" + device_name + "/images"
+    image_list_path = store_path + "/image_list.yml"
+    with open(image_list_path, 'r') as f:  # 读取image list的内容
+        yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
+        f.close()
+    for img in yml_dict["image_list"]:
+        if img["index"] in indexes:
+            print(img["index"])
+            os.remove(store_path + "/" + img["image_name"])
+            yml_dict["image_list"].remove(img)
+    with open(image_list_path, 'w+') as f:  # 修改image list
+        yaml.dump(yml_dict, f, allow_unicode=True)
+        f.close()
+    return get_image_list(device_type)
+
+
 # 导出快照列表
 def export_snapshot_list(device_type, snapshot_id_list=[], file_path=""):
     """
@@ -267,6 +321,9 @@ def export_snapshot_list(device_type, snapshot_id_list=[], file_path=""):
     sheet.write(2, 2, "视频/摄像头内时间")
     sheet.write(2, 3, "快照备注")
     sheet.write(2, 4, "快照超链接")
+    sheet.write(2, 5, "快照宽度")
+    sheet.write(2, 6, "快照高度")
+    sheet.write(2, 7, "单位")
     # 详情信息
     sheet_lines = 3
     with open(image_list_path + "/image_list.yml", 'r') as f:  # 读取image list的内容
@@ -282,6 +339,9 @@ def export_snapshot_list(device_type, snapshot_id_list=[], file_path=""):
             sheet.write(sheet_lines, 4, xlwt.Formula('HYPERLINK("{}"; "{}")'.format(
                                             image_list_path + "/" + img["image_name"],
                                             img["image_name"])))
+            sheet.write(sheet_lines, 5, img["size_w"])
+            sheet.write(sheet_lines, 6, img["size_h"])
+            sheet.write(sheet_lines, 7, img["unit"])
             sheet_lines += 1
     work_book.save(store_path + device_type_name + "_" + device_name + '_缺陷检测结果.xls')
     return_dict = {
@@ -291,6 +351,7 @@ def export_snapshot_list(device_type, snapshot_id_list=[], file_path=""):
     }
     return json.dumps(return_dict, ensure_ascii=False)
 
+
 # 批量删除快照
 def delete_snapshot_list(indexes, device_type):
     """
@@ -298,6 +359,7 @@ def delete_snapshot_list(indexes, device_type):
     :param device_type: 设备类型，0表示视频，1表示摄像头
     :return: 新的快照列表
     """
+    print(indexes)
     if device_type == 0:
         device_name = get_system_ini("video")
         store_path = get_system_ini("device_video_path") + "/" + device_name + "/images"
@@ -308,10 +370,15 @@ def delete_snapshot_list(indexes, device_type):
     with open(image_list_path, 'r') as f:  # 读取image list的内容
         yml_dict = yaml.load(f.read(), Loader=yaml.FullLoader)
         f.close()
-    for img in yml_dict["image_list"]:
-        if img["index"] in indexes:
-            os.remove(store_path + "/" + img["image_name"])
-            yml_dict["image_list"].remove(img)
+
+    for idx in indexes:
+        for img in yml_dict["image_list"]:
+            if img["index"] == idx:
+                # for img in yml_dict["image_list"]:
+                #     if img["index"] in indexes:
+                print(img["index"])
+                os.remove(store_path + "/" + img["image_name"])
+                yml_dict["image_list"].remove(img)
     with open(image_list_path, 'w+') as f:  # 修改image list
         yaml.dump(yml_dict, f, allow_unicode=True)
         f.close()
@@ -336,5 +403,5 @@ if __name__ == '__main__':
 
     # print(delete_snapshot(2, 1))
     # print(get_image_info(0, 2))
-    export_snapshot_list(0, [1,2,3,4,5,6,7,8,9])
+    export_snapshot_list(0, [1,2,3])
     pass

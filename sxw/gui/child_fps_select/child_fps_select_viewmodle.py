@@ -15,6 +15,8 @@ class ChildFpsSelect(QMainWindow, child_fps_select.Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setupUi(self)
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+        self.setFixedSize(self.width(), self.height())
 
         # 绑定回调函数
         self.slot_init()

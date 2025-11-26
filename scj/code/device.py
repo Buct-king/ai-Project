@@ -8,6 +8,7 @@ import time
 import yaml
 import cv2
 import shutil
+from sxw.utils.conver_video import convertVideo
 
 
 # qurl转string
@@ -36,8 +37,8 @@ def video_judge(url_path):
     path = qurl_to_string(url_path)
     if os.path.isfile(path) is not True:
         return 1  # 错误码1，文件不存在
-    if ".mp4" not in path:
-        return 2  # 错误码2，文件类型错误
+    # if ".mp4" not in path:
+    #     return 2  # 错误码2，文件类型错误
     return 0  # 文件类型检查无误，可以打开
 
 
@@ -121,7 +122,13 @@ def open_new_video(video_url_path):  # 打开新视频时，调用该函数为�
             # yaml_data = yaml.load(f, Loader=yaml.FullLoader)
             yaml.dump(image_list_dict, f, allow_unicode=True)
             f.close()
-        shutil.copyfile(video_path, device_video_path + "/" + video_name[:-4] + "/" + video_name)  # 复制视频副本
+        # shutil.copyfile(video_path, device_video_path + "/" + video_name[:-4] + "/" + video_name)  # 复制视频副本
+        # 视频格式转换
+        if video_name[-3:] != "mp4":
+            # pass
+            convertVideo(video_path, device_video_path + "/" + video_name[:-4] + "/" + video_name[:-4] + ".mp4")
+        else:
+            shutil.copyfile(video_path, device_video_path + "/" + video_name[:-4] + "/" + video_name[:-4] + ".mp4")
         conf.set('processing', 'video', video_name[:-4])  # 配置文件修改：当前正在处理的视频是该视频
         with open(initialization.get_root_path() + "/system.ini", 'w') as f:
             conf.write(f)

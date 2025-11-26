@@ -1,14 +1,14 @@
 import json
-
+import os
 import sxw.gui.child.child as child  # 刚刚转为py文件的UI文件名
 
-from PyQt5 import QtCore
+from PyQt5 import QtCore,QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 import scj.code.device as device
 
-
+from main import ROOT
 class Child(QMainWindow, child.Ui_MainWindow):
     # 向父窗口传递打开文件名的信号量
     _signal = QtCore.pyqtSignal([str,QtCore.QUrl,int])
@@ -16,6 +16,17 @@ class Child(QMainWindow, child.Ui_MainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setupUi(self)
+
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+        self.setFixedSize(self.width(), self.height())
+        self.iconMin=QtGui.QIcon()
+        self.iconMin.addPixmap(QtGui.QPixmap(os.path.join(ROOT, "sxw/resource/minimize.png")), QtGui.QIcon.Normal,
+                                   QtGui.QIcon.Off)
+
+        self.deletePushButton.setIcon(self.iconMin)
+
+
+
         self.slot_init()
         self.historyVideosName, self.historyVideosPath=self.getHistoryVideosInfo()
         self.selectedItem = None

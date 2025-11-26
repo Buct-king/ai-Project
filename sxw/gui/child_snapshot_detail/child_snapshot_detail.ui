@@ -198,34 +198,6 @@ font: 25 11pt &quot;Adobe 宋体 Std L&quot;;</string>
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="snapshotNoteShowLabel">
-    <property name="geometry">
-     <rect>
-      <x>674</x>
-      <y>283</y>
-      <width>211</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius: 4px;  
-border-width: 1px;
-border-style: solid;
-border-color: rgb(0, 0, 0)</string>
-    </property>
-    <property name="text">
-     <string>TextLabeldsfsfsfsfsfsfsdfsdfsfsfweeweqwfwfwe</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-    <property name="margin">
-     <number>1</number>
-    </property>
-   </widget>
    <widget class="QLabel" name="snapshotTimeLabel">
     <property name="geometry">
      <rect>
@@ -337,7 +309,7 @@ border-radius: 4px;   </string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="snapshotIDShowLabel_2">
+   <widget class="QLabel" name="snapshotLengthShowLabel">
     <property name="geometry">
      <rect>
       <x>830</x>
@@ -352,10 +324,75 @@ border-radius: 4px;
 font: 25 11pt &quot;Adobe 宋体 Std L&quot;;</string>
     </property>
     <property name="text">
-     <string>10cm</string>
+     <string>长度: 10cm</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="snapshotWidthShowLabel">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>110</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+border-radius: 4px;   
+font: 25 11pt &quot;Adobe 宋体 Std L&quot;;</string>
+    </property>
+    <property name="text">
+     <string>宽度: 10cm</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="snapshotNoteShowLabel">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>280</y>
+      <width>261</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 4px;  
+border-width: 1px;
+border-style: solid;
+border-color: rgb(0, 0, 0)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="updatePushButton">
+    <property name="geometry">
+     <rect>
+      <x>800</x>
+      <y>447</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{border-radius:10px;border: 2px groove gray;background-color: rgb(182, 182, 182);}
+
+QPushButton:hover
+{
+    background-color:rgb(193, 205, 205);
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(131, 139, 139);
+    padding-left:3px;
+    padding-top:3px;
+}</string>
+    </property>
+    <property name="text">
+     <string>更新</string>
     </property>
    </widget>
   </widget>
@@ -365,7 +402,7 @@ font: 25 11pt &quot;Adobe 宋体 Std L&quot;;</string>
      <x>0</x>
      <y>0</y>
      <width>984</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

@@ -18,11 +18,13 @@ class ChildSnapshotDetails(QMainWindow, child_snapshot_detail.Ui_MainWindow):
         self.idSet=[]
         self.maxSnapshotIndex=None
         self.slot_init()
+        self.getSnapshotList()
 
     def slot_init(self):
         self.cancelPushButton.clicked.connect(lambda: self.cancelPush())
         self.lastPushButton.clicked.connect(lambda: self.lastSnapshotPush())
         self.nextPushButton.clicked.connect(lambda: self.nextSnapshotPush())
+        self.updatePushButton.clicked.connect(lambda: self.updateDetails())
 
     def lastSnapshotPush(self):
         find=self.indexNow-1
@@ -55,6 +57,7 @@ class ChildSnapshotDetails(QMainWindow, child_snapshot_detail.Ui_MainWindow):
         self.close()
 
     def getSnapshotList(self):
+        print(self.kind)
         if self.kind is None:
             return
         self.snapshotList=json.loads(ssnapshot.get_image_list(self.kind))
@@ -65,14 +68,27 @@ class ChildSnapshotDetails(QMainWindow, child_snapshot_detail.Ui_MainWindow):
 
 
     def updataSnapshotInfo(self,kind,id):
+        if kind == 1:
+            self.snapshotVideoTimeLabel.setVisible(False)
+            self.snapshotVideoTimeShowLabel.setVisible(False)
+        if kind == 0:
+            self.snapshotVideoTimeLabel.setVisible(True)
+            self.snapshotVideoTimeShowLabel.setVisible(True)
         jsonInfos=ssnapshot.get_image_info(kind,id)
         info=json.loads(jsonInfos)
+        print(info)
         self.snapshotNoteShowLabel.setText(info["info"]["image_note"])
         self.snapshotIDShowLabel.setText(str(id))
         self.snapshotVideoTimeShowLabel.setText(info["info"]["video_time"])
         self.snapshotTimeShowLabel.setText(info["info"]["image_time"])
         self.snapshotVideoInfoShowLabel.setText(info["info"]["image_name"])
+        length = str(round(info["info"]["size_w"], 2)) + info["info"]["unit"]
+        width = str(round(info["info"]["size_h"], 2)) + info["info"]["unit"]
+        self.snapshotLengthShowLabel.setText(length)
+        self.snapshotWidthShowLabel.setText(width)
         image_path=info["info"]["image_path"]
+
+
         show=cv2.imread(image_path)
 
         #
@@ -103,3 +119,21 @@ class ChildSnapshotDetails(QMainWindow, child_snapshot_detail.Ui_MainWindow):
 
         print(image.shape)
         return image
+
+    def updateDetails(self):
+        if self.kind is None:
+            QMessageBox.critical(self, "警告", "更新失败")
+            return
+
+        text_contents = self.snapshotNoteShowLabel.toPlainText()
+        if len(text_contents)>0:
+            ssnapshot.modify_snapshot_info(device_type=self.kind,index=self.indexNow,image_note=text_contents)
+            self.snapshotNoteShowLabel.setText(text_contents)
+            QMessageBox.information(self, "更新", "更新成功")
+        else:
+            QMessageBox.critical(self, "警告", "更新失败")
+            return
+
+
+
+

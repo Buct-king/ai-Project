@@ -38,6 +38,7 @@ import torch.backends.cudnn as cudnn
 from matplotlib import pyplot as plt
 import numpy as np
 import cv2
+import threading
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -55,7 +56,7 @@ import json
 from scj.code.snapshot import new_snapshot
 
 
-def camera_defect_detection(image, detect_json,save=False):
+def camera_defect_detection(image, detect_json,data_queue,save=False):
     """
     :param image: 需要处理的图像帧
     :param detect_json: 检测出的缺陷json，格式同视频
@@ -74,8 +75,20 @@ def camera_defect_detection(image, detect_json,save=False):
         }
         dict_ = json.dumps(post_dict, ensure_ascii=False)
         if save:
-            new_snapshot(dict_, defect["position"])
+            data_queue.put([dict_, defect["position"]])
+            # new_snapshot(dict_, defect["position"])
+            # t1 = MyThread(dict_, defect["position"])
+            # t1.start()
 
+
+class MyThread(threading.Thread):
+    def __init__(self, dict,position):
+        super(MyThread, self).__init__()  # 重构run函数必须要写
+        self.dict = dict
+        self.position=position
+
+    def run(self):
+        new_snapshot(self.dict, self.position)
 
 
 def xyxy_center_id(xyxy):
@@ -86,6 +99,7 @@ def xyxy_center_id(xyxy):
 
 @smart_inference_mode()
 def run(
+        data_queue,
         weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         source=ROOT / 'data/images',  # file/dir/URL/glob, 0 for webcam
         data=ROOT / 'data/coco128.yaml',  # dataset.yaml path
@@ -239,7 +253,7 @@ def run(
             if re_image:
                 json_str = json.dumps(result_json, indent=4)
                 image = cv2.imread(source)
-                camera_defect_detection(image, json_str,save)
+                camera_defect_detection(image, json_str,data_queue,save)
                 return im0
             # im0 = cv2.resize(im0, (im0.shape[1] // 4, im0.shape[0] // 4))
             if view_img:
@@ -354,12 +368,12 @@ def t_camera_defect(image=None):
     # camera_defect_detection(image, j)
 
 
-def ta_camera_defect(model, image=None, save=False):
+def ta_camera_defect(model, myqueue,image=None, save=False):
     opt = parse_opt()
     cv2.imwrite('./t.jpg', image)
     opt.source = './t.jpg'
     opt.re_image = True
-    im = run(model=model, save=save, **vars(opt))
+    im = run(myqueue,model=model, save=save, **vars(opt))
     return im
 
 
